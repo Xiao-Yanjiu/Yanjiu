@@ -1,0 +1,42 @@
+[
+  {
+    "File": "AngleSharp.dll",
+    "Version": "1.8.0+abc5527e2b0cb94954d260e386685bd1e5b537cb",
+    "Sha256": "2d72e9d5f21a4cfa2e0b85c87b5408c10d0a45700499a4af20cd6e47c032f6fd"
+  },
+  {
+    "File": "GuerrillaNtp.dll",
+    "Version": "3.1.0",
+    "Sha256": "2c083c720ecbc2224fc728132b971b38ebc30d787a443a490b855e9b04d0094f"
+  },
+  {
+    "File": "Jeffijoe.MessageFormat.dll",
+    "Version": "8.0.0+dae6f0b05094893f4f5e51ec46a0f0d68ba9ed54",
+    "Sha256": "d4b3af8a2efc4071dc36edbbbc8b04b9604c498bd882534ca0c1d3c5ec9bc355"
+  },
+  {
+    "File": "Markdig.dll",
+    "Version": "0.43.0+8c01cf054971a1ec4cd663edaca6e2d035236133",
+    "Sha256": "420a1c3c5d9875eda2108130d95ae244fa8a4a68baec2546d33e1204517a8910"
+  },
+  {
+    "File": "Microsoft.CodeAnalysis.CSharp.dll",
+    "Version": "5.9.0-1.26357.3+35d9211b841e7613c1d2f8f5af6d628ace696c4c",
+    "Sha256": "fc571a6647ac45b0b0dc1866b795529bb2eeb93adf9be97fcd5903cf482f700a"
+  },
+  {
+    "File": "Microsoft.CodeAnalysis.dll",
+    "Version": "5.9.0-1.26357.3+35d9211b841e7613c1d2f8f5af6d628ace696c4c",
+    "Sha256": "55618d457128eec582017545b8929ebf195669003b6ec737110f9519e1711d28"
+  },
+  {
+    "File": "OmenTools.dll",
+    "Version": "1.0.0+c726d53456d56b82074a3ee8dafdef6ac1831811",
+    "Sha256": "9fd90ba952702774bc340162faf04722f71fbe7c945019fa924adf157609265b"
+  },
+  {
+    "File": "TinyPinyin.dll",
+    "Version": "1.1.0",
+    "Sha256": "3e7f3d65e7a5076ca823dce496bc182a658ee72aacb23012e8c186a8e5aa2ede"
+  }
+]

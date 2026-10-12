@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>Yanjiu</AssemblyName>
+    <RootNamespace>Yanjiu</RootNamespace>
+    <Version>0.1.0.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <DalamudLibPath Condition="'$(DalamudLibPath)'==''">$(APPDATA)/XIVLauncherCN/addon/Hooks/dev</DalamudLibPath>
+    <YanjiuDependencyPath Condition="'$(YanjiuDependencyPath)'==''">../../third_party/plugin-runtime</YanjiuDependencyPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dalamud"><HintPath>$(DalamudLibPath)/Dalamud.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Dalamud.Common"><HintPath>$(DalamudLibPath)/Dalamud.Common.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Dalamud.Bindings.ImGui"><HintPath>$(DalamudLibPath)/Dalamud.Bindings.ImGui.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Dalamud.Bindings.ImPlot"><HintPath>$(DalamudLibPath)/Dalamud.Bindings.ImPlot.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Dalamud.Bindings.ImGuizmo"><HintPath>$(DalamudLibPath)/Dalamud.Bindings.ImGuizmo.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="FFXIVClientStructs"><HintPath>$(DalamudLibPath)/FFXIVClientStructs.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="InteropGenerator.Runtime"><HintPath>$(DalamudLibPath)/InteropGenerator.Runtime.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Lumina"><HintPath>$(DalamudLibPath)/Lumina.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Lumina.Excel"><HintPath>$(DalamudLibPath)/Lumina.Excel.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(DalamudLibPath)/Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="OmenTools"><HintPath>$(YanjiuDependencyPath)/OmenTools.dll</HintPath></Reference>
+    <Reference Include="Microsoft.CodeAnalysis"><HintPath>$(YanjiuDependencyPath)/Microsoft.CodeAnalysis.dll</HintPath></Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp"><HintPath>$(YanjiuDependencyPath)/Microsoft.CodeAnalysis.CSharp.dll</HintPath></Reference>
+  </ItemGroup>
+  <ItemGroup><Content Include="$(YanjiuDependencyPath)/*.dll" CopyToOutputDirectory="PreserveNewest" Link="%(Filename)%(Extension)"/><Content Include="Yanjiu.json" CopyToOutputDirectory="PreserveNewest"/></ItemGroup>
+</Project>
