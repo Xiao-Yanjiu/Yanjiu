@@ -21,6 +21,8 @@ static class Tests
   File.Delete(root+"/tests/runtime/modules/DRSample.json");
   var refs=Directory.EnumerateFiles(api,"*.dll").Concat(Directory.EnumerateFiles(root+"/artifacts/plugin","*.dll")).Concat(Directory.EnumerateFiles(Path.GetDirectoryName(typeof(object).Assembly.Location)!,"*.dll"));
   var compiler=new SourceCompiler(refs);
+  Check(SourceCompiler.ReferenceFiles([null,"",root+"/missing-directory",root+"/artifacts/plugin"]).Any(path=>Path.GetFileName(path)=="Yanjiu.dll"),"empty in-memory assembly paths skipped");
+  _=new SourceCompiler();
   var source="""
   using OmniToolbox.Common.Module.Abstractions;using OmniToolbox.Common.Module.Models;using OmniToolbox.Common.Module.Enums;
   public class LifecycleSample:ModuleBase{public override ModuleInfo Info{get;}=new(){Title="生命周期",Description="测试",Author="小烟酒",Category=ModuleCategory.Interface};protected override void OnEnable(){AppDomain.CurrentDomain.SetData("enabledCount",(int)(AppDomain.CurrentDomain.GetData("enabledCount")??0)+1);}protected override void OnDisable(){AppDomain.CurrentDomain.SetData("disabledCount",(int)(AppDomain.CurrentDomain.GetData("disabledCount")??0)+1);}protected override void OnDispose(){AppDomain.CurrentDomain.SetData("disposedCount",(int)(AppDomain.CurrentDomain.GetData("disposedCount")??0)+1);}}

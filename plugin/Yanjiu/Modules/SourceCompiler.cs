@@ -20,19 +20,23 @@ public sealed class ModuleCompilationException(string message):Exception(message
 public sealed class SourceCompiler
 {
     private readonly MetadataReference[] references;
+    private static string PluginDirectory=>Services.PluginInterface?.AssemblyLocation.DirectoryName??Path.GetDirectoryName(typeof(ModuleBase).Assembly.Location)??AppContext.BaseDirectory;
     public SourceCompiler(IEnumerable<string>? paths=null)
     {
         var files=paths?.ToArray()??ReferencePaths();var unique=new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase);
         foreach(var path in files){try{var name=AssemblyName.GetAssemblyName(path).Name!;if(name.StartsWith("OmniToolbox")||name.StartsWith("DailyRoutines"))continue;unique[name]=path;}catch{}}
-        foreach(var path in Directory.EnumerateFiles(Path.GetDirectoryName(typeof(ModuleBase).Assembly.Location)!,"*.dll")){try{unique[AssemblyName.GetAssemblyName(path).Name!]=path;}catch{}}
-        unique[typeof(ModuleBase).Assembly.GetName().Name!]=typeof(ModuleBase).Assembly.Location;
+        foreach(var path in Directory.EnumerateFiles(PluginDirectory,"*.dll")){try{unique[AssemblyName.GetAssemblyName(path).Name!]=path;}catch{}}
+        unique[typeof(ModuleBase).Assembly.GetName().Name!]=Path.Combine(PluginDirectory,"Yanjiu.dll");
         references=unique.Values.Select(path=>MetadataReference.CreateFromFile(path)).ToArray();
     }
     public static string[] ReferencePaths()
     {
-        var roots=new[]{Path.GetDirectoryName(typeof(object).Assembly.Location)!,Path.GetDirectoryName(typeof(Dalamud.Plugin.IDalamudPlugin).Assembly.Location)!,Path.GetDirectoryName(typeof(ModuleBase).Assembly.Location)!};
-        return roots.Distinct().SelectMany(root=>Directory.EnumerateFiles(root,"*.dll")).Concat(AppDomain.CurrentDomain.GetAssemblies().Where(a=>!a.IsDynamic).Select(a=>a.Location).Where(File.Exists)).Distinct().ToArray();
+        var roots=new[]{Path.GetDirectoryName(typeof(object).Assembly.Location),Path.GetDirectoryName(typeof(Dalamud.Plugin.IDalamudPlugin).Assembly.Location),PluginDirectory,AppContext.BaseDirectory};
+        var loaded=AppDomain.CurrentDomain.GetAssemblies().Where(a=>!a.IsDynamic).SelectMany(a=>{try{return new[]{a.Location};}catch(NotSupportedException){return Array.Empty<string>();}});
+        var platform=(AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string??"").Split(Path.PathSeparator,StringSplitOptions.RemoveEmptyEntries);
+        return ReferenceFiles(roots).Concat(loaded).Concat(platform).Where(File.Exists).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
     }
+    public static string[] ReferenceFiles(IEnumerable<string?> roots)=>roots.Where(root=>!string.IsNullOrWhiteSpace(root)&&Directory.Exists(root)).Distinct(StringComparer.OrdinalIgnoreCase).SelectMany(root=>Directory.EnumerateFiles(root!,"*.dll")).ToArray();
     public CompiledModule Compile(byte[] data,string name)
     {
         if(data.Length>4*1024*1024)throw new ModuleCompilationException("模块不能超过 4 MiB");

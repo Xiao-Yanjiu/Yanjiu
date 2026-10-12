@@ -13,8 +13,9 @@ public sealed class Plugin : IDalamudPlugin
     {
         pi.Create<Services>();Services.ConfigDirectory=pi.GetPluginConfigDirectory();Directory.CreateDirectory(Services.ConfigDirectory);
         config=pi.GetPluginConfig() as Configuration??new Configuration();config.Modules??=new();config.Repositories??=new();
+        modules=new ModuleManager(config,new SourceCompiler());
         try{DService.Init(pi);}catch(Exception e){Services.Log.Error(e,"OmenTools initialization failed; helper-dependent modules may be unavailable");}
-        modules=new ModuleManager(config,new SourceCompiler());window=new MainWindow(config,modules);Services.Windows.AddWindow(window);
+        window=new MainWindow(config,modules);Services.Windows.AddWindow(window);
         modules.AddBuiltIn(new BuiltIn.PhoneChat());modules.Restore();
         Services.Commands.AddHandler("/yanjiu",new CommandInfo(Command){HelpMessage="打开小烟酒；/yanjiu 模块名 参数"});Services.Commands.AddHandler("/xyj",new CommandInfo(Command){HelpMessage="打开小烟酒"});
         pi.UiBuilder.Draw+=Draw;pi.UiBuilder.OpenConfigUi+=Open;pi.UiBuilder.OpenMainUi+=Open;Services.Framework.Update+=Update;
