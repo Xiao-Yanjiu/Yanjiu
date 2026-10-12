@@ -1,0 +1,25 @@
+# Private local material and generated outputs
+local/
+backups/
+备份/
+构建工具/
+**/bin/
+**/obj/
+**/build/
+**/.gradle/
+**/__pycache__/
+*.apk
+*.idsig
+*.jks
+*.keystore
+*.pfx
+*.p12
+*.pair
+*.push
+*.qq
+*.db
+*.sqlite*
+*.log
+.env
+.env.*
+local.properties
