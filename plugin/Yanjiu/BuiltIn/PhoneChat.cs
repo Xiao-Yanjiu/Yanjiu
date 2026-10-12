@@ -389,7 +389,6 @@ public sealed class PhoneChat : ModuleBase
         lifecycle?.RegisterListener(AddonEvent.PostSetup,"SelectYesno",OnPrompt);
         if(chat!=null){chat.ChatMessageUnhandled+=OnChat;chat.ChatMessageHandled+=OnSuppressedChat;}
         if(framework!=null)framework.Update+=Update;
-        if(DalamudServices.PluginInterface!=null)DalamudServices.PluginInterface.UiBuilder.Draw+=DrawPanel;
         qqMirrorCursor=entries.LastId;qqMirrorSince=DateTimeOffset.UtcNow;StartServer();if(settings.QQAutoConnect)ConnectQQ(false);historyRequested=true;AttachWorld();if(objects?.LocalPlayer!=null){RefreshGameMetadata();LoadGameChatHistory();}
     }
     protected override void OnDisable()
@@ -398,7 +397,6 @@ public sealed class PhoneChat : ModuleBase
         if(chat!=null){chat.ChatMessageUnhandled-=OnChat;chat.ChatMessageHandled-=OnSuppressedChat;}
         if(framework!=null)framework.Update-=Update;
         lifecycle?.UnregisterListener(AddonEvent.PostSetup,"SelectYesno",OnPrompt);
-        if(DalamudServices.PluginInterface!=null)DalamudServices.PluginInterface.UiBuilder.Draw-=DrawPanel;
         DetachWorld();StopServer();historyScan.Clear();panel=false;
     }
     protected override void OnDispose() { DisconnectQQ();pushRouter?.Dispose();pushRouter=null;StopServer();lock(gate)entries?.Dispose(); }
@@ -980,7 +978,7 @@ public sealed class PhoneChat : ModuleBase
 
     public override bool DrawSettings()
     {if(ImGui.Button("打开手机聊天面板"))panel=true;return false;}
-    private void DrawPanel()
+    public void DrawPanel()
     {
         if(!panel)return;using var font=OmniFonts.GetUIFont().Push();using var theme=new ComicStyleScope();
         ImGui.SetNextWindowSize(new Vector2(620,700),ImGuiCond.FirstUseEver);

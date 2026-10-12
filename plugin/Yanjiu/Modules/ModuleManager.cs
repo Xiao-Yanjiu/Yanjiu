@@ -7,6 +7,7 @@ public sealed class ModuleEntry : IDisposable
     public required ModulePreference Preference{get;init;}public CompiledModule? Compiled{get;set;}
     public ModuleBase? Instance{get;set;}public string Error{get;set;}="";
     public string Title=>Instance?.Descriptor.Title??System.IO.Path.GetFileName(Path);
+    public bool DrawSettings()=>Instance?.IsEnabled==true&&Instance.HasSettings&&Instance.DrawSettings();
     public void Dispose(){try{Instance?.Dispose();}finally{Instance=null;Compiled?.Dispose();Compiled=null;}}
 }
 public sealed class ModuleManager : IDisposable

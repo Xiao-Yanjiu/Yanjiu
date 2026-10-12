@@ -6,6 +6,8 @@ public sealed class Configuration : IPluginConfiguration
     public int Version { get; set; } = 1;
     public int Theme { get; set; }
     public float Scale { get; set; } = 1;
+    public float FontSize { get; set; } = 20;
+    public int FontFamily { get; set; } = 1;
     public List<ModulePreference> Modules { get; set; } = new();
     public List<string> Repositories { get; set; } = new();
     public void Save()=>Services.PluginInterface.SavePluginConfig(this);

@@ -56,7 +56,7 @@ namespace OmniToolbox.UI
 {
     public static class OmniFonts
     {
-        public static IFontHandle GetUIFont(float scale=1)=>OmenTools.OmenService.FontManager.Instance().GetUIFont(scale);
+        public static IFontHandle GetUIFont(float scale=1)=>Yanjiu.UI.UiFonts.Get(scale);
     }
 }
 namespace OmniToolbox.UI.Controls

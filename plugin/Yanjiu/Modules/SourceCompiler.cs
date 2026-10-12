@@ -31,7 +31,7 @@ public sealed class SourceCompiler
     }
     public static string[] ReferencePaths()
     {
-        var roots=new[]{Path.GetDirectoryName(typeof(object).Assembly.Location),Path.GetDirectoryName(typeof(Dalamud.Plugin.IDalamudPlugin).Assembly.Location),PluginDirectory,AppContext.BaseDirectory};
+        var roots=new[]{Path.GetDirectoryName(typeof(object).Assembly.Location),Path.GetDirectoryName(typeof(System.Security.Cryptography.ProtectedData).Assembly.Location),Path.GetDirectoryName(typeof(System.Windows.Forms.Form).Assembly.Location),Path.GetDirectoryName(typeof(Dalamud.Plugin.IDalamudPlugin).Assembly.Location),PluginDirectory,AppContext.BaseDirectory};
         var loaded=AppDomain.CurrentDomain.GetAssemblies().Where(a=>!a.IsDynamic).SelectMany(a=>{try{return new[]{a.Location};}catch(NotSupportedException){return Array.Empty<string>();}});
         var platform=(AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string??"").Split(Path.PathSeparator,StringSplitOptions.RemoveEmptyEntries);
         return ReferenceFiles(roots).Concat(loaded).Concat(platform).Where(File.Exists).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();

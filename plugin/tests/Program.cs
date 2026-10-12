@@ -20,7 +20,7 @@ static class Tests
   Yanjiu.Services.ConfigDirectory=root+"/tests/runtime";Directory.CreateDirectory(Yanjiu.Services.ConfigDirectory);
   File.Delete(root+"/tests/runtime/modules/DRSample.json");
   var refs=Directory.EnumerateFiles(api,"*.dll").Concat(Directory.EnumerateFiles(root+"/artifacts/plugin","*.dll")).Concat(Directory.EnumerateFiles(Path.GetDirectoryName(typeof(object).Assembly.Location)!,"*.dll"));
-  var compiler=new SourceCompiler(refs);
+  var compiler=new SourceCompiler(refs.Concat(SourceCompiler.ReferencePaths()));
   Check(SourceCompiler.ReferenceFiles([null,"",root+"/missing-directory",root+"/artifacts/plugin"]).Any(path=>Path.GetFileName(path)=="Yanjiu.dll"),"empty in-memory assembly paths skipped");
   _=new SourceCompiler();
   var source="""
@@ -35,9 +35,10 @@ static class Tests
   using(var compiled=compiler.Compile(Encoding.UTF8.GetBytes(failSource),"fail.cs")){using var module=compiled.Create();try{module.SetEnabled(true);}catch{}Check(!module.IsEnabled,"failed startup cannot remain enabled");}
   var dr="""
   using DailyRoutines.Common.Module.Abstractions;using DailyRoutines.Common.Module.Models;using DailyRoutines.Common.Module.Enums;
-  public class DRSample:ModuleBase{public override ModuleInfo Info{get;}=new(){Title="DR配置",Description="测试",Author=["小烟酒"],Category=ModuleCategory.System};private class Config:ModuleConfig{public int Count{get;set;}}protected override void Init(){var c=LoadConfig<Config>()??new();c.Count++;SaveConfig(c);}}
+  public class DRSample:ModuleBase{public override ModuleInfo Info{get;}=new(){Title="DR配置",Description="测试",Author=["小烟酒"],Category=ModuleCategory.System};private class Config:ModuleConfig{public int Count{get;set;}}private Config? c;protected override void Init(){c=LoadConfig<Config>()??new();c.Count++;SaveConfig(c);}protected override void ConfigUI(){if(c==null)throw new NullReferenceException("Settings drawn before Init");AppDomain.CurrentDomain.SetData("drSettingsCount",(int)(AppDomain.CurrentDomain.GetData("drSettingsCount")??0)+1);}}
   """;
-  for(int i=0;i<2;i++)using(var compiled=compiler.Compile(Encoding.UTF8.GetBytes(dr),"dr.cs")){using var module=compiled.Create();module.SetEnabled(true);module.SetEnabled(false);}
+  for(int i=0;i<2;i++)using(var compiled=compiler.Compile(Encoding.UTF8.GetBytes(dr),"dr.cs")){using var module=compiled.Create();var entry=new ModuleEntry{Path="test",Origin="test",Preference=new(),Instance=module};entry.DrawSettings();module.SetEnabled(true);entry.DrawSettings();module.SetEnabled(false);entry.DrawSettings();}
+  Check((int)AppDomain.CurrentDomain.GetData("drSettingsCount")! ==2,"settings drawn only after DR initialization, never while disabled");
   using(var persisted=System.Text.Json.JsonDocument.Parse(File.ReadAllText(root+"/tests/runtime/modules/DRSample.json")))Check(persisted.RootElement.GetProperty("Count").GetInt32()==2,"DR configuration persisted between instances");
   Check(Themes.Available.Length==6&&Themes.Available.Select(p=>p.Name).Distinct().Count()==6,"six unique palettes");
   Check(OnlineRepository.ManifestUrl("https://github.com/Xiao-Yanjiu/OmniToolbox.xiaoyanjiu").ToString().EndsWith("/HEAD/TreeHouseModules.json"),"GitHub repository conversion");
@@ -50,6 +51,7 @@ static class Tests
    catch(Exception e){failures++;results.Add(new{file,ok=false,type="",error=e.Message});Console.WriteLine("COMPAT FAIL "+Path.GetFileName(file)+": "+e.Message.Split('\n')[0]);}
   }
   File.WriteAllText(root+"/tests/local-compatibility.json",System.Text.Json.JsonSerializer.Serialize(results,new System.Text.Json.JsonSerializerOptions{WriteIndented=true}));
+  var phoneSource=root+"/temporary/legacy-publication/Modules/PhoneChat.cs";if(File.Exists(phoneSource)){using var phoneCompiled=compiler.Compile(File.ReadAllBytes(phoneSource),phoneSource);Check(phoneCompiled.ModuleType.Name=="PhoneChat","published phone module type");Console.WriteLine("PHONE MODULE PASS: publication source compiled");}
   using var online=new OnlineRepository();var listing=await online.Fetch("https://github.com/Xiao-Yanjiu/OmniToolbox.xiaoyanjiu");
   Check(listing.Modules.Count>0,"owned online repository has modules");Directory.CreateDirectory(root+"/tests/online-sources");var remote=new List<object>();
   foreach(var item in listing.Modules.Take(12)){
