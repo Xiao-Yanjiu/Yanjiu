@@ -11,6 +11,7 @@ public sealed class Configuration : IPluginConfiguration
     public float BorderWidth { get; set; } = 2.25f;
     public Dictionary<string,float[]> ThemeColors { get; set; } = new();
     public Dictionary<string,bool> RepositoryAutoRefresh { get; set; } = new();
+    public List<string> HiddenAvailableModules { get; set; } = new();
     public List<ModulePreference> Modules { get; set; } = new();
     public List<string> Repositories { get; set; } = new();
     public void Save()=>Services.PluginInterface.SavePluginConfig(this);

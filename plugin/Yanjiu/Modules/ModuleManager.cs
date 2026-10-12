@@ -61,7 +61,7 @@ public sealed class ModuleManager : IDisposable
     {
         var removed=new HashSet<string>(paths.Select(NormalizePath),StringComparer.OrdinalIgnoreCase);
         foreach(var path in removed)revisions.AddOrUpdate(path,1,(_,previous)=>previous+1);
-        foreach(var entry in Entries.Where(e=>removed.Contains(e.Path)).ToArray()){try{entry.Dispose();}catch(Exception e){Status="模块清理失败："+e.Message;Services.Log?.Error(e,"Module removal failed");}Entries.Remove(entry);}
+        foreach(var entry in Entries.Where(e=>removed.Contains(e.Path)).ToArray()){if(entry.Instance!=null&&!config.HiddenAvailableModules.Contains(entry.Instance.ModuleName))config.HiddenAvailableModules.Add(entry.Instance.ModuleName);try{entry.Dispose();}catch(Exception e){Status="模块清理失败："+e.Message;Services.Log?.Error(e,"Module removal failed");}Entries.Remove(entry);}
         config.Modules.RemoveAll(pref=>removed.Contains(NormalizePath(pref.Path)));config.Save();
     }
     public static string NormalizePath(string path){if(path.StartsWith("builtin:",StringComparison.Ordinal))return path;try{return Path.GetFullPath(path);}catch{return path;}}

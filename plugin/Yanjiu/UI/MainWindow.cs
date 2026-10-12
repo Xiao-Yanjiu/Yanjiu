@@ -47,7 +47,7 @@ public sealed class MainWindow : Window,IDisposable
         ImGui.Spacing();ImGui.TextUnformatted("小烟酒");ImGui.TextDisabled("Yanjiu · 0.1.0");ImGui.Spacing();ImGui.Separator();ImGui.Spacing();
         string[] pages=["首页","模块","外观","诊断"];
         for(int i=0;i<pages.Length;i++){bool active=page==i;if(active)ImGui.PushStyleColor(ImGuiCol.Button,Themes.Current.Selected);if(ImGui.Button(pages[i],new Vector2(-1,40*Themes.Scale)))page=i;if(active)ImGui.PopStyleColor();}
-        ImGui.EndChild();ImGui.SameLine();ImGui.BeginChild("content",Vector2.Zero,false);
+        ImGui.EndChild();ImGui.SameLine();ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding,new Vector2(18)*Themes.Scale);ImGui.BeginChild("content",Vector2.Zero,false,ImGuiWindowFlags.AlwaysUseWindowPadding);ImGui.PopStyleVar();
         switch(page){case 0:DrawHome();break;case 1:DrawModules();break;case 2:DrawAppearance();break;case 3:DrawDiagnostics();break;}
         DrawIconPicker();ImGui.EndChild();
     }
@@ -73,7 +73,7 @@ public sealed class MainWindow : Window,IDisposable
                     ImGui.PushID(address);ImGui.TableNextColumn();string display=address;ImGui.SetNextItemWidth(-1);ImGui.InputText("##address",ref display,2000,ImGuiInputTextFlags.ReadOnly);
                     if(sourceStatus.TryGetValue(address,out var message)&&message.Length>0)ImGui.TextWrapped(message);
                     ImGui.TableNextColumn();bool automatic=config.RepositoryAutoRefresh.GetValueOrDefault(address);if(ImGui.Checkbox("自动刷新",ref automatic)){config.RepositoryAutoRefresh[address]=automatic;config.Save();}
-                    ImGui.TableNextColumn();ImGui.BeginDisabled(fetching.Contains(address));if(IconButton(Refresh,"refresh","刷新模块清单"))Fetch(address);ImGui.EndDisabled();ImGui.SameLine();if(IconButton(Trash,"remove","删除地址并卸载该来源的模块；保留磁盘文件"))RemoveRepository(address);
+                    ImGui.TableNextColumn();ImGui.BeginDisabled(fetching.Contains(address));if(IconButton(Refresh,"refresh","刷新清单并恢复已移除的候选模块"))Fetch(address,true);ImGui.EndDisabled();ImGui.SameLine();if(IconButton(Trash,"remove","删除地址并卸载该来源的模块；保留磁盘文件"))RemoveRepository(address);
                     ImGui.PopID();
                 }
                 ImGui.EndTable();
@@ -100,7 +100,7 @@ public sealed class MainWindow : Window,IDisposable
         var address=repository.Trim();try{
             var canonical=OnlineRepository.ManifestUrl(address);
             if(config.Repositories.Any(existing=>SameRepository(existing,canonical))){status="这个在线地址已经添加";return;}
-            config.Repositories.Add(address);config.RepositoryAutoRefresh[address]=newAutoRefresh;config.Save();repository="";status="";Fetch(address);
+            config.Repositories.Add(address);config.RepositoryAutoRefresh[address]=newAutoRefresh;config.Save();repository="";status="";Fetch(address,true);
         }catch(Exception e){status=e.Message;}
     }
     private static bool SameRepository(string address,Uri canonical){try{return OnlineRepository.ManifestUrl(address)==canonical;}catch{return false;}}
@@ -124,6 +124,7 @@ public sealed class MainWindow : Window,IDisposable
         ImGui.SetNextItemWidth(-1);ImGui.InputTextWithHint("##search","搜索模块名称或说明",ref search,200);ImGui.Spacing();
         foreach(var entry in modules.Entries.Where(e=>Matches(e.Title+e.Instance?.Descriptor.Description+e.Instance?.Descriptor.Author)).ToArray())DrawEntry(entry);
         foreach(var pair in listings.ToArray())foreach(var item in pair.Value.Modules){
+            if(config.HiddenAvailableModules.Contains(item.InternalName))continue;
             if(modules.Entries.Any(e=>e.Path.Equals(ModulePath(pair.Value,item),StringComparison.OrdinalIgnoreCase)||e.Origin=="内置"&&e.Instance?.ModuleName==item.InternalName))continue;
             if(Matches(item.Name+item.Description+item.Author))DrawAvailable(pair.Key,pair.Value,item);
         }
@@ -146,16 +147,18 @@ public sealed class MainWindow : Window,IDisposable
         ImGui.GetWindowDrawList().AddRect(start,new Vector2(start.X+width,end.Y),ImGui.ColorConvertFloat4ToU32(Themes.Current.Border),12*Themes.Scale,ImDrawFlags.None,Themes.BorderWidth*Themes.Scale);
         ImGui.PopID();ImGui.Dummy(new Vector2(0,10*Themes.Scale));
     }
-    private bool BeginHeader(){if(!ImGui.BeginTable("header",3,ImGuiTableFlags.SizingStretchProp))return false;ImGui.TableSetupColumn("toggle",ImGuiTableColumnFlags.WidthFixed,36*Themes.Scale);ImGui.TableSetupColumn("title",ImGuiTableColumnFlags.WidthStretch);ImGui.TableSetupColumn("actions",ImGuiTableColumnFlags.WidthFixed,190*Themes.Scale);return true;}
-    private static void Author(string author){ImGui.TextDisabled("作者："+(author.Length>12?author[..12]+"…":author));if(ImGui.IsItemHovered())ImGui.SetTooltip(author);}
+    private bool BeginHeader(string author){float available=ImGui.GetContentRegionAvail().X-12*Themes.Scale;float width=Math.Clamp(ImGui.CalcTextSize("作者："+author).X+12*Themes.Scale,150*Themes.Scale,Math.Max(150*Themes.Scale,available*.65f));if(!ImGui.BeginTable("header",3,ImGuiTableFlags.SizingStretchProp,new Vector2(available,0)))return false;ImGui.TableSetupColumn("toggle",ImGuiTableColumnFlags.WidthFixed,36*Themes.Scale);ImGui.TableSetupColumn("title",ImGuiTableColumnFlags.WidthStretch);ImGui.TableSetupColumn("actions",ImGuiTableColumnFlags.WidthFixed,width);return true;}
+    private static void Author(string author){string text="作者："+author;float x=ImGui.GetCursorPosX(),available=ImGui.GetContentRegionAvail().X,width=ImGui.CalcTextSize(text).X;if(width<=available){ImGui.SetCursorPosX(x+available-width);ImGui.TextDisabled(text);}else{ImGui.PushStyleColor(ImGuiCol.Text,new Vector4(Themes.Current.Text.X,Themes.Current.Text.Y,Themes.Current.Text.Z,.65f));ImGui.TextWrapped(text);ImGui.PopStyleColor();}ImGui.SetCursorPosX(x);}
+    private static void AlignButtons(int count){float width=count*ImGui.GetFrameHeight()+(count-1)*ImGui.GetStyle().ItemSpacing.X;ImGui.SetCursorPosX(ImGui.GetCursorPosX()+Math.Max(0,ImGui.GetContentRegionAvail().X-width));}
 
     private void DrawEntry(ModuleEntry entry)
     {
         var start=BeginCard(entry.Path);bool remove=false;
-        if(BeginHeader()){
+        if(BeginHeader(entry.Instance?.Descriptor.Author??entry.Origin)){
             ImGui.TableNextColumn();bool enabled=entry.Instance?.IsEnabled==true;ImGui.BeginDisabled(entry.Instance==null);if(ImGui.Checkbox("##enabled",ref enabled)){ClearSettingsError(entry);modules.Enable(entry,enabled);}ImGui.EndDisabled();
             ImGui.TableNextColumn();if(ImGui.Selectable((selected==entry?"▼ ":"▶ ")+entry.Title,selected==entry))selected=selected==entry?null:entry;
             ImGui.TableNextColumn();Author(entry.Instance?.Descriptor.Author??entry.Origin);
+            AlignButtons(entry.Origin=="内置"?1:2);
             if(entry.Origin!="内置"){if(IconButton(Trash,"removeModule","移除模块"))remove=true;ImGui.SameLine();}
             if(IconButton(Menu,"moduleMenu","模块操作"))ImGui.OpenPopup("actions");
             if(ImGui.BeginPopup("actions")){
@@ -181,13 +184,13 @@ public sealed class MainWindow : Window,IDisposable
     }
     private void DrawAvailable(string address,OnlineListing listing,OnlineModule item)
     {
-        var path=ModulePath(listing,item);var start=BeginCard(path);
-        if(BeginHeader()){
+        var path=ModulePath(listing,item);var start=BeginCard(path);bool remove=false;
+        if(BeginHeader(item.Author)){
             ImGui.TableNextColumn();bool off=false;ImGui.BeginDisabled();ImGui.Checkbox("##notInstalled",ref off);ImGui.EndDisabled();
             ImGui.TableNextColumn();ImGui.TextUnformatted(item.Name);if(item.Description.Length>0)ImGui.TextWrapped(item.Description);
-            ImGui.TableNextColumn();Author(item.Author);ImGui.BeginDisabled(installing.Contains(path));if(IconButton(Download,"download","下载并导入模块（默认停用）"))Install(address,listing,item);ImGui.EndDisabled();ImGui.EndTable();
+            ImGui.TableNextColumn();Author(item.Author);AlignButtons(2);ImGui.BeginDisabled(installing.Contains(path));if(IconButton(Download,"download","下载并导入模块（默认停用）"))Install(address,listing,item);ImGui.EndDisabled();ImGui.SameLine();if(IconButton(Trash,"hide","从列表移除；刷新来源可恢复"))remove=true;ImGui.EndTable();
         }
-        EndCard(path,start);
+        EndCard(path,start);if(remove){if(!config.HiddenAvailableModules.Contains(item.InternalName))config.HiddenAvailableModules.Add(item.InternalName);modules.Forget([path]);}
     }
     private static void ClearSettingsError(ModuleEntry entry){if(entry.Error.StartsWith("设置界面错误：",StringComparison.Ordinal))entry.Error="";}
 
@@ -213,10 +216,10 @@ public sealed class MainWindow : Window,IDisposable
         if(ImGui.ColorEdit4("##"+key,ref value,ImGuiColorEditFlags.AlphaBar)){config.ThemeColors[key]=[value.X,value.Y,value.Z,value.W];config.Save();}
     }
 
-    private async void Fetch(string address)
+    private async void Fetch(string address,bool restoreHidden=false)
     {
         if(!fetching.Add(address))return;sourceStatus[address]="读取中…";
-        try{var result=await online.Fetch(address,stop.Token);uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address))return;listings[address]=result;sourceStatus[address]="";});}
+        try{var result=await online.Fetch(address,stop.Token);uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address))return;listings[address]=result;sourceStatus[address]="";if(restoreHidden){config.HiddenAvailableModules.RemoveAll(name=>result.Modules.Any(item=>item.InternalName==name));config.Save();}});}
         catch(Exception e){string message=e.GetBaseException().Message;uiActions.Enqueue(()=>{if(config.Repositories.Contains(address))sourceStatus[address]=message;});}
         finally{uiActions.Enqueue(()=>fetching.Remove(address));}
     }
@@ -226,7 +229,7 @@ public sealed class MainWindow : Window,IDisposable
         try{
             var bytes=await online.Download(listing,item,stop.Token);if(stop.IsCancellationRequested)return;
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);File.WriteAllBytes(path+".tmp",bytes);File.Move(path+".tmp",path,true);
-            uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address))return;modules.Import(path,"在线",repository:address);status="校验通过，正在导入 "+item.Name;});
+            uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address)||config.HiddenAvailableModules.Contains(item.InternalName))return;modules.Import(path,"在线",repository:address);status="校验通过，正在导入 "+item.Name;});
         }catch(Exception e){var message=e.GetBaseException().Message;uiActions.Enqueue(()=>status=message);}
         finally{uiActions.Enqueue(()=>installing.Remove(path));}
     }

@@ -12,7 +12,7 @@ public sealed class Plugin : IDalamudPlugin
     public Plugin(IDalamudPluginInterface pi)
     {
         pi.Create<Services>();Services.ConfigDirectory=pi.GetPluginConfigDirectory();Directory.CreateDirectory(Services.ConfigDirectory);
-        config=pi.GetPluginConfig() as Configuration??new Configuration();config.Modules??=new();config.Repositories??=new();config.ThemeColors??=new();config.RepositoryAutoRefresh??=new();
+        config=pi.GetPluginConfig() as Configuration??new Configuration();config.Modules??=new();config.Repositories??=new();config.ThemeColors??=new();config.RepositoryAutoRefresh??=new();config.HiddenAvailableModules??=new();
         modules=new ModuleManager(config,new SourceCompiler());
         try{DService.Init(pi);}catch(Exception e){Services.Log.Error(e,"OmenTools initialization failed; helper-dependent modules may be unavailable");}
         window=new MainWindow(config,modules);Services.Windows.AddWindow(window);
