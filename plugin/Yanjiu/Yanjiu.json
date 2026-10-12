@@ -1,0 +1,13 @@
+{
+  "Author": "小烟酒",
+  "Name": "小烟酒 · Yanjiu",
+  "InternalName": "Yanjiu",
+  "AssemblyVersion": "0.1.0.0",
+  "DalamudApiLevel": 15,
+  "ApplicableVersion": "any",
+  "Description": "独立模块管理、DR/Omni源码兼容、在线模块校验、手机聊天支持及多主题界面。未适配的宿主私有API会显示诊断。",
+  "Punchline": "模块与手机支持，集中管理。",
+  "RepoUrl": "https://github.com/Xiao-Yanjiu/Yanjiu",
+  "Tags": ["聊天", "手机", "模块", "主题"],
+  "IsTestingExclusive": true
+}

@@ -1,7 +1,38 @@
-# Yanjiu Dalamud 插件
+# 小烟酒 · Yanjiu 卫月插件
 
-这里用于后续独立卫月插件源码与项目文件。
-当前业务实现保存在 `../legacy/PhoneChat.cs`，尚未完成独立插件迁移。
+0.1.0 为开发测试版，面向国服卫月 API 15 / .NET 10。入口命令为 `/yanjiu` 或 `/xyj`。
 
-迁移目标：将聊天来源、设备授权、缓存、推送、QQ、UI 拆分为独立组件，作为一个卫月插件安装包发布。
-原生聊天通过卫月/游戏接口接入；Omni 专有聊天窗口和国服聊天仍需兼容适配，不能声称已经完全脱离 Omni。
+## 已实现
+
+- 独立插件入口、模块生命周期、配置持久化、诊断面板。
+- DR / Omni **C# 源码**兼容层，以及针对 Yanjiu 编译的模块 DLL。
+- Omni `TreeHouseModules.json` 在线仓库：HTTPS 下载、SHA256 校验、有界下载、后台编译。首次导入停用；恢复运行前校验源码哈希。
+- 手机支持：迁移旧 PhoneChat 的聊天窗口同步、磁盘缓存、设备授权、个人推送及 QQ 功能。旧凭据仅在目标文件不存在时迁移。
+- 薄荷、桃夭、鸢尾、石墨、纸白、琥珀六套主题和缩放。
+
+兼容层由本项目独立实现，不分发 Omni / DailyRoutines 宿主 DLL。调用原宿主私有管理器的模块仍需要逐个适配；原宿主编译的 DLL 不能直接当作 Yanjiu DLL 使用。DR 本地化暂时返回原键名。导入模块具有完整插件权限，没有沙箱。
+
+原生聊天使用本游戏进程的日志记录和窗口过滤。**Omni 专有聊天窗和国服聊天仍需运行 Omni**；本版不实现它的私有服务器协议。已启用旧 PhoneChat 时，请先停用旧模块再启用本插件的手机支持，避免两个服务争用端口。
+
+## 本地开发测试
+
+1. 在 `/xlplugins` 设置的开发插件选项添加测试包解压后的 `Yanjiu.dll` 路径。
+2. 在开发插件中加载小烟酒，输入 `/yanjiu`。
+3. 模块页导入 `.cs`；在线页填写旧库地址并点击读取。新模块默认关闭。
+4. 手机支持页启用内置模块，核对设备授权、端口、原生聊天及 Omni 聊天来源。
+
+实际 SDK 编译成功，测试覆盖生命周期、失败启动清理、配置持久化、下载哈希与路径校验。2026-10-12 的兼容编译样本为用户提供的 3 个 DR、5 个 Omni 本地模块及旧库的 7 个在线模块，均通过；测试未执行这些模块的游戏操作。**真实游戏加载、UI 显示和手机联调尚未验证，不作为稳定版发布。**
+
+## 构建
+
+安装 .NET SDK 10.0.401，准备卫月 API 15 库目录。运行：
+
+```powershell
+pwsh -File ./plugin/build.ps1 -ProjectRoot D:/Yanjiu.Dalamud -DalamudPath '<卫月 API 15 目录>'
+```
+
+脚本优先使用项目根目录 `tools/dotnet/dotnet.exe`，否则使用 PATH 中的 `dotnet`；可通过 `-DotnetPath` 指定。所有构建缓存和输出放入 `ProjectRoot`。运行时依赖位于 `third_party/plugin-runtime`，构建前核对 SHA256，不需安装 Omni 或 DR 来提供宿主 DLL。
+
+测试：`pwsh -File ./plugin/tests/run-tests.ps1 -ProjectRoot D:/Yanjiu.Dalamud -DalamudPath '<SDK目录>'`。本地兼容样本可放到项目根目录 `FF14-Omni-DR/DR`、`FF14-Omni-DR/Omni`；在线测试会下载用户旧库，保存到项目根目录 `tests/online-sources`，只编译，不启用。
+
+打包：`pwsh -File ./plugin/package.ps1 -ProjectRoot D:/Yanjiu.Dalamud`。许可证和对应源码地址随包提供。
