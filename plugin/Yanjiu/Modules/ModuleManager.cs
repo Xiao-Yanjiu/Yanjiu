@@ -20,12 +20,6 @@ public sealed class ModuleManager : IDisposable
     private readonly CancellationTokenSource stop=new();private readonly object queueGate=new();private readonly SemaphoreSlim compileSlots=new(2);private volatile bool disposed;
     public string Status{get;private set;}="";
     public ModuleManager(Configuration config,SourceCompiler compiler){this.config=config;this.compiler=compiler;}
-    public void AddBuiltIn(ModuleBase module)
-    {
-        var pref=config.Modules.FirstOrDefault(p=>p.Path=="builtin:phone")??new ModulePreference{Path="builtin:phone",Origin="内置"};
-        if(!config.Modules.Contains(pref))config.Modules.Add(pref);Entries.Add(new ModuleEntry{Path=pref.Path,Origin="内置",Instance=module,Preference=pref});
-        if(pref.Enabled)Enable(Entries[^1],true);
-    }
     public void Restore(){foreach(var pref in config.Modules.Where(p=>!p.Path.StartsWith("builtin:")).ToArray())Import(pref.Path,pref.Origin,pref.Hash);}
     public void Import(string path,string origin="本地",string? expectedHash=null,string? repository=null)
     {

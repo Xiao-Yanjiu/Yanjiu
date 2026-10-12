@@ -14,6 +14,7 @@ public sealed class Configuration : IPluginConfiguration
     public List<string> HiddenAvailableModules { get; set; } = new();
     public List<ModulePreference> Modules { get; set; } = new();
     public List<string> Repositories { get; set; } = new();
+    public bool RemoveRetiredBuiltInModules()=>Modules.RemoveAll(p=>p.Path=="builtin:phone")>0;
     public void Save()=>Services.PluginInterface.SavePluginConfig(this);
 }
 public sealed class ModulePreference

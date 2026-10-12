@@ -41,6 +41,8 @@ static class Tests
   Check((int)AppDomain.CurrentDomain.GetData("drSettingsCount")! ==2,"settings drawn only after DR initialization, never while disabled");
   using(var persisted=System.Text.Json.JsonDocument.Parse(File.ReadAllText(root+"/tests/runtime/modules/DRSample.json")))Check(persisted.RootElement.GetProperty("Count").GetInt32()==2,"DR configuration persisted between instances");
   Check(Themes.Available.Length==6&&Themes.Available.Select(p=>p.Name).Distinct().Count()==6,"six unique palettes");
+  var migrated=new Yanjiu.Configuration{Modules=[new(){Path="builtin:phone",Enabled=true},new(){Path="external-phone.cs",Origin="本地"}]};Check(migrated.RemoveRetiredBuiltInModules()&&migrated.Modules.Count==1&&migrated.Modules[0].Path=="external-phone.cs"&&!migrated.RemoveRetiredBuiltInModules(),"remove only retired built-in phone preference, migration idempotent");
+  Check(typeof(Yanjiu.Plugin).Assembly.GetType("Yanjiu.BuiltIn.PhoneChat")==null,"plugin assembly no longer embeds phone support");
   var custom=new Yanjiu.Configuration{Theme=2,BorderWidth=3,ThemeColors=new(){["body"]=[.2f,.3f,.4f,1],["border"]=[1,1,1,1],["shadow"]=[.1f,.2f,.3f,.4f],["selected"]=[.7f,.6f,.5f,1]}};
   custom.Repositories.Add("https://github.com/Xiao-Yanjiu/OmniToolbox.xiaoyanjiu");custom.RepositoryAutoRefresh[custom.Repositories[0]]=true;
   var restored=System.Text.Json.JsonSerializer.Deserialize<Yanjiu.Configuration>(System.Text.Json.JsonSerializer.Serialize(custom))!;Themes.Configure(restored);
