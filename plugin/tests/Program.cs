@@ -41,6 +41,20 @@ static class Tests
   Check((int)AppDomain.CurrentDomain.GetData("drSettingsCount")! ==2,"settings drawn only after DR initialization, never while disabled");
   using(var persisted=System.Text.Json.JsonDocument.Parse(File.ReadAllText(root+"/tests/runtime/modules/DRSample.json")))Check(persisted.RootElement.GetProperty("Count").GetInt32()==2,"DR configuration persisted between instances");
   Check(Themes.Available.Length==6&&Themes.Available.Select(p=>p.Name).Distinct().Count()==6,"six unique palettes");
+  var custom=new Yanjiu.Configuration{Theme=2,BorderWidth=3,ThemeColors=new(){["body"]=[.2f,.3f,.4f,1],["border"]=[1,1,1,1],["shadow"]=[.1f,.2f,.3f,.4f],["selected"]=[.7f,.6f,.5f,1]}};
+  custom.Repositories.Add("https://github.com/Xiao-Yanjiu/OmniToolbox.xiaoyanjiu");custom.RepositoryAutoRefresh[custom.Repositories[0]]=true;
+  var restored=System.Text.Json.JsonSerializer.Deserialize<Yanjiu.Configuration>(System.Text.Json.JsonSerializer.Serialize(custom))!;Themes.Configure(restored);
+  Check(Themes.Current.Background==new System.Numerics.Vector4(.2f,.3f,.4f,1)&&Themes.Current.Border==System.Numerics.Vector4.One&&Themes.Current.Shadow.W==.4f&&Themes.Current.Selected.X==.7f&&Themes.BorderWidth==3,"custom palette and border width survive reload");
+  Check(restored.RepositoryAutoRefresh[restored.Repositories[0]],"repository refresh choice survives reload");
+  var safePalette=Themes.Resolve(Themes.Available[0],new Dictionary<string,float[]>{["body"]=[float.NaN,0,0,1],["border"]=[2,-1,.5f,1]});
+  Check(safePalette.Background==Themes.Available[0].Background&&safePalette.Border==new System.Numerics.Vector4(1,0,.5f,1),"invalid colors rejected and finite components clamped");
+  var proxy=DispatchProxy.Create<Dalamud.Plugin.IDalamudPluginInterface,NoopPluginInterface>();
+  typeof(Yanjiu.Services).GetProperty("PluginInterface")!.SetValue(null,proxy);
+  try{
+   var pendingFile=root+"/tests/cancelled-import.cs";File.WriteAllText(pendingFile,source);var pendingConfig=new Yanjiu.Configuration();using(var manager=new ModuleManager(pendingConfig,compiler)){manager.Import(pendingFile);manager.Forget([pendingFile]);for(int retry=0;retry<60;retry++){await Task.Delay(25);manager.Pump();}Check(manager.Entries.Count==0&&pendingConfig.Modules.Count==0,"deleted address cannot return after asynchronous compilation");}
+   using var queueManager=new ModuleManager(new Yanjiu.Configuration(),compiler);for(int i=0;i<3;i++){var fixture=root+"/tests/queued-"+i+".cs";File.WriteAllText(fixture,source.Replace("LifecycleSample","QueuedSample"+i));queueManager.Import(fixture);}for(int retry=0;retry<160&&queueManager.Entries.Count<3;retry++){await Task.Delay(25);queueManager.Pump();}Check(queueManager.Entries.Count==3&&queueManager.Entries.All(e=>e.Instance!=null&&!e.Instance.IsEnabled),"more than two source imports are queued without dropping modules");
+  }
+  finally{typeof(Yanjiu.Services).GetProperty("PluginInterface")!.SetValue(null,null);}
   Check(OnlineRepository.ManifestUrl("https://github.com/Xiao-Yanjiu/OmniToolbox.xiaoyanjiu").ToString().EndsWith("/HEAD/TreeHouseModules.json"),"GitHub repository conversion");
   foreach(var path in new[]{"../evil.cs","%2e%2e/evil.cs","https://evil/evil.cs","/evil.cs"}){bool rejected=false;try{OnlineRepository.ModuleUrl(new Uri("https://example.com/TreeHouseModules.json"),new OnlineModule{InternalName="Sample",File=path,Sha256=new string('0',64)});}catch(ArgumentException){rejected=true;}Check(rejected,"unsafe module path rejected");}
   var payload=Encoding.UTF8.GetBytes(source);var itemFixture=new OnlineModule{InternalName="LifecycleSample",File="sample.cs",Sha256=Convert.ToHexString(SHA256.HashData(payload))};
@@ -66,4 +80,8 @@ static class Tests
 sealed class BytesHandler(byte[] bytes):System.Net.Http.HttpMessageHandler
 {
  protected override Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request,CancellationToken token)=>Task.FromResult(new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK){Content=new System.Net.Http.ByteArrayContent(bytes)});
+}
+public class NoopPluginInterface:DispatchProxy
+{
+ protected override object? Invoke(MethodInfo? method,object?[]? args)=>method?.Name=="get_AssemblyLocation"?new FileInfo(typeof(Yanjiu.Modules.ModuleBase).Assembly.Location):null;
 }

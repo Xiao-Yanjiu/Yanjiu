@@ -22,6 +22,7 @@ public static class UiFonts
         font=Services.PluginInterface.UiBuilder.FontAtlas.NewDelegateFontHandle(e=>e.OnPreBuild(tk=>{
             var added=sourceFamily!=0&&File.Exists(file)?tk.AddFontFromFile(file,new(){SizePx=pixels,GlyphRanges=ranges,PixelSnapH=true}):tk.AddDalamudDefaultFont(pixels,ranges);
             tk.AddGameSymbol(new(){SizePx=pixels,MergeFont=added,PixelSnapH=true});
+            tk.AddFontAwesomeIconFont(new(){SizePx=pixels,MergeFont=added,PixelSnapH=true});
         }));
         handles[pixels]=font;return font;
     }
