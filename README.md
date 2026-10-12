@@ -20,7 +20,13 @@ Android App 已具备设备验证码授权、聊天窗口同步、分页缓存�
 
 Android 构建见 [构建说明](android/README.md)。独立插件迁移计划见 [插件说明](plugin/README.md)。
 测试安装包、工具、签名密钥和私人配置放在本地，不提交到 Git。
-正式安装包通过本仓库 Releases 管理；当前尚未创建发行版本。
+插件测试安装包通过本仓库 Releases 管理。第三方插件库地址为：
+
+```text
+https://raw.githubusercontent.com/Xiao-Yanjiu/Yanjiu/main/Pluginmaster.json
+```
+
+当前只发布测试版本，需要在卫月中允许测试版插件。不内置手机支持，相关功能通过外部模块按需添加。
 
 ## 许可证
 

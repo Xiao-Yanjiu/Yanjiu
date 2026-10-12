@@ -5,7 +5,7 @@
   "AssemblyVersion": "0.1.0.0",
   "DalamudApiLevel": 15,
   "ApplicableVersion": "any",
-  "Description": "独立模块管理、DR/Omni源码兼容、在线模块校验、手机聊天支持及多主题界面。未适配的宿主私有API会显示诊断。",
+  "Description": "独立模块管理、DR/Omni源码兼容、在线模块校验及自定义主题界面。按需添加外部模块，不内置手机支持。当前为开发测试版。",
   "Punchline": "模块与手机支持，集中管理。",
   "RepoUrl": "https://github.com/Xiao-Yanjiu/Yanjiu",
   "Tags": ["聊天", "手机", "模块", "主题"],
