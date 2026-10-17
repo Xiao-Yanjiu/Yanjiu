@@ -3,20 +3,25 @@
     "Author": "小烟酒",
     "Name": "小烟酒 · Yanjiu",
     "InternalName": "Yanjiu",
-    "AssemblyVersion": "0.1.0.0",
-    "TestingAssemblyVersion": "0.1.0.0",
+    "AssemblyVersion": "0.1.5.0",
     "DalamudApiLevel": 15,
     "ApplicableVersion": "any",
-    "Description": "独立模块管理、DR/Omni 源码兼容、在线模块校验及自定义主题。不内置手机支持。开发测试版，部分私有宿主 API 尚未适配。",
-    "Punchline": "模块管理与自定义主题（测试版）",
+    "Description": "小烟酒模块管理框架，提供在线和本地模块加载、收藏与分类筛选、图标浏览器及主题设置。\n支持经适配的 DR 和 Omni 模块。\n命令：/yanjiu；音乐播放器：/ymusic；图标浏览器：/yanjiu icons。",
+    "Punchline": "在线、本地模块与图标浏览器，集中管理。",
     "RepoUrl": "https://github.com/Xiao-Yanjiu/Yanjiu",
-    "Tags": ["模块", "主题"],
+    "Tags": [
+      "聊天",
+      "手机",
+      "模块",
+      "主题"
+    ],
+    "TestingAssemblyVersion": "0.1.5.0",
     "IsHide": false,
     "IsTestingExclusive": true,
-    "DownloadLinkInstall": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.0-test.1/Yanjiu-0.1.0-test.zip",
-    "DownloadLinkUpdate": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.0-test.1/Yanjiu-0.1.0-test.zip",
-    "DownloadLinkTesting": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.0-test.1/Yanjiu-0.1.0-test.zip",
-    "Changelog": "初始测试版：统一模块及地址管理，自定义配色，DR/Omni 源码兼容。已移除内置手机支持。",
-    "LastUpdate": 20261012
+    "DownloadLinkInstall": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.5-test.1/Yanjiu-0.1.5-test.zip",
+    "DownloadLinkUpdate": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.5-test.1/Yanjiu-0.1.5-test.zip",
+    "DownloadLinkTesting": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.5-test.1/Yanjiu-0.1.5-test.zip",
+    "Changelog": "0.1.5 测试版：在线模块直接删除、完整图标浏览器、音乐播放器宏转发、命令帮助、包哈希隔离及完整对应源码。DR 303/311 通过编译绑定，8 项待适配。",
+    "LastUpdate": 1792237037
   }
 ]
