@@ -1,0 +1,117 @@
+using System.Numerics;
+using DailyRoutines.Common.Module.Abstractions;
+using DailyRoutines.Common.Module.Enums;
+using DailyRoutines.Common.Module.Models;
+using Dalamud.Game.ClientState.Conditions;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using OmenTools.Interop.Game.Lumina;
+using OmenTools.OmenService;
+
+namespace DailyRoutines.ModulesPublic.Duty;
+
+public unsafe class PraetoriumHelper : ModuleBase
+{
+    public override ModuleInfo Info { get; } = new()
+    {
+        Title = Lang.Get("PraetoriumHelperTitle"),
+        Description = Lang.Get
+        (
+            "PraetoriumHelperDescription",
+            LuminaWrapper.GetContentName(16), // 最终决战天幕魔导城
+            LuminaWrapper.GetMountName(6),    // 魔导装甲
+            LuminaWrapper.GetActionName(2434) // 魔导加农炮
+        ),
+        Category = ModuleCategory.Duty,
+        Author   = ["逆光"]
+    };
+
+    public override ModulePermission Permission { get; } = new()
+    {
+        AllDefaultEnabled = true
+    };
+
+    protected override void Init()
+    {
+        IClientState.Instance().TerritoryChanged += OnZoneChanged;
+        OnZoneChanged(0);
+    }
+
+    protected override void Uninit()
+    {
+        IClientState.Instance().TerritoryChanged -= OnZoneChanged;
+        FrameworkManager.Instance().Unreg(OnUpdate);
+    }
+
+    private static void OnZoneChanged
+    (
+        uint u
+    )
+    {
+        FrameworkManager.Instance().Unreg(OnUpdate);
+
+        if (GameState.TerritoryType != 1044) return;
+
+        FrameworkManager.Instance().Reg(OnUpdate, 1000);
+    }
+
+    private static void OnUpdate
+    (
+        IFramework framework
+    )
+    {
+        if (!ICondition.Instance()[ConditionFlag.Mounted] ||
+            ActionManager.Instance()->GetActionStatus(ActionType.Action, 1128) != 0)
+            return;
+
+        var target = GetMostCanTargetObjects();
+        if (target == null) return;
+
+        UseActionManager.Instance().UseActionLocation(ActionType.Action, 1128, location: target.Position);
+    }
+
+    private static IGameObject? GetMostCanTargetObjects()
+    {
+        var allTargets = IObjectTable.Instance().SearchObjects
+                                 (
+                                     o => o.IsTargetable && ActionManager.CanUseActionOnTarget(7, o.ToStruct()),
+                                     IObjectTable.CharactersRange
+                                 )
+                                 .ToList();
+        if (allTargets.Count <= 0) return null;
+
+        IGameObject? preObjects         = null;
+        var          preObjectsAoECount = 0;
+
+        foreach (var b in allTargets)
+        {
+            if (Vector3.DistanceSquared(IObjectTable.Instance().LocalPlayer.Position, b.Position) - b.HitboxRadius > 900) continue;
+
+            var aoeCount = GetTargetAoECount(b, allTargets);
+
+            if (aoeCount > preObjectsAoECount)
+            {
+                preObjectsAoECount = aoeCount;
+                preObjects         = b;
+            }
+        }
+
+        return preObjects;
+    }
+
+    private static int GetTargetAoECount
+    (
+        IGameObject              target,
+        IEnumerable<IGameObject> allTarget
+    )
+    {
+        var count = 0;
+
+        foreach (var b in allTarget)
+        {
+            if (Vector3.DistanceSquared(target.Position, b.Position) - b.HitboxRadius <= 36)
+                count++;
+        }
+
+        return count;
+    }
+}

@@ -1,0 +1,153 @@
+using DailyRoutines.Extensions;
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using OmenTools.Interop.Game.AddonEvent;
+using OmenTools.Interop.Game.Helpers;
+using KamiToolKit.Nodes;
+using OmenTools.Threading.TaskHelper;
+
+namespace DailyRoutines.ModulesPublic.Interface;
+
+public unsafe partial class AutoRetainerWork
+{
+    private class EntrustDupsWorker
+    (
+        AutoRetainerWork module
+    ) : RetainerWorkerBase(module)
+    {
+        private TaskHelper? taskHelper;
+
+        public override bool DrawConfigCondition() => false;
+
+        public override bool IsWorkerBusy() => taskHelper?.IsBusy ?? false;
+
+        public override void Init()
+        {
+            taskHelper ??= new() { TimeoutMS = 15_000 };
+
+            IAddonLifecycle.Instance().RegisterListener(AddonEvent.PostSetup, "RetainerItemTransferList",     OnEntrustDupsAddons);
+            IAddonLifecycle.Instance().RegisterListener(AddonEvent.PostSetup, "RetainerItemTransferProgress", OnEntrustDupsAddons);
+        }
+
+        public override void Uninit()
+        {
+            IAddonLifecycle.Instance().UnregisterListener(OnEntrustDupsAddons);
+
+            taskHelper?.Abort();
+            taskHelper?.Dispose();
+            taskHelper = null;
+        }
+
+        public override CollapsingHeaderNode CreateOverlayCategory
+        (
+            float width
+        ) =>
+            CreateOverlayCategory
+            (
+                Lang.Get("AutoRetainerWork-EntrustDups-Title"),
+                width,
+                CreateOverlayActionButton(EnqueueRetainersEntrust, () => taskHelper?.Abort(), width)
+            );
+
+        private void EnqueueRetainersEntrust()
+        {
+            if (taskHelper.AbortByConflictKey(Module)) return;
+            if (Module.IsAnyOtherWorkerBusy(typeof(EntrustDupsWorker))) return;
+
+            var count = GetValidRetainerCount(x => x.ItemCount > 0, out var validRetainers);
+            if (count == 0) return;
+
+            validRetainers.ForEach
+            (index =>
+                {
+                    taskHelper.Enqueue
+                    (
+                        () => taskHelper.AbortByConflictKey(Module) || Module.EnterRetainer(index),
+                        $"选择进入 {index} 号雇员"
+                    );
+                    taskHelper.Enqueue
+                    (
+                        () => taskHelper.AbortByConflictKey(Module) || AddonSelectStringEvent.Select(ItemEntrustWithdrawTexts),
+                        "选择道具管理"
+                    );
+                    taskHelper.Enqueue
+                    (
+                        () =>
+                        {
+                            if (!Module.retainerThrottler.Throttle("AutoRetainerEntrustDups", 100)) return false;
+                            if (taskHelper.AbortByConflictKey(Module)) return true;
+
+                            var agent = AgentModule.Instance()->GetAgentByInternalId(AgentId.Retainer);
+                            if (agent == null || !agent->IsAgentActive()) return false;
+                            AgentId.Retainer.SendEvent(0, 0);
+                            return true;
+                        },
+                        "选择同类道具合并提交"
+                    );
+                    taskHelper.DelayNext(500, "等待同类道具合并提交开始");
+                    taskHelper.Enqueue
+                    (
+                        () => taskHelper.AbortByConflictKey(Module) || ExitRetainerInventory(),
+                        "离开雇员背包界面"
+                    );
+                    taskHelper.Enqueue
+                    (
+                        () => taskHelper.AbortByConflictKey(Module) || LeaveRetainer(),
+                        "回到雇员列表"
+                    );
+                }
+            );
+        }
+
+        private void OnEntrustDupsAddons
+        (
+            AddonEvent type,
+            AddonArgs  args
+        )
+        {
+            if (!taskHelper.IsBusy) return;
+
+            switch (args.AddonName)
+            {
+                case "RetainerItemTransferList":
+                    args.Addon.ToStruct()->Callback(1);
+                    break;
+                case "RetainerItemTransferProgress":
+                    taskHelper.Enqueue
+                    (
+                        () =>
+                        {
+                            if (taskHelper.AbortByConflictKey(Module)) return true;
+                            var addon = AddonHelper.GetByName("RetainerItemTransferProgress");
+                            if (!addon->IsAddonAndNodesReady()) return false;
+
+                            var progress = addon->AtkValues[2].Float;
+
+                            if (progress >= 1)
+                            {
+                                addon->Callback(-2);
+                                addon->Close(true);
+                                return true;
+                            }
+
+                            return false;
+                        },
+                        "等待同类道具合并提交完成",
+                        weight: 2
+                    );
+                    break;
+            }
+        }
+
+        private static readonly string[] ItemEntrustWithdrawTexts =
+        [
+            "道具管理",
+            "Entrust or withdraw items",
+            "アイテムの受け渡し",
+            "아이템 주고받기",
+            "Gegenstände übergeben oder entnehmen",
+            "Échanger des objets"
+        ];
+    }
+}

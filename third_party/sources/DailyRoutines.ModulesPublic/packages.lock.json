@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0-windows7.0": {
+      "DailyRoutines.CodeAnalysis": {
+        "type": "Direct",
+        "requested": "[2.6.0, )",
+        "resolved": "2.6.0",
+        "contentHash": "14sYsFdtHB1Dm++alMmm8K5QM2LsXg3EvcveXgiDxBt0TmQ1eRDOkpiZ5Hz9GYuNqg6A108ljVaDS31YegnZ8Q=="
+      },
+      "DotNet.ReproducibleBuilds": {
+        "type": "Direct",
+        "requested": "[1.2.39, )",
+        "resolved": "1.2.39",
+        "contentHash": "fcFN01tDTIQqDuTwr1jUQK/geofiwjG5DycJQOnC72i1SsLAk1ELe+apBOuZ11UMQG8YKFZG1FgvjZPbqHyatg=="
+      },
+      "TimeAgo.Core": {
+        "type": "Direct",
+        "requested": "[1.1.0, )",
+        "resolved": "1.1.0",
+        "contentHash": "vECozrzeWThMPPXtBdpATwfh+5eGqboZILOYYckSVZSn54JC6L+fdfB307Xu2UDtPvB4kx/tfwGy5+1VgkATfA=="
+      },
+      "TinyPinyin": {
+        "type": "Direct",
+        "requested": "[1.1.0, )",
+        "resolved": "1.1.0",
+        "contentHash": "pwe99NXsWkSeJdOwzcweorlyoB2frOlTU37QwzmnnxfRT5vRENXm4UOl5g4Nxq5V9lYOBWK1mZIozFfIlDVjYA=="
+      },
+      "AngleSharp": {
+        "type": "Transitive",
+        "resolved": "1.8.0",
+        "contentHash": "vRW/0M11Jlfd7WkT5Kr0tXXmnWNVdxyII2S2b6AsgZCJEBGaXCUnti6nKIJTvAjmnmKcQbvn+SJ3lpt8dqoLIA=="
+      },
+      "DalamudPackager": {
+        "type": "Transitive",
+        "resolved": "15.0.0",
+        "contentHash": "411vwC8/X8Z/sQ2TI6v3SvOn66xFPeOjFn3Zn+h0d3Ox2t1kFm66AhDvmx/qcMwVrR+Hidxj0dadpQ2dgyXMBQ=="
+      },
+      "GuerrillaNtp": {
+        "type": "Transitive",
+        "resolved": "3.1.0",
+        "contentHash": "KebM3/iZtZWgeFuGTQJyWu+VQKAeq1xXY9bkSSDv27hALxDtSdJAfPnT8dWpl7ti2B3ajnMj70/VLXY4D3bupg=="
+      },
+      "Markdig": {
+        "type": "Transitive",
+        "resolved": "0.43.0",
+        "contentHash": "tbP3Y/GYC5pIUWXw6Iqf+R5CwBGA4VJswnlgS2x3TgcHoH4IlnGVmL7hfA1sXkZoCPm/4mhzS8cJUkWhQthaPg=="
+      },
+      "MessageFormat": {
+        "type": "Transitive",
+        "resolved": "8.0.0",
+        "contentHash": "+nmYgGQVhGXmvQd+AMYILZGTxOP4J9tOR3KbjoxMDDICRrSzHYB9v1aRRVnXkD1ZeBapscFWIf5B/ck3p9R1mg=="
+      },
+      "Microsoft.CodeAnalysis.Analyzers": {
+        "type": "Transitive",
+        "resolved": "5.9.0-1.26328.17",
+        "contentHash": "HP9NNk8ZjOSI2hgOyXnQg+kv7/X837Vr2nAlXiGAtqtYnYKjRRa1UmQFr8KFs5ynGYKqfbb8zB9APoWjiAGdMg=="
+      },
+      "Microsoft.CodeAnalysis.Common": {
+        "type": "Transitive",
+        "resolved": "5.9.0",
+        "contentHash": "IYaIaUWdIx539AReKZOBEqTskFusZfCh/wFSPilDvCn5Say8MegLw2LONcSIcVy+v3Gzv53qYBspgvBGSErfbQ==",
+        "dependencies": {
+          "Microsoft.CodeAnalysis.Analyzers": "5.9.0-1.26328.17"
+        }
+      },
+      "Microsoft.CodeAnalysis.CSharp": {
+        "type": "Transitive",
+        "resolved": "5.9.0",
+        "contentHash": "7JGDA0UT1+h7k9ZcA3rF4eFC8+QPq1xyYaXxag4p8r/zzPurEJxvdi7aM+MRL/SfP7XADXpWF/pl/eUYXOq/ww==",
+        "dependencies": {
+          "Microsoft.CodeAnalysis.Analyzers": "5.9.0-1.26328.17",
+          "Microsoft.CodeAnalysis.Common": "[5.9.0]"
+        }
+      },
+      "Otp.NET": {
+        "type": "Transitive",
+        "resolved": "1.4.1",
+        "contentHash": "UXjZ80T6BfVACJWmEcz4UFZ93hwX3STKojKvVpPk3qUhubjnLwIiZMsI4Hh91HhYxC0JlatNdNrVK2wkv4O9/Q=="
+      },
+      "System.Management": {
+        "type": "Transitive",
+        "resolved": "10.0.11",
+        "contentHash": "xyNn8KGbWI88LoUwg3rB8qcpFFST6dr8Ro/qS8GBu2GOwR0v7J82kVFHTiiPtvEKS79VbMTxs/sIKQ+Cq1Zs1g=="
+      },
+      "dailyroutines": {
+        "type": "Project",
+        "dependencies": {
+          "DailyRoutines.Common": "[1.0.0, )",
+          "DalamudPackager": "[15.0.0, )",
+          "KamiToolKit": "[1.0.0, )",
+          "Microsoft.CodeAnalysis.CSharp": "[5.9.0, )",
+          "OmenTools": "[1.0.0, )",
+          "OmenTools.KamiToolKit": "[1.0.0, )",
+          "Otp.NET": "[1.4.1, )",
+          "RSASharp": "[1.0.0, )",
+          "System.Management": "[10.0.11, )",
+          "TimeAgo.Core": "[1.1.0, )",
+          "TinyPinyin": "[1.1.0, )"
+        }
+      },
+      "dailyroutines.common": {
+        "type": "Project",
+        "dependencies": {
+          "KamiToolKit": "[1.0.0, )",
+          "Microsoft.CodeAnalysis.CSharp": "[5.9.0, )",
+          "OmenTools": "[1.0.0, )",
+          "TimeAgo.Core": "[1.1.0, )",
+          "TinyPinyin": "[1.1.0, )"
+        }
+      },
+      "ffxivclientstructs.expansion": {
+        "type": "Project",
+        "dependencies": {
+          "FFXIVClientStructs.Expansion.Runtime": "[1.0.0, )"
+        }
+      },
+      "ffxivclientstructs.expansion.runtime": {
+        "type": "Project"
+      },
+      "kamitoolkit": {
+        "type": "Project"
+      },
+      "omentools": {
+        "type": "Project",
+        "dependencies": {
+          "AngleSharp": "[1.8.0, )",
+          "FFXIVClientStructs.Expansion": "[1.0.0, )",
+          "GuerrillaNtp": "[3.1.0, )",
+          "Markdig": "[0.43.0, )",
+          "MessageFormat": "[8.0.0, )",
+          "TinyPinyin": "[1.1.0, )"
+        }
+      },
+      "omentools.kamitoolkit": {
+        "type": "Project",
+        "dependencies": {
+          "KamiToolKit": "[1.0.0, )",
+          "OmenTools": "[1.0.0, )"
+        }
+      },
+      "rsasharp": {
+        "type": "Project"
+      }
+    }
+  }
+}

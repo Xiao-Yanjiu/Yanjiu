@@ -1,0 +1,77 @@
+using DailyRoutines.Common.Module.Abstractions;
+using DailyRoutines.Common.Module.Enums;
+using DailyRoutines.Common.Module.Models;
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using KamiToolKit.Nodes;
+using OmenTools.Info.Game.Packets.Upstream;
+using OmenTools.Interop.Game.Lumina;
+
+namespace DailyRoutines.ModulesPublic.Interface;
+
+public unsafe class AdventurerPlateThroughInspect : ModuleBase
+{
+    public override ModuleInfo Info { get; } = new()
+    {
+        Title       = Lang.Get("AdventurerPlateThroughInspectTitle"),
+        Description = Lang.Get("AdventurerPlateThroughInspectDescription"),
+        Category    = ModuleCategory.Interface
+    };
+
+    public override ModulePermission Permission { get; } = new()
+    {
+        AllDefaultEnabled = true
+    };
+
+    private IconButtonNode? openButton;
+
+    protected override void Init()
+    {
+        IAddonLifecycle.Instance().RegisterListener(AddonEvent.PostDraw,    "CharacterInspect", OnAddon);
+        IAddonLifecycle.Instance().RegisterListener(AddonEvent.PreFinalize, "CharacterInspect", OnAddon);
+        if (CharacterInspect->IsAddonAndNodesReady())
+            OnAddon(AddonEvent.PostSetup, null);
+    }
+
+    protected override void Uninit()
+    {
+        IAddonLifecycle.Instance().UnregisterListener(OnAddon);
+
+        openButton?.Dispose();
+        openButton = null;
+    }
+
+    private void OnAddon
+    (
+        AddonEvent type,
+        AddonArgs? args
+    )
+    {
+        switch (type)
+        {
+            case AddonEvent.PostDraw:
+                if (CharacterInspect == null) return;
+
+                if (openButton == null)
+                {
+                    openButton = new()
+                    {
+                        Size        = new(36f),
+                        IsVisible   = true,
+                        IsEnabled   = true,
+                        IconId      = 66469,
+                        OnClick     = () => new CharaCardOpenPacket(AgentInspect.Instance()->CurrentEntityId).Send(),
+                        TextTooltip = LuminaWrapper.GetAddonText(15083),
+                        Position    = new(298, 86)
+                    };
+                    openButton.AttachNode(CharacterInspect->RootNode);
+                }
+
+                break;
+            case AddonEvent.PreFinalize:
+                openButton = null;
+                break;
+        }
+    }
+}

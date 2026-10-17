@@ -1,0 +1,35 @@
+using DailyRoutines.Common.Module.Abstractions;
+using DailyRoutines.Common.Module.Enums;
+using DailyRoutines.Common.Module.Models;
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.Utility;
+using Lumina.Excel.Sheets;
+using OmenTools.Interop.Game.AddonEvent;
+using OmenTools.Interop.Game.Lumina;
+
+namespace DailyRoutines.ModulesPublic.Interface;
+
+public class AutoPreserveCollectable : ModuleBase
+{
+    public override ModuleInfo Info { get; } = new()
+    {
+        Title       = Lang.Get("AutoPreserveCollectableTitle"),
+        Description = Lang.Get("AutoPreserveCollectableDescription"),
+        Category    = ModuleCategory.Interface
+    };
+
+    protected override void Init() =>
+        IAddonLifecycle.Instance().RegisterListener(AddonEvent.PostSetup, "SelectYesno", OnAddon);
+
+    protected override void Uninit() =>
+        IAddonLifecycle.Instance().UnregisterListener(OnAddon);
+
+    private static void OnAddon
+    (
+        AddonEvent type,
+        AddonArgs  args
+    ) =>
+        AddonSelectYesnoEvent.ClickYes((LuminaGetter.GetRowOrDefault<Addon>(1463).Text.ToDalamudString().Payloads[0] as TextPayload).Text);
+}

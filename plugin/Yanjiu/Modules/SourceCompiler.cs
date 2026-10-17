@@ -13,14 +13,14 @@ public sealed class CompiledModule : IDisposable
     public required Type ModuleType { get; init; }
     public AssemblyLoadContext? Context { get; init; }
     public required string Hash { get; init; }
-    public ModuleBase Create()=> (ModuleBase)Activator.CreateInstance(ModuleType)!;
+    public ModuleBase Create()=>OmniModuleFactory.Create(ModuleType);
     public void Dispose()=>Context?.Unload();
 }
 public sealed class ModuleCompilationException(string message):Exception(message);
 public sealed class SourceCompiler
 {
     private readonly MetadataReference[] references;
-    private static string PluginDirectory=>Services.PluginInterface?.AssemblyLocation.DirectoryName??Path.GetDirectoryName(typeof(ModuleBase).Assembly.Location)??AppContext.BaseDirectory;
+    private static string PluginDirectory=>PluginFiles.DirectoryPath;
     public SourceCompiler(IEnumerable<string>? paths=null)
     {
         var files=paths?.ToArray()??ReferencePaths();var unique=new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase);
@@ -45,7 +45,7 @@ public sealed class SourceCompiler
             Assembly assembly;
             if(Path.GetExtension(name).Equals(".dll",StringComparison.OrdinalIgnoreCase)){using var stream=new MemoryStream(data);assembly=context.LoadFromStream(stream);}
             else if(Path.GetExtension(name).Equals(".cs",StringComparison.OrdinalIgnoreCase)){
-                var source=System.Text.Encoding.UTF8.GetString(data).TrimStart('\uFEFF');
+                var source=new System.Text.UTF8Encoding(false,true).GetString(data).TrimStart('\uFEFF');
                 var parseOptions=new CSharpParseOptions(LanguageVersion.Preview);
                 var globals="global using System;global using System.IO;global using System.Linq;global using System.Collections.Generic;global using System.Threading;global using System.Threading.Tasks;global using System.Numerics;";
                 if(source.Contains("OmniToolbox.Common.Module.Abstractions",StringComparison.Ordinal)&&!source.Contains("DailyRoutines.Common.Module",StringComparison.Ordinal))globals+="global using OmniToolbox.Common.Module.Models;";
@@ -56,12 +56,14 @@ public sealed class SourceCompiler
             }else throw new ModuleCompilationException("只支持 .cs / .dll 模块");
             var types=assembly.GetTypes().Where(t=>!t.IsAbstract&&typeof(ModuleBase).IsAssignableFrom(t)).ToArray();
             if(types.Length!=1)throw new ModuleCompilationException("需要一个可实例化的 Yanjiu/DR/Omni 兼容模块。原宿主 DLL 不能直接复用，请导入对应源码。");
-            if(types[0].GetConstructor(Type.EmptyTypes)==null)throw new ModuleCompilationException("模块需要公共无参构造函数");
+            var unsupported=OmniModuleFactory.UnsupportedReason(types[0]);if(unsupported!=null)throw new ModuleCompilationException(unsupported);
             return new CompiledModule{Assembly=assembly,ModuleType=types[0],Context=context,Hash=hash};
-        }catch{context.Unload();throw;}
+        }catch(ReflectionTypeLoadException e){context.Unload();var missing=string.Join("；",e.LoaderExceptions.Where(x=>x!=null).Select(x=>x!.Message).Distinct().Take(4));throw new ModuleCompilationException("模块依赖不兼容，请使用针对 Yanjiu 编译的 DLL 或导入 UTF-8 源码。"+missing);}catch(System.Text.DecoderFallbackException){context.Unload();throw new ModuleCompilationException("模块源码不是有效的 UTF-8 编码，请转换为 UTF-8 后导入。");}catch{context.Unload();throw;}
     }
     private sealed class ModuleContext():AssemblyLoadContext("YanjiuModule-"+Guid.NewGuid().ToString("N"),true)
     {
         protected override Assembly? Load(AssemblyName name)=>AssemblyLoadContext.GetLoadContext(typeof(ModuleBase).Assembly)!.LoadFromAssemblyName(name);
     }
 }
+
+

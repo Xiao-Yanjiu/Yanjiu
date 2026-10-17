@@ -1,42 +1,34 @@
-# 小烟酒 · Yanjiu 卫月插件
+# 小烟酒 · Yanjiu 0.1.5 开发测试版
 
-0.1.0 为开发测试版，面向国服卫月 API 15 / .NET 10。入口命令为 `/yanjiu` 或 `/xyj`。
+国服卫月 API 15 / .NET 10。入口 `/yanjiu`、`/xyj`；音乐播放器入口 `/ymusic`（模块须已安装并启用）；图标浏览器入口 `/yanjiu icons`。
 
-## 已实现
+## 安装
 
-- 独立插件入口、模块生命周期、配置持久化、诊断面板。
-- DR / Omni **C# 源码**兼容层，以及针对 Yanjiu 编译的模块 DLL。
-- Omni `TreeHouseModules.json` 在线仓库：HTTPS 下载、SHA256 校验、有界下载、后台编译。首次导入停用；恢复运行前校验源码哈希。
-- 不内置手机支持。需要时从首页添加外部 PhoneChat 模块；旧内置模块的配置条目会自动移除。
-- 石墨、霁蓝、青麦、纸白、暖灰、月白六套主题；主体、面板、阴影、边框、选中、强调及文字颜色可独立调整并保存。默认边框宽度 2.25，支持调整粗细。
-- 首页统一添加、刷新和移除本地文件、在线仓库地址；模块页统一显示已安装和可下载模块，手机支持沿用同一模块卡片。删除地址会卸载其模块、取消待完成导入，保留磁盘文件。
-- 独立字号、字体选择及布局缩放。字体按实际像素生成，避免放大已有字形导致模糊。
+卫月第三方仓库地址：`https://raw.githubusercontent.com/Xiao-Yanjiu/Yanjiu/main/Pluginmaster.json`。本版以测试版本发布，需允许测试版插件。安装器从本仓库 Releases 下载完整 ZIP；开发插件可导入解压后的 Yanjiu.dll，保留同目录依赖、DR、Omni、Assets 和许可证。
 
-兼容层由本项目独立实现，不分发 Omni / DailyRoutines 宿主 DLL。调用原宿主私有管理器的模块仍需要逐个适配；原宿主编译的 DLL 不能直接当作 Yanjiu DLL 使用。DR 本地化暂时返回原键名。导入模块具有完整插件权限，没有沙箱。
+## 功能与边界
 
-外部 PhoneChat 模块的原生聊天使用本游戏进程的日志记录和窗口过滤。**Omni 专有聊天窗和国服聊天仍需运行 Omni**；本版不实现它的私有服务器协议。手机模块同时只启用一个实例，避免端口冲突。
+- 在线、本地模块管理，全部/已启用/收藏/在线/本地筛选；已下载在线模块有直接删除按钮。
+- FF14 原生配色、完整图标浏览器、模块图标选择、独立字体与布局缩放。
+- 宿主按模块名转发宏命令，提供参数保留和禁用模块检查。`/omni` 未被占用时可作兼容别名；同时使用 Omni 时使用 `/yanjiu MusicPlayer`，不会接管 Omni 命令。
+- DR 311 个目录项，303 个编译及类型绑定通过，8 个因原宿主接口缺失不可启用。模块间前置、冲突和可搭配关系会显示。
+- 不内置 Omni 功能模块，不内置手机支持。外部模块按需下载，首次默认关闭；原 Omni 宿主 DLL 不能直接当作 Yanjiu 模块 DLL。
+- 启动校验宿主及模块哈希，不匹配时隔离错误。导入代码具有插件进程权限，不是沙箱。
 
-## 本地开发测试
+编译、内存加载、生命周期、依赖与冲突、配置、命令转发、删除路径边界和包哈希已通过离线回归。并未逐项执行所有上游模块的游戏操作，也未完成所有外部服务联调；因此保持开发测试标记。
 
-1. 在 `/xlplugins` 设置的开发插件选项添加测试包解压后的 `Yanjiu.dll` 路径。
-2. 在开发插件中加载小烟酒，输入 `/yanjiu`。
-3. 首页填写本地 `.cs` / Yanjiu `.dll` 文件路径，或在线仓库地址并点加号。模块页直接显示模块；未安装的在线模块可点下载图标，新模块默认关闭。卡片可展开，设置需先启用。
-4. 手机支持通过外部模块按需安装和启用，与其他模块使用相同列表。
+## 从对应源码重建
 
-首页的自动刷新仅刷新仓库清单，模块下载与更新仍由用户点击执行。配色、来源地址及自动刷新选择会保存，重开插件后恢复。模块恢复导入最多同时编译两个，其他任务排队处理。
-
-实际 SDK 编译成功，测试覆盖生命周期、失败启动清理、配置持久化、下载哈希与路径校验。2026-10-12 的兼容编译样本为用户提供的 3 个 DR、5 个 Omni 本地模块及旧库的 7 个在线模块，均通过；测试未执行这些模块的游戏操作。**真实游戏加载、UI 显示和手机联调尚未验证，不作为稳定版发布。**
-
-## 构建
-
-安装 .NET SDK 10.0.401，准备卫月 API 15 库目录。运行：
+安装 .NET SDK 10.0.401、PowerShell 7，准备 API 15 的卫月库目录。在仓库根目录运行：
 
 ```powershell
-pwsh -File ./plugin/build.ps1 -ProjectRoot D:/Yanjiu.Dalamud -DalamudPath '<卫月 API 15 目录>'
+./plugin/tools/rebuild-release.ps1 -DalamudPath '<卫月 API 15 目录>' -DotnetPath '<dotnet.exe>'
 ```
 
-脚本优先使用项目根目录 `tools/dotnet/dotnet.exe`，否则使用 PATH 中的 `dotnet`；可通过 `-DotnetPath` 指定。所有构建缓存和输出放入 `ProjectRoot`。运行时依赖位于 `third_party/plugin-runtime`，构建前核对 SHA256，不需安装 Omni 或 DR 来提供宿主 DLL。
+该脚本从 third_party/sources 初始化本地工作目录，构建宿主，编译与绑定审计公开 DR 模块，生成模块目录及哈希，重新构建完整包并运行离线测试。输出位于 local/release-work/staging/plugin；local 不上传。
 
-测试：`pwsh -File ./plugin/tests/run-tests.ps1 -ProjectRoot D:/Yanjiu.Dalamud -DalamudPath '<SDK目录>'`。本地兼容样本可放到项目根目录 `FF14-Omni-DR/DR`、`FF14-Omni-DR/Omni`；在线测试会下载用户旧库，保存到项目根目录 `tests/online-sources`，只编译，不启用。
+运行库使用 third_party/plugin-runtime/SHA256.json 固定校验。修改版 OmenTools 及两个原生 UI 依赖的完整源码在 third_party/sources；可使用 plugin/tools/rebuild-omen.ps1 和 build-dr-dependencies.ps1 重建。重建依赖后应更新校验清单并重新运行完整构建测试。
 
-打包：`pwsh -File ./plugin/package.ps1 -ProjectRoot D:/Yanjiu.Dalamud`。许可证和对应源码地址随包提供。
+打包前确认主 DLL 与 DR/Omni/Modules/host.sha256 相同；部署可使用 plugin/tools/deploy-plugin.ps1，先校验与备份，最后复制主 DLL。
+
+源码、各组件许可证、构建脚本与插件在同一 GitHub 仓库及发行标签保存。既有 Android App 和 legacy/PhoneChat.cs 保留，不作为本版新增功能。

@@ -1,0 +1,3112 @@
+[
+  {
+    "id": "AutoActionAlignCamera",
+    "title": "自动镜头面向释放技能",
+    "description": "使部分技能的施法面向始终以当前镜头朝向为基准",
+    "path": "Action/AutoActionAlignCamera.cs",
+    "category": "Action",
+    "sha256": "2d26ed25bc72652784d5432a0675a0a9c5f233abfdccab922f2b7e34b68f7f10",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoAethericMimicry",
+    "title": "自动以太复制",
+    "description": "在未选中任一有效目标使用 \"以太复制\" 时, 自动打开快捷操作界面以一键吸取周围指定职能的玩家",
+    "path": "Action/AutoAethericMimicry.cs",
+    "category": "Action",
+    "sha256": "5b139198999fd65f6482bc7e3f63b67f6121ebae5f875b106dce76ff61cde9cb",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoBroadcastActionHitInfo",
+    "title": "自动播报技能直暴击情况",
+    "description": "配置完成后, 自动使用副本内提示文本和 TTS 播报指定的技能直暴击文本",
+    "path": "Action/AutoBroadcastActionHitInfo.cs",
+    "category": "Action",
+    "sha256": "e7c10a4cecc4beced98e53e34802b5b2d3055e727880bc6ca76108056fb9c929",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCancelCast",
+    "title": "自动中断咏唱",
+    "description": "当目标死亡或不可选中时, 自动中断咏唱",
+    "path": "Action/AutoCancelCast.cs",
+    "category": "Action",
+    "sha256": "9e63be41aa8e2d2d2d94fc9ae44d509856d88249f3ca5ee2db7641d211d59fa6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCancelMountCast",
+    "title": "自动中断坐骑咏唱",
+    "description": "配置完毕后, 在满足特定条件时自动中断当前正在进行的坐骑咏唱",
+    "path": "Action/AutoCancelMountCast.cs",
+    "category": "Action",
+    "sha256": "efe6cb49fce95b78d89d5d08d40cea636f26830649d0042e831202a1e92ca276",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoChakraFormShift",
+    "title": "自动斗气与演武",
+    "description": "若当前职业为武僧，则在进入副本、重新挑战或脱战后，自动发动“阴阳斗气”与“演武”。",
+    "path": "Action/AutoChakraFormShift.cs",
+    "category": "Action",
+    "sha256": "f10f59466675752c421dbc53ab0a813da5ddfee0f5f29fe072859efa107edd0d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDance",
+    "title": "自动跳舞",
+    "description": "若当前职业为舞者，则在发动“标准舞步”与“技巧舞步”后，自动连续发动对应的舞步技能。",
+    "path": "Action/AutoDance.cs",
+    "category": "Action",
+    "sha256": "5c2fd24c83044ff471b992f25391dc73706562cc969b786d12a96c4841133de3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDrawMotifs",
+    "title": "自动绘画",
+    "description": "若当前职业为绘灵法师，则在进入副本、重新挑战或脱战后，自动发动彩绘技能以补全画布。",
+    "path": "Action/AutoDrawMotifs.cs",
+    "category": "Action",
+    "sha256": "9b07f118c1cb6490aec613dafa92c0dcbf1a034f96ad0bc7beb62294f1387f8e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHighlightSprint",
+    "title": "自动高亮冲刺",
+    "description": "",
+    "path": "Action/AutoHighlightSprint.cs",
+    "category": "Action",
+    "sha256": "3ef9973596af6cd1d11c2e8cfebea01ce69d867a20f8a1cb961f65f2d86f6f4e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHighlightStatusAction",
+    "title": "自动高亮状态对应技能",
+    "description": "配置完毕后, 当技能对应的状态即将失效时, 自动高亮对应的技能图标",
+    "path": "Action/AutoHighlightStatusAction.cs",
+    "category": "Action",
+    "sha256": "3699ad86ea9a2b8d134f3d9ed5ae8fac82ac951d0c77accc15dceaf565c627bf",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHolmgangSelf",
+    "title": "自动死斗自身",
+    "description": "使用战士技能死斗时, 强制令自身为技能目标",
+    "path": "Action/AutoHolmgangSelf.cs",
+    "category": "Action",
+    "sha256": "f9b38a30f5722e53d636829dbbc0a7ea21c61eb97856acf983dad1b2815fe89b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoLucidDreaming",
+    "title": "自动醒梦",
+    "description": "配置后，若当前职业有需要使用“醒梦”技能，则在魔力低于设定下限时自动插入使用。",
+    "path": "Action/AutoLucidDreaming.cs",
+    "category": "Action",
+    "sha256": "9e92936c8180162d5a6876ceeb0bfbc8f3296d753c39228d351aa82a351e26d9",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoManageInterruptAction",
+    "title": "自动管控打断技能",
+    "description": "若当前目标不在咏唱可打断的技能, 则禁止使用打断类技能 (插言、伤头)",
+    "path": "Action/AutoManageInterruptAction.cs",
+    "category": "Action",
+    "sha256": "e1c5df0cc70fcfa558c1e0221eb0cab2276fc283b025905fe8164dbdeab8551c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoManagePeloton",
+    "title": "自动管控速行",
+    "description": "若当前正在战斗状态, 则自动阻止使用速行技能",
+    "path": "Action/AutoManagePeloton.cs",
+    "category": "Action",
+    "sha256": "685bf01150955549f3f073f6edd6d57878c1a512e6d1ad2dba69755e0a5aac00",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoPeloton",
+    "title": "自动速行",
+    "description": "若当前为远程敏捷职业，则在移动时自动发动“速行”。",
+    "path": "Action/AutoPeloton.cs",
+    "category": "Action",
+    "sha256": "0a4cddd715631a6f1f2cb5169bc448852debae0a8e1c346fc19770789ce4fbb9",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoPreventDuplicateStatus",
+    "title": "自动防技能重复",
+    "description": "使用相应技能时, 将自动检测相关状态是否已存在, 以防止团辅/团减等重叠",
+    "path": "Action/AutoPreventDuplicateStatus.cs",
+    "category": "Action",
+    "sha256": "77b79f26d393ffeb1cc4e622f8966af54d532eb241710b2bf0ae4f72c472b0ae",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoPreventFireBlizzard",
+    "title": "自动阻止 \"火炎\" 与 \"冰结\" 释放",
+    "description": "",
+    "path": "Action/AutoPreventFireBlizzard.cs",
+    "category": "Action",
+    "sha256": "f5e27032c08846bbd31842b8ad9cf82eb7e3760b54ec931fa105e0d5c8625207",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRedirectActionTarget",
+    "title": "自动重定向技能目标",
+    "description": "配置完成后, 若待使用技能无法对当前目标释放, 则自动尝试重定向至先前可用目标",
+    "path": "Action/AutoRedirectActionTarget.cs",
+    "category": "Action",
+    "sha256": "6169a1189c17d268e2cc7ed6d72b0553d6a0c3cbd2901ed0b48461f50d0d4d7e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoReplaceActionLowLevel",
+    "title": "自动替换低等级技能",
+    "description": "当因等级同步而导致部分高等级技能无法使用时, 自动将它们替换为对应的下位低等级技能",
+    "path": "Action/AutoReplaceActionLowLevel.cs",
+    "category": "Action",
+    "sha256": "9ff80e3d46d1c0e16b89c2d1dfc2a7a526b5ca1430f9aaffa4666045bb4ebcb6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoReplaceLocationAction",
+    "title": "自动重定向地面目标类技能",
+    "description": "进入副本后, 在使用地面放置类技能时, 自动将其放置位置重定向至场地中心",
+    "path": "Action/AutoReplaceLocationAction.cs",
+    "category": "Action",
+    "sha256": "c45c14b31cd891e6e8c4a64bdae5f6be0122aa298b5d7650bc398da32b3519b7",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoReplaceLowBlowWithInterject",
+    "title": "自动插言替换下踢",
+    "description": "若当前目标正在咏唱可打断的技能, 且 插言 处于可用状态, 则在热键栏中用 插言 替换 下踢",
+    "path": "Action/AutoReplaceLowBlowWithInterject.cs",
+    "category": "Action",
+    "sha256": "aa4855f7a4faf532c7020a26cb14a7183e4d51fa9db1689e7d2b87689c13a3ce",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSoulsow",
+    "title": "自动播魂种",
+    "description": "若当前职业为钐镰客，则在进入副本、重新挑战或脱战后，自动发动“播魂种”。",
+    "path": "Action/AutoSoulsow.cs",
+    "category": "Action",
+    "sha256": "aeed153da47855fa92a5cfb1d51bc799459c6bc07a9a613feca425c69a23948c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoStellarSprint",
+    "title": "自动宇宙探索冲刺",
+    "description": "当位于宇宙探索相关区域, 且当前职业为生产采集时, 自动使用宇宙冲刺",
+    "path": "Action/AutoStellarSprint.cs",
+    "category": "Action",
+    "sha256": "b8d3d742be8b921ee3579beb6a609020b4a9bf4006a7d17c8bcb817ebd826084",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSummonPet",
+    "title": "自动召唤召唤兽",
+    "description": "若当前职业为召唤师或学者，则在进入副本或重新挑战后，自动召唤召唤兽。",
+    "path": "Action/AutoSummonPet.cs",
+    "category": "Action",
+    "sha256": "723feb02c2482308dcfb569b0f8964e7adcda5219099b8b0844adfc74f9b29cc",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoTankStance",
+    "title": "自动盾姿",
+    "description": "若当前为防护职业，则在进入副本后，自动开启盾姿。",
+    "path": "Action/AutoTankStance.cs",
+    "category": "Action",
+    "sha256": "103e6f28753c3647a4c1ab387d0129deabcf68263d36fc38d532f747b7b7c6bc",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoTenChiJin",
+    "title": "自动结印",
+    "description": "配置完成后, 在自动模式下: 点击目标忍术技能后自动按顺序结印、释放; 在手动模式下: 自动使每个结印技能在一次结印期间仅能释放一次",
+    "path": "Action/AutoTenChiJin.cs",
+    "category": "Action",
+    "sha256": "35c7f2a81b5ed09f0c912810ac6967d1f06f08fddd7bb59e802264669db989f2",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoUmbralSoul",
+    "title": "自动灵极魂",
+    "description": "若当前职业为黑魔法师，则在进入副本、重新挑战或脱战后，自动发动“灵极魂”。",
+    "path": "Action/AutoUmbralSoul.cs",
+    "category": "Action",
+    "sha256": "5600a3c1df8374115067eacc0e4d8f19daf15c2b8927d78f2980757b4943fc0d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoUseEarthsReply",
+    "title": "自动使用金刚转轮",
+    "description": "使用玩家对战技能“金刚极意”后, 自动在其即将结束时使用技能“金刚转轮”以防止失效",
+    "path": "Action/AutoUseEarthsReply.cs",
+    "category": "Action",
+    "sha256": "2758517a5292eece2698ce5862b033d5af0d9abec266b69a8a4add806ee82d3e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoUseMountAction",
+    "title": "自动使用坐骑技能",
+    "description": "配置完毕后, 骑乘特定坐骑时, 自动重复使用指定的坐骑技能",
+    "path": "Action/AutoUseMountAction.cs",
+    "category": "Action",
+    "sha256": "bf5ec4340216e223da4af4da98fd0025ed3fe6ba7426b0c2b51981a88954a817",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BanEscToCancelCast",
+    "title": "禁止 Esc 键中断咏唱",
+    "description": "咏唱过程中使用 Esc 键将不再会中断当前咏唱进程",
+    "path": "Action/BanEscToCancelCast.cs",
+    "category": "Action",
+    "sha256": "ff50e1550753caf527f363c475468f7f23800b56df1f8221a10b79f5104c8374",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterPVPACCommand",
+    "title": "“/对战技能”命令优化",
+    "description": "使“/对战技能（/pvpaction、/pvpac）”命令支持填写连击中技能等无法被设置到热键栏中的技能的名称。\n（示例：/对战技能 闪飒、/对战技能 暴乱剑）",
+    "path": "Action/BetterPVPACCommand.cs",
+    "category": "Action",
+    "sha256": "e4a8e488cc0f69ca08352fd3437ae043dd4a425d119e42f4de2251bdddd4763b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CustomActionQueueTime",
+    "title": "自定义技能队列时间",
+    "description": "允许自定义默认状态下的技能与特定技能在队列中的留存时间 (即在距下一 GCD 转好前多久允许技能预先排入技能队列)",
+    "path": "Action/CustomActionQueueTime.cs",
+    "category": "Action",
+    "sha256": "2bc8188e5d909e69ec1b714b7c19ffd714030943c80b6740f4b51a987d54b5fd",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "DisableGroundActionAutoFace",
+    "title": "禁止地面类技能改变面向",
+    "description": "在使用地面类技能(如庇护所, 地星等)时将不会再更改当前面向",
+    "path": "Action/DisableGroundActionAutoFace.cs",
+    "category": "Action",
+    "sha256": "c77835c984ec49cba442562ea69e7b70d62fb42539abff14b4303d5c6b0f18cc",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "HealerHelper",
+    "title": "治疗职业技能优化",
+    "description": "配置完成后, 若当前职业为治疗职业, 则在使用特定技能时根据设定对其使用进行优化",
+    "path": "Action/HealerHelper.cs",
+    "category": "Action",
+    "sha256": "6dcf470267dcebd74d83a3512af5eee60b848f17a10415bf1bb9b55f6ae8c0fc",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "InstantPlaceLocationAction",
+    "title": "即刻放置地面目标类技能",
+    "description": "使用地面目标类技能时, 自动在鼠标指向处释放, 而无须再次确认",
+    "path": "Action/InstantPlaceLocationAction.cs",
+    "category": "Action",
+    "sha256": "aaad532929c544f374cf9af5a42d41644337e4efc834fc249859fd6c2d744261",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "MacroIntoActionQueue",
+    "title": "宏进入技能队列",
+    "description": "令所有技能与物品使用都可以进入技能队列",
+    "path": "Action/MacroIntoActionQueue.cs",
+    "category": "Action",
+    "sha256": "5e4949ca369b871464f80c94d5a89f69417a9d02e7d539867c791d964bcbf2b4",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCastMovementLock",
+    "title": "自动禁止咏唱期间移动",
+    "description": "技能咏唱时自动禁止移动，以避免意外打断咏唱。",
+    "path": "Action/AutoCastMovementLock/AutoCastMovementLock.cs",
+    "category": "Action",
+    "sha256": "ec754df2e3bc77cb51010a42576cf2c232ecc412290560a89321052f2a472526",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BaitSwitchCommand",
+    "title": "钓饵切换指令",
+    "description": "添加 /pdr bait <物品 ID / 物品名 / 物品名拼音>指令, 以便使用指令切换钓饵",
+    "path": "Assist/BaitSwitchCommand.cs",
+    "category": "Assist",
+    "sha256": "cc64fcd47e8d2b7ebb65b94fcf0d21c55e2821c3a0c1b4a4d70626f8e2aa405f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CallbackCommand",
+    "title": "界面回调触发指令",
+    "description": "添加 /pdr {0} <界面内部名称> <参数...> 指令, 以便使用指令直接操控游戏内各界面",
+    "path": "Assist/CallbackCommand.cs",
+    "category": "Assist",
+    "sha256": "fd1f70d4e226f146841f58caa650df8ddb2df5e52198e53e6195b08a8408eb76",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CancelCountdownCommand",
+    "title": "取消战斗开始倒计时指令",
+    "description": "添加 /pdr {0} 指令, 以快速取消战斗开始倒计时",
+    "path": "Assist/CancelCountdownCommand.cs",
+    "category": "Assist",
+    "sha256": "7c8bbc23d891429136d5348f757af0c00cff827855a0ef469ae8c5c22f9be320",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ContentFinderCommand",
+    "title": "任务搜索器指令",
+    "description": "添加 {0} 指令, 用于快速参加指定的副本任务或随机任务",
+    "path": "Assist/ContentFinderCommand.cs",
+    "category": "Assist",
+    "sha256": "0a4d499edbbe544a3595e969733971cbb9fb3feff7d94943b8133f1de5f11ef7",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FieldEntryCommand",
+    "title": "特殊场景探索进入指令",
+    "description": "添加 {0} <参数 / 副本名> (不区分大小写 / 部分匹配) 指令, 用于快速进入指定的特殊场景探索",
+    "path": "Assist/FieldEntryCommand.cs",
+    "category": "Assist",
+    "sha256": "41876285c93a485ac685c4475355dde8c52848e95334c01b632f5f007b7ab6b5",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "GlamourPlateApplyCommand",
+    "title": "投影模板切换指令",
+    "description": "添加 /pdr gpapply <编号> (从 1 开始) 指令, 允许使用指令快捷切换游戏原生保存的各投影模板",
+    "path": "Assist/GlamourPlateApplyCommand.cs",
+    "category": "Assist",
+    "sha256": "600671c1c352a46f2d016e9d9375d1a48a96d93ca46f12a31f8b6f2ce7c48b50",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "JobSwitchCommand",
+    "title": "职业切换指令",
+    "description": "添加 /pdr {0} <职业 ID / 职业名称 / 职业名称拼音> (部分包含, 大小写不敏感) 指令, 以快捷切换至指定职业",
+    "path": "Assist/JobSwitchCommand.cs",
+    "category": "Assist",
+    "sha256": "8f9ef3a0a4778dc59356577efacbfcce775af79219857ebf7cc2588d545b1ff3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "JoinExitDutyCommand",
+    "title": "自动进退副本一次",
+    "description": "添加 /pdr joinexitduty 指令, 使用后可快速进退副本一次",
+    "path": "Assist/JoinExitDutyCommand.cs",
+    "category": "Assist",
+    "sha256": "755aa7b63e54e9144e79798de5c1ba31434156d48b17600ad98ef710adf6be04",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "LeaveDutyCommand",
+    "title": "退出副本指令",
+    "description": "",
+    "path": "Assist/LeaveDutyCommand.cs",
+    "category": "Assist",
+    "sha256": "41839f26e9b3339c9fa4d16e7dd458db956f8ef7fd9d410c9ee41856fbca4357",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OrnamentActionCommand",
+    "title": "时尚配饰技能使用指令",
+    "description": "添加 /pdr {0} <技能 ID / 技能名称 / 技能名称拼音> (部分包含, 大小写不敏感) 指令, 以快捷使用时尚配饰技能",
+    "path": "Assist/OrnamentActionCommand.cs",
+    "category": "Assist",
+    "sha256": "93c9773e44cc63c983296c3c87728ae946c7f1a4a40c13f5a9a13a62cafae1d6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "PhantomJobSwitchCommand",
+    "title": "辅助职业切换指令",
+    "description": "添加 /pdr {0} <ID / 名称 (大小写不敏感, 部分包含)> 指令, 以在蜃景幻界新月岛内快捷切换至内指定的辅助职业",
+    "path": "Assist/PhantomJobSwitchCommand.cs",
+    "category": "Assist",
+    "sha256": "88cdbfb51b34a320ddae2d5fdad111ab2d81da5d61e152abe605c66f951de183",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ReceiveEventCommand",
+    "title": "代理事件触发指令",
+    "description": "添加 /pdr {0} <代理名称> <事件类型> <参数...> 指令, 以便使用指令直接操控游戏内各代理",
+    "path": "Assist/ReceiveEventCommand.cs",
+    "category": "Assist",
+    "sha256": "06dc473bccc33095dc3e688c893ac76f9c170943d4c7a8ccc2cf4e27479cc2d2",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "UseItemCommand",
+    "title": "物品使用指令",
+    "description": "添加 /pdr {0} <物品 ID / 物品名称 / 物品名称拼音> 指令, 以快捷使用背包中指定物品",
+    "path": "Assist/UseItemCommand.cs",
+    "category": "Assist",
+    "sha256": "7998716b58066a2256e785ae401a34fc9a19b4d567fa667790f65683632206fc",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoAdjustNamePlateIcon",
+    "title": "自动调整目标标记",
+    "description": "配置完毕后, 自动调整所有名牌中目标标记的缩放与位置",
+    "path": "Combat/AutoAdjustNamePlateIcon.cs",
+    "category": "Combat",
+    "sha256": "0a2ac53cbb7284e1323433ad6e30836640877073dee841e2a7f4f50e6d70bcfe",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoChangeBattleEffectLevel",
+    "title": "自动调整战斗特效",
+    "description": "配置完毕后, 自动根据当前区域类型及周围玩家数量调整战斗特效显示设置",
+    "path": "Combat/AutoChangeBattleEffectLevel.cs",
+    "category": "Combat",
+    "sha256": "ffe50aec6a60e321a7214769362f0705b574c760a08f2c4386a62c1969ecdb73",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCheckFoodUsage",
+    "title": "自动检查自身食物状态",
+    "description": "自动检查自身对应食物使用状态, 并在剩余时间低于阈值时自动补充使用特定食物",
+    "path": "Combat/AutoCheckFoodUsage.cs",
+    "category": "Combat",
+    "sha256": "51692b074111fd3f392aa68523f429bc72c4e568375d0057d70e39350f738ce2",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisableBattleBGM",
+    "title": "自动禁止战斗背景音乐播放",
+    "description": "自动阻止进战时场景战斗背景音乐的播放, 而维持原有场景背景音乐不变",
+    "path": "Combat/AutoDisableBattleBGM.cs",
+    "category": "Combat",
+    "sha256": "21a59107878d962f7c048aacb90438b7b3ff89e244442a57bdad716cb97d2464",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayFateItemCount",
+    "title": "自动显示危命任务道具收集数量",
+    "description": "进入收集类危命任务时, 自动在危命任务详情旁显示当前已持有的危命任务道具数量",
+    "path": "Combat/AutoDisplayFateItemCount.cs",
+    "category": "Combat",
+    "sha256": "8d4a85851685fa3caec2413e0b271a03d7920f60f7eaa8981de750753c2657d6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayHiddenCast",
+    "title": "自动显示隐藏咏唱信息",
+    "description": "强制显示所有被刻意隐藏咏唱信息的技能, 以精准掌握技能咏唱进度",
+    "path": "Combat/AutoDisplayHiddenCast.cs",
+    "category": "Combat",
+    "sha256": "01458482806de8af10352d8603a28b0bdaece9b9ccfa9bbf6880f01a9eb1e5cb",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayMarkerInPartyList",
+    "title": "自动小队列表显示目标标记",
+    "description": "配置完毕后, 在任一队伍成员存在目标标记时, 同时将目标标记显示在小队列表界面对应角色上",
+    "path": "Combat/AutoDisplayMarkerInPartyList.cs",
+    "category": "Combat",
+    "sha256": "69035a5c52b3c8917b17f45e406a4276fce0bf44bb37073a07834e5c128d2ec6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayMitigationInfo",
+    "title": "自动显示减伤信息",
+    "description": "当自身拥有减伤效果, 或目标拥有伤害降低效果时, 自动计算等效减伤值, 并在服务器信息栏显示效果一览",
+    "path": "Combat/AutoDisplayMitigationInfo.cs",
+    "category": "Combat",
+    "sha256": "1f9a1e9f96d3bc0db732737ff64cc51f431b8ba7bce48a017fea8d4212c8e6c9",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayPlayerHitbox",
+    "title": "自动显示本地玩家判定点",
+    "description": "自动在当前玩家实际判定点处绘制图标, 以强调、辅助调整人物当前位置",
+    "path": "Combat/AutoDisplayPlayerHitbox.cs",
+    "category": "Combat",
+    "sha256": "b6aadeafb5237437cd4e3486225d7336a1b6f6c1c1bb52eb7a1970864a561d6b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayStatusFullTime",
+    "title": "自动显示完整状态时间",
+    "description": "配置完毕后, 始终显示完整的状态剩余时间, 并提高所有状态更新的精度",
+    "path": "Combat/AutoDisplayStatusFullTime.cs",
+    "category": "Combat",
+    "sha256": "c26303694400760cbe941e5450affd233f4d726d52b4333ab0b16a89ac343287",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoEnableAttack",
+    "title": "自动开启自动攻击",
+    "description": "进入战斗时, 自动为所有职业开启自动攻击",
+    "path": "Combat/AutoEnableAttack.cs",
+    "category": "Combat",
+    "sha256": "91bac7bf5a4f1a87c49cf093de62d4891136fd8b24888c643b92828e15952084",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoFateSync",
+    "title": "自动危命任务等级同步",
+    "description": "进入危命任务范围时自动等级同步",
+    "path": "Combat/AutoFateSync.cs",
+    "category": "Combat",
+    "sha256": "744af21428185ca0f35000e23a654409c44af367b95b997472f0d1468a48d10c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyBonusFate",
+    "title": "自动通知额外奖励危命任务出现",
+    "description": "可获得额外奖励的危命任务出现时，自动发送通知提醒。",
+    "path": "Combat/AutoNotifyBonusFate.cs",
+    "category": "Combat",
+    "sha256": "8a3cd26aa27483fd7699e235036b4a144d00f0025e5b053efa30bce2619cb4b7",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyCountdown",
+    "title": "自动通知战斗开始倒计时开始",
+    "description": "在战斗开始倒计时开始时, 自动发送通知提醒。",
+    "path": "Combat/AutoNotifyCountdown.cs",
+    "category": "Combat",
+    "sha256": "d96bcb99f225af9029953e29a8b327cf2141a3ed4c2c3ab755f31609d3a8edc6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyReadyCheck",
+    "title": "自动通知准备确认",
+    "description": "收到准备确认时，自动发送通知提醒。",
+    "path": "Combat/AutoNotifyReadyCheck.cs",
+    "category": "Combat",
+    "sha256": "b22dabe711a0d058c62071d07e0127b0397f3e9f780b18a4c135fc71cb9119b7",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoPetFollow",
+    "title": "自动召唤物跟随",
+    "description": "脱战后, 若当前场上存在自身召唤物, 则自动对其下达跟随命令",
+    "path": "Combat/AutoPetFollow.cs",
+    "category": "Combat",
+    "sha256": "ea46f4ae4e8d726b1f12aa7fdc922a4b5741f92514af90e057f5b495178cd4ea",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSummonBuddyChocobo",
+    "title": "自动召唤搭档陆行鸟",
+    "description": "若当前在野外区域, 且自身陆行鸟搭档尚未被召唤/剩余时间低于 5 分钟, 则自动使用基萨尔野菜召唤搭档陆行鸟",
+    "path": "Combat/AutoSummonBuddyChocobo.cs",
+    "category": "Combat",
+    "sha256": "fe7838fe08f6ef87fc5b5dee93bda8598d8667e3f0f8f36824c4952502528a7a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoTrackStatusOff",
+    "title": "自动记录状态消失情况",
+    "description": "自动记录自身给予其他玩家的状态存续情况, 并在其被他人主动解除时发送通知信息提醒",
+    "path": "Combat/AutoTrackStatusOff.cs",
+    "category": "Combat",
+    "sha256": "fa6954180702dcba6aa5a899828fa8bec4e8fae562b2c35895ffeb8c92da636a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastResetStrikingDummy",
+    "title": "快捷重置木人仇恨",
+    "description": "对单一木人清除仇恨即可清除所有木人的仇恨, 并添加 /pdr {0} 指令用以手动清除",
+    "path": "Combat/FastResetStrikingDummy.cs",
+    "category": "Combat",
+    "sha256": "7e950cf3b94fa1cef5ed28c6395061137fe8db80aecb5ba3acc34d66f902c124",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedCastBar",
+    "title": "“咏唱栏”界面优化",
+    "description": "优化“咏唱栏”界面。支持详细调整各主要界面元素外观、额外显示滑步标记与直接显示详细咏唱信息（传送目的地、随机坐骑选中的坐骑等）。",
+    "path": "Combat/OptimizedCastBar.cs",
+    "category": "Combat",
+    "sha256": "95cb8f4d42681f5db4e6d9e57c7c9a7376653c7f937a4078f387173c67eea3b6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedEnemyList",
+    "title": "“敌对列表”界面优化",
+    "description": "优化“敌对列表”界面，支持显示详细体力、仇恨与咏唱信息，并可以强制选中锁定选中的目标。",
+    "path": "Combat/OptimizedEnemyList.cs",
+    "category": "Combat",
+    "sha256": "10ff5d225dd74128a467f123a0f6cebf28b44ffca691841ec73ca1c9a825e8b5",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedTargetInfo",
+    "title": "目标情报界面优化",
+    "description": "对目标情报与焦点目标情报界面进行优化, 显示目标体力值与目标技能咏唱剩余时间, 放大自身状态, 并支持快捷取消焦点目标",
+    "path": "Combat/OptimizedTargetInfo.cs",
+    "category": "Combat",
+    "sha256": "5feb57adabe274d69695a0d74e4cb46de038b0e1fd50e0e9866cb1441204cad6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoBlockAgelessWordsAndSolidReason",
+    "title": "自动阻止石工之理与农夫之智",
+    "description": "“理智同兴预备”状态期间，自动禁止使用技能“石工之理”与“农夫之智”，避免意外浪费采集力。",
+    "path": "CraftGather/AutoBlockAgelessWordsAndSolidReason.cs",
+    "category": "CraftGather",
+    "sha256": "4337eb9f75bf6d8889a79246b5a3b87687e6e062f0609cf918a2445098931e97",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCheckQuickGathering",
+    "title": "自动勾选简易采集",
+    "description": "采集界面出现时，自动勾选“简易采集所选道具”。",
+    "path": "CraftGather/AutoCheckQuickGathering.cs",
+    "category": "CraftGather",
+    "sha256": "303f25e615b5c86359ffade311c2b3bbdfbefb934303fa50930319823a17c173",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoEliminateFishAwareness",
+    "title": "自动消除钓场警惕",
+    "description": "若当前钓场发生警惕，则自动前往其他区域后再回到原位置，以解除当前钓点的抛竿限制。",
+    "path": "CraftGather/AutoEliminateFishAwareness.cs",
+    "category": "CraftGather",
+    "sha256": "3c116f231d4ac82023e25d3e44ef8affc89d20b6436fe2585849f463f2d36bc8",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoGathererRoleActions",
+    "title": "自动采集职业职能技能",
+    "description": "当切换到任一采集职业时, 自动使用其他采集职业的职能技能",
+    "path": "CraftGather/AutoGathererRoleActions.cs",
+    "category": "CraftGather",
+    "sha256": "76fe92953fe23ee77a7cbd714cc217e71ae704cbd0e644b168982ed8127c2e19",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyDiademWeather",
+    "title": "自动通知云冠群岛特殊天气",
+    "description": "配置后，当所选的特殊天气出现时，自动发送通知提醒。",
+    "path": "CraftGather/AutoNotifyDiademWeather.cs",
+    "category": "CraftGather",
+    "sha256": "fefdab3cd738e3296251280e51c9a77b00f8f1ec9dcbfb645cba2594c73b0fff",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoUseCrafterGathererManual",
+    "title": "自动使用生产采集指南",
+    "description": "若当前职业为生产采集、并未满级、持有任一有效的生存学/工程学指南, 且并无对应的经验加成增益效果, 则自动使用对应的指南物品",
+    "path": "CraftGather/AutoUseCrafterGathererManual.cs",
+    "category": "CraftGather",
+    "sha256": "75b59084a4c3e7345f8a94207cb3d3fac666148d9bdcb932f19e3775cf312a8b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedRecipeNote",
+    "title": "“制作笔记”界面优化",
+    "description": "优化“制作笔记”界面, 支持快速切换职业；求解配方，并复制为宏、可视化预览与批量制作。",
+    "path": "CraftGather/OptimizedRecipeNote/OptimizedRecipeNote.cs",
+    "category": "CraftGather",
+    "sha256": "0f6f11fffa07d532002044864dbccbedd0699f4aaa1cce1c2f42878ade2e3610",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "Alphascape3Helper",
+    "title": "\"欧米茄时空狭缝 阿尔法幻境3\" 助手",
+    "description": "",
+    "path": "Duty/Alphascape3Helper.cs",
+    "category": "Duty",
+    "sha256": "5311ce93e980f7137fe4aa1c0bc0b289765fbf4d40efe4810896384f258db188",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoBlockEmptyXBMParty",
+    "title": "自动禁止不合理魔兽编队",
+    "description": "“斗兽奇弈”中，若当前魔兽编队不满三只魔兽，则禁止开始挑战；若有兽笛未设置魔兽，则禁止开始战斗，以避免误触。",
+    "path": "Duty/AutoBlockEmptyXBMParty.cs",
+    "category": "Duty",
+    "sha256": "4c260141469b559cdd4c2c0c6277613a7b9db2fa3c1ea258916a789e038db02e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCheckItemLevel",
+    "title": "自动检查装备品级",
+    "description": "进入副本后，自动检查小队成员等级与装备品级信息，突出标记可能仅堪堪满足任务要求的成员。",
+    "path": "Duty/AutoCheckItemLevel.cs",
+    "category": "Duty",
+    "sha256": "928a7ca6770176d2f9513d061b5f5b5afed72e8dfa806efb6731a3b53f8614b6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCommenceDuty",
+    "title": "自动任务出发确认",
+    "description": "任务出发确认窗口出现后, 自动点击出发按钮",
+    "path": "Duty/AutoCommenceDuty.cs",
+    "category": "Duty",
+    "sha256": "8d1c2b987a8ba2bf3414a3772eb584cad6289e205e03cce86e3819bd564f8020",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayDutyReadyLeftTime",
+    "title": "自动显示准备确认剩余时间",
+    "description": "任务出发准备确认界面出现后, 自动在其内显示距离超时的剩余时间文本",
+    "path": "Duty/AutoDisplayDutyReadyLeftTime.cs",
+    "category": "Duty",
+    "sha256": "04f86b37254d5885ea1548d03cce04020199e2c8f4ab1f372e278d2831b00c89",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayZoneServerID",
+    "title": "自动显示特殊场景探索副本 ID",
+    "description": "进入特殊场景探索副本时, 自动在服务器信息栏显示当前所在的副本 ID, 并发送聊天消息提醒",
+    "path": "Duty/AutoDisplayZoneServerID.cs",
+    "category": "Duty",
+    "sha256": "c7a9b7e81644df1eb95391f30961483a07895c5346e6aba46904a1997234b198",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoInDutySelectYes",
+    "title": "自动确认副本内物体对话框",
+    "description": "进入副本后, 自动确认副本内交互物体时出现的对话框",
+    "path": "Duty/AutoInDutySelectYes.cs",
+    "category": "Duty",
+    "sha256": "b1a0dc834b4607bd627effe50181a6f787bb744f65daaafb838096a2ae7cf288",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoLeaveDuty",
+    "title": "自动退出副本",
+    "description": "配置后，在副本任务完成时自动退出。",
+    "path": "Duty/AutoLeaveDuty.cs",
+    "category": "Duty",
+    "sha256": "08a41509d92a7fca0fa97ee9922400c77c52cb7ef78216c37c9ee4494aed7dfd",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMovePetCenter",
+    "title": "自动移动召唤物至场地中心",
+    "description": "自身在副本内召唤召唤物/副本开始时, 自动将召唤物移动至场地中心",
+    "path": "Duty/AutoMovePetCenter.cs",
+    "category": "Duty",
+    "sha256": "ba54ec38e6f4be94af53b2c0d7a7e3f4d320dbf0f63da650841b5bb221e0dff8",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMovePetPosition",
+    "title": "自动移动召唤物位置",
+    "description": "配置完成并进入八人副本后, 若当前场上存在自身召唤物, 则根据设定时间轴自动将召唤物移动至指定位置",
+    "path": "Duty/AutoMovePetPosition.cs",
+    "category": "Duty",
+    "sha256": "f0e0730cde81116d9811f56b978b3acbe64a7398b5cbba9a0e0005d81b4059f2",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyChaoticRaidBonus",
+    "title": "自动通知诛灭战限时奖励提升",
+    "description": "配置后，当所在或所选大区进入诛灭战限时奖励时段时，自动发送通知提醒。",
+    "path": "Duty/AutoNotifyChaoticRaidBonus.cs",
+    "category": "Duty",
+    "sha256": "218d9467d874203099d8ba91a8d038af39f04a80988e3443f035cdbf9bbb80a3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyCutsceneEnd",
+    "title": "自动通知过场剧情结束",
+    "description": "在副本内，当全部队友观看完毕过场剧情时，自动发送通知提醒。",
+    "path": "Duty/AutoNotifyCutsceneEnd.cs",
+    "category": "Duty",
+    "sha256": "25a92c4fba44aa0a0762f4a3f213ddb2da1a3fd520d8bbdbf8ec8be803e47ecb",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyDutyConfirm",
+    "title": "自动通知任务出发准备",
+    "description": "当副本任务出发准备完毕时，自动发送通知提醒。",
+    "path": "Duty/AutoNotifyDutyConfirm.cs",
+    "category": "Duty",
+    "sha256": "94eeb23fcbfa05c10734a7d6ed8d6a63e353ceba88dfdfbd3a4c86338abaa312",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyDutyName",
+    "title": "自动通知副本信息",
+    "description": "进入副本时，自动通知副本名称与装备品级需求。",
+    "path": "Duty/AutoNotifyDutyName.cs",
+    "category": "Duty",
+    "sha256": "fd11248499fbb208a60c4efc2f8dbdd553290bb2abe9e8b85e7d756e744ad107",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyDutyStart",
+    "title": "自动通知副本开始",
+    "description": "副本任务开始时，自动发送通知提醒。",
+    "path": "Duty/AutoNotifyDutyStart.cs",
+    "category": "Duty",
+    "sha256": "4adf9b4a57bd630f9132c106a11d499319d2e3f7a00e96253a0d617a0d308837",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyMentorRouletteProgress",
+    "title": "自动通知“随机任务：指导者”成就进度",
+    "description": "当以“随机任务：指导者”进入副本时，若尚有系列任一成就未完成，自动通知相关进度信息。",
+    "path": "Duty/AutoNotifyMentorRouletteProgress.cs",
+    "category": "Duty",
+    "sha256": "8a4fce0c8bfb903922d63f83a1c36e868dd0aef2fb50aab9155da4c64a888e53",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoPlayerCommend",
+    "title": "自动最优队员推荐",
+    "description": "副本任务完成时，自动给予对位队友最优队员推荐。",
+    "path": "Duty/AutoPlayerCommend.cs",
+    "category": "Duty",
+    "sha256": "ce088f06a231d50fd85f7e4c565f6807170c0c2052292e5d004416a1359b16ef",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoQTE",
+    "title": "自动完成动态演练",
+    "description": "在副本中, 自动完成全种类的动态演练 (QTE)",
+    "path": "Duty/AutoQTE.cs",
+    "category": "Duty",
+    "sha256": "4ebfb3ee60420b7e9b7d3b554f5edad92d224a8bddf1fe07ac1cf5c79f5197ed",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoShowFrontlineKillCount",
+    "title": "自动强调展示纷争前线击倒人数",
+    "description": "进入纷争前线击倒玩家时, 自动在屏幕左侧强调显示击倒人数, 以加强游玩正反馈",
+    "path": "Duty/AutoShowFrontlineKillCount.cs",
+    "category": "Duty",
+    "sha256": "207968d31c76922c5d311b4642d001529b73a8c1ccd8cb64b3f82ad69ae80b43",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoVeryEasyQuestBattle",
+    "title": "自动任务战斗非常简单",
+    "description": "进入单人任务战斗时，自动将其难度修改为“非常简单”。",
+    "path": "Duty/AutoVeryEasyQuestBattle.cs",
+    "category": "Duty",
+    "sha256": "5b171e47474bef8424f4c0aee1aa0efad56ac5bf9ee3ced7e7b12e668cdd55fe",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterMKDSupportJobList",
+    "title": "更好的辅助职业列表",
+    "description": "将蜃景幻界新月岛中的“辅助职业列表”界面替换为更加美观易用的模块原生界面，支持自定义排序、外显职业名称、拖出真实技能、显示解锁方式等",
+    "path": "Duty/BetterMKDSupportJobList.cs",
+    "category": "Duty",
+    "sha256": "d4bff9e9a62a19dc70729f1a930fdfc4482c330c76bfbafbed2975c4118107d8",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BrayfloxsLongstopHelper",
+    "title": "\"休养胜地布雷福洛克斯野营地\" 助手",
+    "description": "",
+    "path": "Duty/BrayfloxsLongstopHelper.cs",
+    "category": "Duty",
+    "sha256": "285347a248497f0a57007e3718bef78bdd4d7c034c38c3d19844833e341b47ae",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BurnHelper",
+    "title": "死亡大地终末焦土助手",
+    "description": "进入副本“死亡大地终末焦土”后，自动阻止选中、攻击处于“雾散”状态下的“雾龙”。",
+    "path": "Duty/BurnHelper.cs",
+    "category": "Duty",
+    "sha256": "aec46da4496c8dc970325a748279bd6532b3ba5cd45833d0760509c006468f67",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ChrysalisHelper",
+    "title": "那布里亚勒斯讨伐战助手",
+    "description": "进入副本“那布里亚勒斯讨伐战”后，自动根据当前自身状态突出标记将要碰撞的球体。",
+    "path": "Duty/ChrysalisHelper.cs",
+    "category": "Duty",
+    "sha256": "aa8baf441da7cbf4d6345be73fdfa6a4126d757d8a96602286c89461bdeed73a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CuffOfTheFatherHelper",
+    "title": "\"亚历山大机神城 启动之章2\" 助手",
+    "description": "",
+    "path": "Duty/CuffOfTheFatherHelper.cs",
+    "category": "Duty",
+    "sha256": "4cba3dd1764949286e81e067d8b84f9d0fe640bea5acbb126ec2d5f032dcaf0b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "HullbreakerIsleHelper",
+    "title": "\"财宝传说破舰岛\" 助手",
+    "description": "",
+    "path": "Duty/HullbreakerIsleHelper.cs",
+    "category": "Duty",
+    "sha256": "ea4e4c0a5f8da44360c7a94bd7d9424b28548b0a56e3cd73441f9af43199f917",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "NeverreapHelper",
+    "title": "空中神域不获岛助手",
+    "description": "进入副本“空中神域不获岛”后, 自动与“托努瓦努”对话获取“云卵石”; 在与头目一“奴涅努克怪鸟”的战斗中, 自动标记以指示“奴涅努克之影”的位置。",
+    "path": "Duty/NeverreapHelper.cs",
+    "category": "Duty",
+    "sha256": "ff265aeedc413737c27d5e70c38fcdcdbe7d7a43a2e1a37424a0109dcb994ec9",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "PoolOfTributeHelper",
+    "title": "\"须佐之男歼灭战\" 助手",
+    "description": "",
+    "path": "Duty/PoolOfTributeHelper.cs",
+    "category": "Duty",
+    "sha256": "6d0de158c69b97610c0b198cd127ea79dc26d1fb1b549f9d99f8a29e80ac2cd8",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "PraetoriumHelper",
+    "title": "\"最终决战天幕魔导城\" 助手",
+    "description": "",
+    "path": "Duty/PraetoriumHelper.cs",
+    "category": "Duty",
+    "sha256": "5377ecad7297ef9e554f8f351c0a34bb614f13dd78db622e684285f0e06ec05a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "SastashaHelper",
+    "title": "\"天然要害沙斯塔夏溶洞\" 助手",
+    "description": "进入副本 \"{0}\" 后, 自动提示并高亮显示正确的珊瑚机关",
+    "path": "Duty/SastashaHelper.cs",
+    "category": "Duty",
+    "sha256": "4b994c2d56cd77dfb1fe2e59a6f0c226064832ec81252694bdf255c61bdf4c13",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "StrikingTreeHelper",
+    "title": "\"拉姆歼灭战\" 助手",
+    "description": "",
+    "path": "Duty/StrikingTreeHelper.cs",
+    "category": "Duty",
+    "sha256": "2c3abc0029f72a1c9886625dab549e3e6aaaa140f7b86f8ffab4ebe2eec182c7",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OccultCrescentHelper",
+    "title": "蜃景幻界新月岛助手",
+    "description": "辅助游玩“蜃景幻界新月岛”相关副本, 包括快速传送/提醒区域事件、自动标记/开启宝箱等功能",
+    "path": "Duty/OccultCrescentHelper/OccultCrescentHelper.cs",
+    "category": "Duty",
+    "sha256": "de9140868cfe871f12b581c7edf082768b60f89316e106199d1aa674d1d6b4cc",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoShowDutyGuide",
+    "title": "自动显示副本攻略",
+    "description": "进入副本后，自动以悬浮窗形式显示来自“新大陆见闻录”网站的副本攻略",
+    "path": "Duty/AutoShowDutyGuide.cs",
+    "category": "Duty",
+    "sha256": "5769b5c1284f0ef47eacaadaac2a8c2286ad0e92476977241caa5ec36183ae79",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "DungeonLoggerUploader",
+    "title": "随机任务：指导者任务记录上传助手",
+    "description": "配置完成后, 当进入“随机任务：指导者”任务副本并完成时, 自动记录并上传相关记录数据至 DungeonLogger 网站",
+    "path": "Duty/DungeonLoggerUploader.cs",
+    "category": "Duty",
+    "sha256": "b064bb781699d45b8b243a1a94b52b2b1ce9fa0fb121b251b394fbf58c82076b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCancelStarContributor",
+    "title": "自动取消贡献之星状态",
+    "description": "进入宇宙探索区域场景后, 定期检查自身是否具有 贡献之星 状态, 若有则自动取消",
+    "path": "General/AutoCancelStarContributor.cs",
+    "category": "General",
+    "sha256": "58b28bbea09202d599c2506de9a0a7ff9de542b7b888aeca716c1e7df0276b8f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSendMoney",
+    "title": "自动金币交易",
+    "description": "配置完成后, 自动按照设置批量与指定对象交易指定数额的金币",
+    "path": "General/AutoSendMoney.cs",
+    "category": "General",
+    "sha256": "c5f19a7f19190061c764554cf2cede9e142bbe5d2f396866aaa2049d4eb0221a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCountPlayers",
+    "title": "自动显示周边玩家数量",
+    "description": "以服务器信息栏的形式显示当前周边玩家的数量, 并提供一个可以直接搜索的悬浮窗",
+    "path": "General/AutoCountPlayers/AutoCountPlayers.cs",
+    "category": "General",
+    "sha256": "cdff142c85fbec7868563213e3d124197ec80b4127880737db6d7d420b2c8cd8",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoReplyChatBot",
+    "title": "自动回复聊天信息",
+    "description": "配置完毕后, 自动使用指定的大语言模型与提示词回复指定频道的聊天消息",
+    "path": "General/AutoReplyChatBot/AutoReplyChatBot.cs",
+    "category": "General",
+    "sha256": "ab63e689a58ef388b3712cff9847cdb9c82d9b59b02b5ef77a80b8af3185cf40",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRecordSubTimeLeft",
+    "title": "自动记录剩余游戏时间",
+    "description": "登录时，自动记录保存当前账号剩余的游戏时间，并显示在服务器信息栏。",
+    "path": "General/AutoRecordSubTimeLeft/AutoRecordSubTimeLeft.cs",
+    "category": "General",
+    "sha256": "123e033d80921daf4b46335c739fa5d1465b22f013e87e5542bdabed6fdb5339",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoJumboCactpot",
+    "title": "自动完成仙人仙彩",
+    "description": "进入仙人仙彩界面后, 自动购买本周所有的仙人彩",
+    "path": "GoldSaucer/AutoJumboCactpot.cs",
+    "category": "GoldSaucer",
+    "sha256": "fc661d4fe97446dac704be6962f00fc2d4d78becd5b139595ece5a5fc8b8df1e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMiniCactpot",
+    "title": "自动完成仙人微彩",
+    "description": "进入仙人微彩界面后, 自动完成当日所有的仙人微彩",
+    "path": "GoldSaucer/AutoMiniCactpot.cs",
+    "category": "GoldSaucer",
+    "sha256": "b8b0e191dbf14c2797f2d7c984763997ea8125df127ca0baaef7a9a65e22f15a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSellCards",
+    "title": "自动幻卡回收",
+    "description": "幻卡回收界面出现, 并点击开始后, 自动回收全部的幻卡; 幻卡回收确认界面出现时, 自动点击确认按钮",
+    "path": "GoldSaucer/AutoSellCards.cs",
+    "category": "GoldSaucer",
+    "sha256": "baaacef0d81bc0c23ce359043df27cd0e8cbc0a2768cdc00f6deb1ecb1e1d479",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AdventurerPlateThroughInspect",
+    "title": "玩家检视界面打开冒险者铭牌",
+    "description": "为玩家检视界面新增按钮, 可点击其以一键打开当前检视玩家的冒险者铭牌",
+    "path": "Interface/AdventurerPlateThroughInspect.cs",
+    "category": "Interface",
+    "sha256": "871cdae1fc8539da035442da5b574b5090b7a57eff7566f1cd274ab85de14323",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoAcceptInvitation",
+    "title": "自动接受组队邀请",
+    "description": "配置完成后, 自动接受满足条件的玩家的组队邀请",
+    "path": "Interface/AutoAcceptInvitation.cs",
+    "category": "Interface",
+    "sha256": "b9694eadc8034b8945ea33a34d73d976c7ba2f59f003895f0a55cf22055823ec",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoAetherialReduction",
+    "title": "自动精选",
+    "description": "打开精选界面并点击开始后, 自动精选所有物品",
+    "path": "Interface/AutoAetherialReduction.cs",
+    "category": "Interface",
+    "sha256": "b838188ce7f927d3bbf2cee078e0e95a477c4754831e9ced149aea5f6b1eed0c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoClaimItemIgnoringMismatchJobAndLevel",
+    "title": "自动忽略领取物品时职业等级相符需求",
+    "description": "领取/交换/购买物品时, 自动确认因职业或等级与目标物品不符而额外产生的提示框",
+    "path": "Interface/AutoClaimItemIgnoringMismatchJobAndLevel.cs",
+    "category": "Interface",
+    "sha256": "a76643f3b129bf47a4d644015df0c99c77eeb867df20ebbd39e149f24d273ed6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoClaimPVPRewards",
+    "title": "自动领取战利水晶",
+    "description": "打开星里路标界面, 并点击开始后, 自动领取所有待领取的系列赛奖励",
+    "path": "Interface/AutoClaimPVPRewards.cs",
+    "category": "Interface",
+    "sha256": "5739965a15460103d3f35fb99080944134ebe17e6c40be0f40430f57565e6e36",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCollectableExchange",
+    "title": "自动交易收藏品",
+    "description": "支持在“收藏品交易”界面中按住打断热键批量交换全部收藏品，并添加“工票交易”按钮以快捷对话工票交易员。",
+    "path": "Interface/AutoCollectableExchange.cs",
+    "category": "Interface",
+    "sha256": "50d6d5454fca6bc7ab8d2807698e9b519d4cf8eae8477adb8642a8ed758429b3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoConfirmPortraitUpdate",
+    "title": "自动确认肖像更新",
+    "description": "肖像更新预览界面出现时, 自动点击确认以更新肖像至最新装备状态",
+    "path": "Interface/AutoConfirmPortraitUpdate.cs",
+    "category": "Interface",
+    "sha256": "5d57c15ad2c05cf37d8c077c7371f953504882b6c92f627f25513ad97c336e2d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoConstantlyInspect",
+    "title": "自动连续鉴定",
+    "description": "道具鉴定结果界面出现后, 自动点击继续鉴定按钮",
+    "path": "Interface/AutoConstantlyInspect.cs",
+    "category": "Interface",
+    "sha256": "491c65fdc22feb664647f04e0185a42a07c86609bf088ae986f2f9b9a2838f7e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayIDInformation",
+    "title": "自动显示 ID 信息",
+    "description": "自动外显诸如物品、天气、状态、技能等的 ID 信息",
+    "path": "Interface/AutoDisplayIDInformation.cs",
+    "category": "Interface",
+    "sha256": "625c172ffb574a3e9d884b106aab7f29c2543378d0749ba645067b91b179e532",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayMSQProgress",
+    "title": "自动显示主线任务完成进度",
+    "description": "若尚有未完成的主线任务, 则自动在主线向导界面内显示当前剩余的主线任务件数与已完成进度百分比",
+    "path": "Interface/AutoDisplayMSQProgress.cs",
+    "category": "Interface",
+    "sha256": "feaa5c66de6433ac172eafd469fd9ee3fc8a2b6cd265d2aeed27c23778d93d28",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayMTQObject",
+    "title": "自动显示任务对象",
+    "description": "自动在周围标记当前正在进行的任务中的任务对象，以方便找寻。",
+    "path": "Interface/AutoDisplayMTQObject.cs",
+    "category": "Interface",
+    "sha256": "98085a694b58a4b725888c443d5573fb841678356edf34602fb29c1ee5092a3a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayNetworkLatency",
+    "title": "自动显示网络延迟",
+    "description": "自动在服务器信息栏显示实时游戏服务器连接网络延迟信息",
+    "path": "Interface/AutoDisplayNetworkLatency.cs",
+    "category": "Interface",
+    "sha256": "f411dfa3b9ca98358850db0d1d7f58749a4526f63250da39d0ec9aad23c80f0d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoExpertDelivery",
+    "title": "自动筹备稀有品",
+    "description": "允许在“筹备任务”界面中批量提交稀有品，并支持修改打开界面时的默认分页。",
+    "path": "Interface/AutoExpertDelivery.cs",
+    "category": "Interface",
+    "sha256": "a2e4b0b0e41e8e79360963e773142c01a9668dbf59d4bc9759a03a11149f855e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoFCWSDeliver",
+    "title": "自动部队合建交纳素材",
+    "description": "打开提供素材界面, 并点击开始后, 自动交纳当前所有可用素材",
+    "path": "Interface/AutoFCWSDeliver.cs",
+    "category": "Interface",
+    "sha256": "eff406924b92b9df712175fb5dbddca7e04a0852f051d19b8e6e278a6fc1b278",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoGardensWork",
+    "title": "自动园圃作业",
+    "description": "自动或半自动完成园圃相关作业, 包含种植, 收获, 施肥, 护理等",
+    "path": "Interface/AutoGardensWork.cs",
+    "category": "Interface",
+    "sha256": "70e1e6169b90af8904e0065f13b0fadce9d9a7b0c047a36fad40bb59bfaf0894",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoGlamourDresser",
+    "title": "自动管理投影台",
+    "description": "打开投影台后, 自动切换至当前职业对应分类, 并可按需批量取出重复装备、重复模型装备、可放入收藏柜的装备, 或处理可保存为套装的装备",
+    "path": "Interface/AutoGlamourDresser.cs",
+    "category": "Interface",
+    "sha256": "2f7d145eefe34ffe21ba7b4680cf6ca67f038d3cd86303b291d907394ac57574",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHideBanners",
+    "title": "自动隐藏横幅",
+    "description": "配置完毕后, 自动阻止对应的游戏横幅与音效弹出",
+    "path": "Interface/AutoHideBanners.cs",
+    "category": "Interface",
+    "sha256": "bcbaa47b5990ef833718134171b5e4db4349c3a166a8a4e24f277c11c29a3ae8",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHideExpBar",
+    "title": "自动隐藏经验值栏",
+    "description": "若当前职业等级已满, 则自动隐藏经验值栏",
+    "path": "Interface/AutoHideExpBar.cs",
+    "category": "Interface",
+    "sha256": "b1f48a059555a4391ec8430aeb243c0ad91192e74c1353a48031b32ddeae9280",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHideNeedlessPopups",
+    "title": "自动隐藏不必要弹出窗口",
+    "description": "自动隐藏诸如接近达成的成就、同好会通知、资讯中心、推荐任务、新手指南等不必要的弹出窗口",
+    "path": "Interface/AutoHideNeedlessPopups.cs",
+    "category": "Interface",
+    "sha256": "0b9fe3aa245d2799b0970a96962403a2f2f5bc45ae19f8975968cec40b6ead7a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHighlightCursor",
+    "title": "自动高亮鼠标",
+    "description": "自动在当前鼠标位置绘制背景高亮图标, 以强调、辅助寻找鼠标位置",
+    "path": "Interface/AutoHighlightCursor.cs",
+    "category": "Interface",
+    "sha256": "56d7c1dc51c3407d00c711bcff7943f37f206000027ff307f71ec533a8788af1",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoInventoryTransfer",
+    "title": "自动物品页面转移",
+    "description": "若当前存在可以互相转移物品的不同页面, 则在按住打断热键并点击任一页面物品时, 自动转移该物品至另一页面",
+    "path": "Interface/AutoInventoryTransfer.cs",
+    "category": "Interface",
+    "sha256": "5a7641c034439df80a012279fa8d893edd66de4adb09f105dce3d59c4805ae7d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMarkAetherCurrents",
+    "title": "自动标记风脉泉",
+    "description": "在地图上自动标记所有风脉泉的位置, 并用模块界面取代游戏原生界面, 允许自定义显示风脉和快速传送或寻路至指定风脉处",
+    "path": "Interface/AutoMarkAetherCurrents.cs",
+    "category": "Interface",
+    "sha256": "2718e850946819a2fd031d2e257481cca0308afab868f53e924f424e924bcafa",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMaterialize",
+    "title": "自动精制魔晶石",
+    "description": "当任一装备精炼度达到 100%, 或打开精制魔晶石界面并点击开始后, 自动精制全部装备的魔晶石",
+    "path": "Interface/AutoMaterialize.cs",
+    "category": "Interface",
+    "sha256": "8c1f4c6fd6259d7c324241dadba0811a4cb572d2b8925f086c569f85e4151e3b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMateriaTransmutation",
+    "title": "自动合成魔晶石",
+    "description": "打开魔晶石合成界面, 并点击开始后, 自动选择并合成魔晶石",
+    "path": "Interface/AutoMateriaTransmutation.cs",
+    "category": "Interface",
+    "sha256": "25a334a20566402259d0574aa07826da1e29d3545c479fcc25142a64f843dc9f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMoveGearsNotInSet",
+    "title": "自动取出未在套装内装备",
+    "description": "使用后, 自动从兵装库内取出所有未在任一有效套装内的装备",
+    "path": "Interface/AutoMoveGearsNotInSet.cs",
+    "category": "Interface",
+    "sha256": "e0f09efa613e8a8c3ce97a5dc29acee7039e8623b70ab827c83e3833f9d56da3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNumericInputMax",
+    "title": "自动数字输入框最大值",
+    "description": "令所有数字输入框始终为最大值",
+    "path": "Interface/AutoNumericInputMax.cs",
+    "category": "Interface",
+    "sha256": "94cd0ea409ce3c6c5f9e2a813a49e10e21c7951957b0f728e8b56c99406c1045",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoOpenNeedGreed",
+    "title": "自动打开战利品界面",
+    "description": "当新获得需要掷骰的战利品时, 自动打开战利品界面",
+    "path": "Interface/AutoOpenNeedGreed.cs",
+    "category": "Interface",
+    "sha256": "e5139fb74d1f3125c71b988bd0950ec4c6a360f7b6d9d6ef24c74568ecacf5aa",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoPreserveCollectable",
+    "title": "自动确认采集收藏品",
+    "description": "当出现确认是否将采集道具收为收藏品界面时, 自动点击确认",
+    "path": "Interface/AutoPreserveCollectable.cs",
+    "category": "Interface",
+    "sha256": "8f0d18bed6737f7db3dadde7286b815ca78d49feb199ff9bd02458b000c6a317",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoPreviewColorsInDye",
+    "title": "自动预览染剂颜色",
+    "description": "当悬停通用染剂或追加染剂物品时, 自动预览该染剂包含的所有可用颜色",
+    "path": "Interface/AutoPreviewColorsInDye.cs",
+    "category": "Interface",
+    "sha256": "f3f6b770ff515b4e1056dc1a49f71697d69fc0c44e9c1bb1a7baa0af359e5f2a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoQuestAccept",
+    "title": "自动确认任务接取",
+    "description": "任务接取界面出现后, 自动点击确认按钮",
+    "path": "Interface/AutoQuestAccept.cs",
+    "category": "Interface",
+    "sha256": "27858dafb8ba4da474a3d51ec98f07d36dce5868196718bc64537d20675db9e2",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoQuestComplete",
+    "title": "自动确认任务结果",
+    "description": "任务结果界面出现后, 自动点击完成按钮",
+    "path": "Interface/AutoQuestComplete.cs",
+    "category": "Interface",
+    "sha256": "d6f6aef9ececf88f61bc695f3c6a6d7790e56cf06b85020d934f95228539205e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoReadOutTalk",
+    "title": "自动朗读对话",
+    "description": "对话文本出现时, 自动调用插件内置的文本转语音服务朗读对应文本",
+    "path": "Interface/AutoReadOutTalk.cs",
+    "category": "Interface",
+    "sha256": "2b111b12b344ee780ac91785e561338f6ebbe3f53c47aad8931242d93ea7ddd6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRecommendFauxHollows",
+    "title": "自动高亮幻巧拼图最优解",
+    "description": "打开 幻巧拼图 界面后, 自动根据设置高亮当前最优解\n(高亮颜色: 蓝色 → 双剑 / 粉色 → 宝箱、礼箱 / 金色 → 宗长)",
+    "path": "Interface/AutoRecommendFauxHollows.cs",
+    "category": "Interface",
+    "sha256": "6e732a1e117d4bf2d9781196649168e5f9b2d61139e2740fa63b7039bdfff7bf",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRequestItemSubmit",
+    "title": "自动选择并递交物品",
+    "description": "在递交物品时, 自动选择物品并完成递交",
+    "path": "Interface/AutoRequestItemSubmit.cs",
+    "category": "Interface",
+    "sha256": "b80a56fab0f4dd545b7c3b47857a6f183383026df66a5708df8091c90e1e4a51",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRestoreFurniture",
+    "title": "自动取回家具",
+    "description": "打开家具界面, 并点击开始后, 自动将所有仓库家具取回背包/已布置家具存入仓库",
+    "path": "Interface/AutoRestoreFurniture.cs",
+    "category": "Interface",
+    "sha256": "52186bc442a0f277ae11c333b3528b0d25bd25baf9c03e9f4f236e3cbdb60fe5",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSharpenInterfaceText",
+    "title": "自动高清化界面文本",
+    "description": "自动处理部分界面内模糊不清的文本, 高清化其渲染效果, 使文本更加清晰且易于阅读",
+    "path": "Interface/AutoSharpenInterfaceText.cs",
+    "category": "Interface",
+    "sha256": "61975e0ac3b6f9ce48e4dd8ef59c728392a942ce652dc7e566f6ad81f8d3d1bf",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoShopPurchase",
+    "title": "自动商店重复购买",
+    "description": "配置完成并点击开始后, 自动重复购买指定的商店列表物品",
+    "path": "Interface/AutoShopPurchase.cs",
+    "category": "Interface",
+    "sha256": "5d0f78080aa9c18817fea314ef2b30b7736281e94b7e66396e5fde6dfc05e899",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoStoreToCabinet",
+    "title": "自动存入收藏柜",
+    "description": "为“收藏柜”界面新增批量存入功能。",
+    "path": "Interface/AutoStoreToCabinet.cs",
+    "category": "Interface",
+    "sha256": "9d3f9b7ec205840f20af4bd09a2586ea41ff06e949de2d3ce5c837dcc8dceb89",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSubmarineCollect",
+    "title": "自动收取潜水艇",
+    "description": "打开潜水艇列表, 并点击开始后, 自动确认潜水艇探索结果并重新委派",
+    "path": "Interface/AutoSubmarineCollect.cs",
+    "category": "Interface",
+    "sha256": "c31520c310e9208dd05419708d5d320bc3fe42dd3d2d3a909ad9f9fd8193e511",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoTryOnPlayerOutfit",
+    "title": "自动试穿全套外观",
+    "description": "为玩家检视界面新增按钮, 以一键试穿当前检视玩家全套实际外观装备",
+    "path": "Interface/AutoTryOnPlayerOutfit.cs",
+    "category": "Interface",
+    "sha256": "6ebca4b493ca1dc0897115999895468e90fe8d4d2771daf282eac135e7a8641b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterFateProgressUI",
+    "title": "更好的危命任务完成度界面",
+    "description": "用模块界面取代游戏原生界面, 打开切换无需加载, 支持实时数据更新, 且支持右键快捷传送",
+    "path": "Interface/BetterFateProgressUI.cs",
+    "category": "Interface",
+    "sha256": "3f372fe010868ce738db12ec94e612af62648fe9537e17f04581f0c2d5c4e017",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ChineseNumericalNotation",
+    "title": "中文风格数字显示模式",
+    "description": "按照中文习惯以 万、亿 为基本单位显示游戏内数字, 并将剩余数字由千分位分隔改为万分位分隔",
+    "path": "Interface/ChineseNumericalNotation.cs",
+    "category": "Interface",
+    "sha256": "35efa7be1234119f0d8f61f1696f44b9c677bda80e34e030224f1424cb7c1520",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ClickableAethernet",
+    "title": "城内以太之晶地图传送",
+    "description": "允许在地图中直接点击城内以太之晶发起传送，如同以太之光。",
+    "path": "Interface/ClickableAethernet.cs",
+    "category": "Interface",
+    "sha256": "5b4e42cfc72e5fa9bdc32cdf06cc5f3e1aaff9e07ad931d103c6352436a642ee",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ColorThemeHotReload",
+    "title": "颜色主题热重载",
+    "description": "使颜色主题设置可以立即生效，而无需登出游戏。",
+    "path": "Interface/ColorThemeHotReload.cs",
+    "category": "Interface",
+    "sha256": "80de88c145814d8451b98d94828bbc97b2d244378ed1adfd88da65a620f40aa9",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CustomizeInterfaceText",
+    "title": "自定义界面文本替换",
+    "description": "按照预设处理替换并自定义游戏内所有文本",
+    "path": "Interface/CustomizeInterfaceText.cs",
+    "category": "Interface",
+    "sha256": "18afabf694b43d701dc110b9c6f513b43fe9c3e3e88d9250232137c4a2144741",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ExpandItemMenuSearch",
+    "title": "物品右键菜单搜索扩展",
+    "description": "为物品右键菜单新增“在外部平台上搜索”项，以快捷在多个外部平台网站上搜索对应物品信息。",
+    "path": "Interface/ExpandItemMenuSearch.cs",
+    "category": "Interface",
+    "sha256": "bef304fed31545c820d523f184b79fe510a05fb4dfaafadfe5ae1ea92a75e7ab",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ExpandPlayerMenuSearch",
+    "title": "玩家右键菜单搜索扩展",
+    "description": "为玩家右键菜单新增“在外部平台上搜索”项，以快捷在多个外部平台网站上搜索对应玩家信息。",
+    "path": "Interface/ExpandPlayerMenuSearch.cs",
+    "category": "Interface",
+    "sha256": "8d5c348c3abdb3285700a92f0e2d1bc71052748328dbcc9548d2c16ecc995ff0",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ExtraBlueSet",
+    "title": "额外的青魔法技能组",
+    "description": "在青魔法书界面旁新增悬浮窗, 允许保存更多的青魔法技能组, 并提供 /pdr {0} 指令用以快捷切换技能组",
+    "path": "Interface/ExtraBlueSet.cs",
+    "category": "Interface",
+    "sha256": "558f2f2962e05666e555104a28a1330bda9ccf4328b63f82fad52453373532fa",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastBLUSpellbookSearchBar",
+    "title": "快捷青魔法书搜索框",
+    "description": "为青魔法书界面左上角新增一个快捷搜索悬浮窗, 用于根据技能名称执行即时搜索",
+    "path": "Interface/FastBLUSpellbookSearchBar.cs",
+    "category": "Interface",
+    "sha256": "d6353fedd8239896876545555ea5894609334d5d52021287d13d8c151a244004",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastCustomDeliveriesInfo",
+    "title": "快捷老主顾任务情报界面",
+    "description": "优化任务情报内的老主顾界面, 为其添加传送等快捷操作项",
+    "path": "Interface/FastCustomDeliveriesInfo.cs",
+    "category": "Interface",
+    "sha256": "4c7bd230b48b19e07dce96bf71c74dd31b3c11490db25f61a0c5ce15376400eb",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastGrandCompanyExchange",
+    "title": "快捷交换军票物品",
+    "description": "",
+    "path": "Interface/FastGrandCompanyExchange.cs",
+    "category": "Interface",
+    "sha256": "16375a14a9e84aca5282969dafd6d997f9d82d1109e4221802dda7bd0f764ed8",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastMinimizeWindow",
+    "title": "快捷最小化游戏窗口",
+    "description": "添加 /pdr {0}/{1} 命令与按钮, 以将游戏快速最小化至任务栏或托盘栏",
+    "path": "Interface/FastMinimizeWindow.cs",
+    "category": "Interface",
+    "sha256": "871f6f1e9cf3d5c883df1a802bb840ecb1907f6b56be8d21fec3a83a008c65bf",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastObjectInteract",
+    "title": "快速目标交互",
+    "description": "添加一个自定义悬浮窗, 列出周围可交互物体, 可直接点击其中的按钮以实现更快速的交互",
+    "path": "Interface/FastObjectInteract.cs",
+    "category": "Interface",
+    "sha256": "bf1d84cb3890f6bcf70944551c636dda52c26c0bd01cb365e7e197009d21baa0",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastRetainerStore",
+    "title": "快捷雇员物品存取",
+    "description": "打开雇员道具管理界面后，为物品页面添加右键菜单，用以一键存取同类道具。",
+    "path": "Interface/FastRetainerStore.cs",
+    "category": "Interface",
+    "sha256": "b2f19866ae23d4e8bad10722ba21a5229b3cc4a7dd946e33b1d3766b4619900a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastSetWeatherTime",
+    "title": "快捷天气时间设置",
+    "description": "提供游戏原生风格的快捷天气时间设置界面, 并允许保存为区域设置自动应用, 通过交互导向地图界面天气或使用 /pdr {0} 打开",
+    "path": "Interface/FastSetWeatherTime.cs",
+    "category": "Interface",
+    "sha256": "f162d81eebd4d65b0d557c91a1a5b83430d846b977bbfcb6f6d5c04feea79913",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FCMemberManagePanel",
+    "title": "部队成员管理面板",
+    "description": "为“部队成员”界面新增界面，用以批量管理（任命、除名等）部队成员。",
+    "path": "Interface/FCMemberManagePanel.cs",
+    "category": "Interface",
+    "sha256": "eff8e61310111c87797dce065cd23072db487b7c8cf6254231dfc83a0bb8356b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "LargerColorantColoringPreviewComponent",
+    "title": "更大的染色界面预览组件",
+    "description": "放大染色界面预览组件的尺寸, 获得更佳的预览效果",
+    "path": "Interface/LargerColorantColoringPreviewComponent.cs",
+    "category": "Interface",
+    "sha256": "6b0df03c831c5bebd2e53ae2f82da7db8a3fe14f740ca7acfada2ecaa224de78",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "LargerIME",
+    "title": "更大的输入法界面",
+    "description": "使游戏内输入法候选词界面支持自定义缩放, 并使其界面文本显示更加清晰",
+    "path": "Interface/LargerIME.cs",
+    "category": "Interface",
+    "sha256": "1959d7ee9a92825cfa722876df396367f592c98a2903bd090ab9def5925c8bc5",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "MoreMessageFilterPresets",
+    "title": "更多的消息过滤预设",
+    "description": "允许保存无限多的消息栏消息过滤设置，并可将保存的消息过滤设置通过配置界面或消息栏右键菜单等应用到任意消息栏中",
+    "path": "Interface/MoreMessageFilterPresets.cs",
+    "category": "Interface",
+    "sha256": "f7d272332efef58d6a5db966493b3a633350ddafed3e5ea8ed16d046ab89c2ab",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "NoHideHotbars",
+    "title": "始终显示游戏内 UI 界面",
+    "description": "使游戏内相关 UI 界面 (如热键栏等) 不再因交互或执行特殊操作而被自动隐藏",
+    "path": "Interface/NoHideHotbars.cs",
+    "category": "Interface",
+    "sha256": "c110908fd3ebed853ae853e8400027529e72b6e3d3f4a149e4442788b4835ce7",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "NoUIFade",
+    "title": "无加载黑屏界面",
+    "description": "禁止游戏内各类用于过渡的黑屏与淡入淡出绘制, 以减少加载过程中不必要的等待时间",
+    "path": "Interface/NoUIFade.cs",
+    "category": "Interface",
+    "sha256": "2c6f89615bb6be1b796d554df7d1bcd973ce8823fdd07282f899655518d1b29f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedCharacterClass",
+    "title": "职业&特职 / 角色 界面优化",
+    "description": "对 职业&特职 (PVE) 与 角色 (PVP) 界面进行优化, 使其可以通过点击职业名称/图标直接切换至对应职业",
+    "path": "Interface/OptimizedCharacterClass.cs",
+    "category": "Interface",
+    "sha256": "7b4a4306fe48ca7c295c9a7302545397ec300a261f64aca34e75d226a343c0a4",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedChatBubble",
+    "title": "聊天气泡界面优化",
+    "description": "对聊天气泡界面进行优化, 支持在战斗中显示、自定义最大行数/显示时间等",
+    "path": "Interface/OptimizedChatBubble.cs",
+    "category": "Interface",
+    "sha256": "6a0c2a3691efb9894690d291804d0f26e96ae3f8942450e842fc4cff516f48a6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedFreeCompanyChest",
+    "title": "部队储物柜界面优化",
+    "description": "对部队储物柜界面进行优化, 移除操作锁, 并提供右键快捷存取物品、修改默认页面等功能与额外信息显示",
+    "path": "Interface/OptimizedFreeCompanyChest.cs",
+    "category": "Interface",
+    "sha256": "c70eb3e4dd65d42b408d77b7dc2d08ee76e62b40a5c7b1bd590016299ddc636c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedFreeShop",
+    "title": "“报酬”界面优化",
+    "description": "优化“报酬”界面，支持批量领取任一职业全部装备，并使手动领取时无需二次确认。",
+    "path": "Interface/OptimizedFreeShop.cs",
+    "category": "Interface",
+    "sha256": "a1a02822974d437bec0cde54fd00fb6d21a00055920b768c5665e316ca99c8d9",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedLetter",
+    "title": "“莫古邮件”界面优化",
+    "description": "优化“莫古邮件”界面，支持批量领取附件或删除邮件，为“收信人列表”界面加入搜索功能，并移除了“请求特典道具”按钮的点击等待限制。",
+    "path": "Interface/OptimizedLetter.cs",
+    "category": "Interface",
+    "sha256": "f150e4908f1a0520d425f3d92c29ed6fa12352668176e154e770fe2e027ece80",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedMacro",
+    "title": "用户宏指令界面优化",
+    "description": "对用户宏指令界面进行优化, 使其支持保存全部宏指令为多个预设, 以便随时切换使用",
+    "path": "Interface/OptimizedMacro.cs",
+    "category": "Interface",
+    "sha256": "be2ae361937a4448aad4f5b60066e451506c4e4d589bee36d0792f08033aff9b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedPVPProfileAction",
+    "title": "“对战专用特职技能”界面优化",
+    "description": "优化“对战专用特职技能”界面，使原本不可被设置到热键栏的技能也可被拖出设置到对战专用热键栏。",
+    "path": "Interface/OptimizedPVPProfileAction.cs",
+    "category": "Interface",
+    "sha256": "823a0a6853c95dd2c9c8fd46ff946799ca5cc9a6178f3d1ef0cd37c1ea0a7aa3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedQuickPanel",
+    "title": "快捷面板界面优化",
+    "description": "优化“快捷面板”界面，添加锁定按钮，使其交互逻辑与操作表现与“热键栏”界面逻辑完全一致；使原本的 {0} 与 {1} 指令支持传入页码参数，以直接打开指定页。",
+    "path": "Interface/OptimizedQuickPanel.cs",
+    "category": "Interface",
+    "sha256": "4c437857d902f620f17842ca1e53bd52c9ac338dbcf187fa4eaf0ca2bb5ad04b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedXBMMonsterNotebook",
+    "title": "魔兽图鉴界面优化",
+    "description": "优化“魔兽图鉴”界面，支持查看未捕获的魔兽的详情信息，并可在界面上直接点击设置魔兽的体型。",
+    "path": "Interface/OptimizedXBMMonsterNotebook.cs",
+    "category": "Interface",
+    "sha256": "cba418f16c8ecb6c514b1acb97eb5eb672f8f12db41c72cbf5caa39d7c45f584",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "PetSizeContextMenu",
+    "title": "召唤兽体型右键菜单",
+    "description": "为召唤兽、魔兽与自身右键菜单中新增“设置外观”或“设置召唤兽外观”菜单项，帮助快捷调整其显示尺寸。",
+    "path": "Interface/PetSizeContextMenu.cs",
+    "category": "Interface",
+    "sha256": "41eeaef53aba06c616c4aecad1183599c0cccb07f65287a90400da23cdfe49c3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "PlayerTargetInfoExpand",
+    "title": "玩家目标情报扩展",
+    "description": "允许自定义选中目标后出现的目标情报中所显示的信息",
+    "path": "Interface/PlayerTargetInfoExpand.cs",
+    "category": "Interface",
+    "sha256": "495168d5ffb16e8fc95083398f3a7b0a870c4eb72deb9fe434bff9769c8bdb42",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "PortraitAnimationTimeEditor",
+    "title": "肖像角色动作逐帧编辑",
+    "description": "使“编辑肖像”界面支持逐帧调整肖像动作。",
+    "path": "Interface/PortraitAnimationTimeEditor.cs",
+    "category": "Interface",
+    "sha256": "acd207ce479210dce605c69e0f863bdfc2541b7281072ba34abb392fe4a81c0b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "QuickChatPanel",
+    "title": "快捷聊天面板",
+    "description": "为“消息”界面聊天输入栏右侧新增按钮，用以发送待发送消息或打开全新的面板，可在面板中快捷发送消息、宏、系统音、特殊字符和查询游戏物品。",
+    "path": "Interface/QuickChatPanel.cs",
+    "category": "Interface",
+    "sha256": "c6ea10edb034a17db1d0e9f8e88d7497296b9c49439679ea7d83e6ff6fa07922",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "RealPositionInNaviMap",
+    "title": "导向地图界面显示真实坐标",
+    "description": "使导向地图界面的坐标显示为当前人物的真实世界坐标, 并可点击直接复制并标记当前坐标",
+    "path": "Interface/RealPositionInNaviMap.cs",
+    "category": "Interface",
+    "sha256": "fde86c612815ff4790cf741abf2e4b55519041f22b16cd80972e82f0f8ba418b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ScrollableTabs",
+    "title": "游戏界面标签页滚动切换",
+    "description": "使游戏内部分含标签页的界面可以通过鼠标滑轮滚动的方式进行快捷切换",
+    "path": "Interface/ScrollableTabs.cs",
+    "category": "Interface",
+    "sha256": "da35a101df6f65c64db9992b6a92294615f2c14f1ca1e646f37d3f43d8ac7bb4",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ShopDisplayRealItemIcon",
+    "title": "商店显示物品真实图标",
+    "description": "将各类商店界面中物品条目内显示的类别图标调整为其真实图标。",
+    "path": "Interface/ShopDisplayRealItemIcon.cs",
+    "category": "Interface",
+    "sha256": "b53dd46fe7717288be08f5fc1b1b4449b80df5faf57d4d20487a6370ba84fdfb",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "SimplifiedSystemMenu",
+    "title": "自动精简系统菜单",
+    "description": "移除系统菜单中与日常游戏无关的菜单项, 以精简界面",
+    "path": "Interface/SimplifiedSystemMenu.cs",
+    "category": "Interface",
+    "sha256": "e49f3401925a9eead0efa1c10d138fdb80337d0bbf3ab03df96c0d902d245e97",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "UnlimitedMacroIcon",
+    "title": "无限制宏图标指定",
+    "description": "支持在宏内使用 /pdr {0} <图标 ID> 指令以将其图标设置为任意图标。",
+    "path": "Interface/UnlimitedMacroIcon.cs",
+    "category": "Interface",
+    "sha256": "bfa8a8382be54ad16277ee02a8086fff3dfa1638b13295625c47dac55a36cad3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRetainerWork",
+    "title": "自动管理雇员",
+    "description": "自动完成雇员相关操作，支持批量出售改价、确认探险结果、均分或取回金币和修改登记城镇。",
+    "path": "Interface/AutoRetainerWork/AutoRetainerWork.cs",
+    "category": "Interface",
+    "sha256": "2fbed7c3b974c2005d6fdda3993391485afce6be9088dbce11f56ef3167ab65d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoShowItemNPCShopInfo",
+    "title": "自动显示物品商店信息",
+    "description": "为物品新增右键菜单项与道具帮助信息，帮助快速查询其在各类商店中的交换来源与去向。",
+    "path": "Interface/AutoShowItemNPCShopInfo/AutoShowItemNPCShopInfo.cs",
+    "category": "Interface",
+    "sha256": "683d8d9ee582dbf86861cdc77ddc95ef4699c92d006e57b334425dd4631be980",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterMarketBoard",
+    "title": "更好的市场布告板",
+    "description": "添加 /pdr {0} 指令用以打开模块提供的远程市场布告板界面, 可在其中快速查价、购买并设定价格监控",
+    "path": "Interface/BetterMarketBoard/BetterMarketBoard.cs",
+    "category": "Interface",
+    "sha256": "ef7e9e6d30f6cc2340ab84d3a998ff4bd8220ca205d7d7692db8a469b6289b4e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterTeleport",
+    "title": "更好的传送界面",
+    "description": "用模块界面取代游戏原生界面, 提供高效的搜索、目的地预览功能, 并支持直接传送到任一城内以太之晶处",
+    "path": "Interface/BetterTeleport/BetterTeleport.cs",
+    "category": "Interface",
+    "sha256": "561a8696e30ef96094fec0403a8a459a9562756bdbc1c2ace8be82b547548693",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CustomizeMapMarker",
+    "title": "自定义地图标记",
+    "description": "为游戏原生地图添加自定义标记, 支持备注、分组、批量导入导出等",
+    "path": "Interface/CustomizeMapMarker/CustomizeMapMarker.cs",
+    "category": "Interface",
+    "sha256": "eb7e2bf3a489f1fd8672d4dc83b849f6bcc0b1b2ef8c4da1cec761efbef5f4c0",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedFriendList",
+    "title": "“好友名单”界面优化",
+    "description": "优化“好友名单”界面，支持搜索好友、显示状态为“无法获取角色情报”的好友信息、查询好友曾用名与未好友设置昵称与备注。",
+    "path": "Interface/OptimizedFriendList/OptimizedFriendList.cs",
+    "category": "Interface",
+    "sha256": "2915d9dcc75804625d49f3bfdd61ac5cd538225809aad8f70ad04cf05bf6b631",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedSalvage",
+    "title": "“道具分解”界面优化",
+    "description": "优化“道具分解”界面，新增分解技能信息显示，支持批量分解道具。“道具帮助”界面内新增详细物品分解信息显示。手动分解道具时自动确认。",
+    "path": "Interface/OptimizedSalvage/OptimizedSalvage.cs",
+    "category": "Interface",
+    "sha256": "77b17980b0a1f2fee4737e0f871e2a36dc953591522600f6de52dc49cd8d462c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "UnifiedGlamourManager",
+    "title": "统一投影管理器",
+    "description": "新增模块界面, 编辑投影模板时, 可显示投影台与收藏柜中的全部装备; 提供快捷筛选和收藏功能; 支持投影模板的保存、导入与导出, 帮助高效管理装备投影",
+    "path": "Interface/UnifiedGlamourManager/UnifiedGlamourManager.cs",
+    "category": "Interface",
+    "sha256": "5a005265b42091a130f74830256fbaa1c833f5f11e62cdcf151494f0485f379b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMJIWorkshopImport",
+    "title": "自动无人岛工房生产计划",
+    "description": "允许从剪贴板导入外部无人岛生产计划, 并一键自动安排对应生产计划",
+    "path": "Interface/AutoMJIWorkshopImport.cs",
+    "category": "Interface",
+    "sha256": "de2cfd13142574e033da51a7ec2eb6d9dbbf61e9e0d1a736e472f54253539ba8",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyLeveUpdate",
+    "title": "自动通知理符限额刷新",
+    "description": "配置后，在理符限额超过设定阈值时，自动发送通知提醒。",
+    "path": "Notification/AutoNotifyLeveUpdate.cs",
+    "category": "Notification",
+    "sha256": "845a37ae176fefc0a7fd84a5df760cd3ed14ae8f0e0929b8214062f402b9289b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyLogin",
+    "title": "自动通知登录",
+    "description": "登录成功时，自动发送通知提醒。",
+    "path": "Notification/AutoNotifyLogin.cs",
+    "category": "Notification",
+    "sha256": "2d41e582e788c4bfa92426f03b1973732b78df22af2e5345966f48493eacd700",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyMessages",
+    "title": "自动通知新消息",
+    "description": "配置后，接收到已选消息类型的新消息或包含指定关键词新消息时, 自动发送通知提醒。",
+    "path": "Notification/AutoNotifyMessages.cs",
+    "category": "Notification",
+    "sha256": "0000b829a8263dc5498ecd5774d43a92c2c2297d35698b4ef71ba93c8f7abf17",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyRecruitmentEnd",
+    "title": "自动通知招募结束",
+    "description": "在发布的队员招募因各种原因结束时, 自动发送通知信息提醒",
+    "path": "Recruitment/AutoNotifyRecruitmentEnd.cs",
+    "category": "Recruitment",
+    "sha256": "9024da6c9abc726c534ee6adf1f3e1a0a19990585cb1ac2cae9061023fccaa9e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNotifyRouletteBonus",
+    "title": "自动通知随机任务少数职能奖励",
+    "description": "在指定的随机任务出现指定的少数职能奖励时, 自动发送通知信息提醒",
+    "path": "Recruitment/AutoNotifyRouletteBonus.cs",
+    "category": "Recruitment",
+    "sha256": "1f83e9d146c353fef59c09018e61fee237b77f860b98ecf278a0385fe657448d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRefreshPartyFinder",
+    "title": "自动刷新招募板",
+    "description": "打开队员招募后, 每经过固定间隔时间时, 自动刷新一次招募板",
+    "path": "Recruitment/AutoRefreshPartyFinder.cs",
+    "category": "Recruitment",
+    "sha256": "40b1bf9908ee43211d553474f7bbc5c6e1fbf7118831fe1d6f5484d316e9acba",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterPartyFinderSort",
+    "title": "更好的队员招募升降排序",
+    "description": "让队员招募界面内的 升序/降序排列 功能精准按照各招募剩余时间多少排序显示结果",
+    "path": "Recruitment/BetterPartyFinderSort.cs",
+    "category": "Recruitment",
+    "sha256": "f49f07bd067877f6ca3688d653bdd5d6ee4d1ea661b2aef5424033fea2b78c8b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastContentsFinderRegister",
+    "title": "快捷任务搜索器匹配副本",
+    "description": "为任务搜索器内的各任务新增快捷按钮, 用于一键以默认、解除限制、自由探索等设置参加对应的任务",
+    "path": "Recruitment/FastContentsFinderRegister.cs",
+    "category": "Recruitment",
+    "sha256": "542b1d21b40bfc40c207e1deb1a768ab59f5a425bd7947a1af695129e767bcab",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastJoinAnotherPartyRecruitment",
+    "title": "快捷退队加入招募",
+    "description": "为招募详情界面新增按钮, 点击以一键退出当前队伍并加入目标招募",
+    "path": "Recruitment/FastJoinAnotherPartyRecruitment.cs",
+    "category": "Recruitment",
+    "sha256": "983ed7e7cc9efb67140a755dda9db9ab7539368529e99c52795350176c40ba25",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "NoAutoClosePartyFinder",
+    "title": "禁止队员招募自动关闭",
+    "description": "当招募成员发生变更时, 自动阻止游戏关闭队员招募界面, 并重新打开正在阅读的招募详情界面",
+    "path": "Recruitment/NoAutoClosePartyFinder.cs",
+    "category": "Recruitment",
+    "sha256": "436942b0d66871b0c70468a1fe058d85150e5368309f535a3d7a785543954045",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedDutyFinderSetting",
+    "title": "任务搜索器设置优化",
+    "description": "使任务搜索器各设置直接以可交互按钮形式显示在界面上方, 无需打开二级界面即可交互设置",
+    "path": "Recruitment/OptimizedDutyFinderSetting.cs",
+    "category": "Recruitment",
+    "sha256": "1d24e11cd36851fc07a918274088c04f4d7e124187c6581c70de072f30f24546",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "PFPageSizeCustomize",
+    "title": "自定义招募板单页显示数量",
+    "description": "允许自定义队员招募中单页可显示的招募数量, 上限为单页 100 个招募",
+    "path": "Recruitment/PFPageSizeCustomize.cs",
+    "category": "Recruitment",
+    "sha256": "d4bb29ef4f3cd67c455ca6a580500627e2d2ce9b715b5c2f692a75290db63c88",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "SelectableRecruitmentText",
+    "title": "可选中的招募留言文本",
+    "description": "使招募详情的留言文本可以被自由选中, 以快捷复制或临时编辑",
+    "path": "Recruitment/SelectableRecruitmentText.cs",
+    "category": "Recruitment",
+    "sha256": "a4b2abc7b6e9081172507c1baf8a5c39dc74fae6fa668de8e2321062f150b71e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRecordPartyFinderSetting",
+    "title": "自动保存招募编辑信息",
+    "description": "支持将“编辑招募内容”界面内的填写设置的各项信息保存为预设，并自动保存上次填写设置的信息以供下次打开界面时自动填充。",
+    "path": "Recruitment/AutoRecordPartyFinderSettings/AutoRecordPartyFinderSetting.cs",
+    "category": "Recruitment",
+    "sha256": "29043b296f5b357dd3769c1ec3e2a616cab537e745e0ac7bbb3989a1a688b922",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterPartyFinderFilter",
+    "title": "更好的招募过滤界面",
+    "description": "使用模块界面整合、取代游戏原生多个零散的招募过滤、显示界面, 并支持多种规则智能化筛选并显示满足要求的招募信息",
+    "path": "Recruitment/BetterPartyFilter/BetterPartyFinderFilter.cs",
+    "category": "Recruitment",
+    "sha256": "aff55d54030d823a0901dd06cdc692df6b36dd13086a42612ec0166912752b71",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CrossDCPartyFinder",
+    "title": "跨大区队员招募",
+    "description": "为“队员招募”界面新增大区切换按钮，以查看由众包网站提供的其他大区的招募信息。",
+    "path": "Recruitment/CrossDCPartyFinder/CrossDCPartyFinder.cs",
+    "category": "Recruitment",
+    "sha256": "b83a1bb84b91bf24884ee52a08e5b7ea6ea1999b9b8fdc8252f900c7a519ae9f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMarksFinder",
+    "title": "自动扫描恶名精英",
+    "description": "配置后，自动扫描所选区域内的恶名精英，并可根据记录数据快捷带领狩猎车。",
+    "path": "Script/AutoMarksFinder/AutoMarksFinder.cs",
+    "category": "Script",
+    "sha256": "fde9c519ba9e2d6c1e8fc69afa3ad71ac518bc1daf1cc5afe49ecdc98c4573d0",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoAddChatPrefixSuffix",
+    "title": "自动添加聊天信息前缀后缀",
+    "description": "配置完毕后, 在发送普通聊天消息时自动为其加上特定的前缀或后缀",
+    "path": "System/AutoAddChatPrefixSuffix.cs",
+    "category": "System",
+    "sha256": "977970a37f86d97f2e3f0d070c1323dd7fc23da40c802c651f2b235256a5e978",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoAllowMultipleGames",
+    "title": "自动解除游戏多开限制",
+    "description": "自动解除游戏本身对于多开游戏实例 (≤ 2) 的限制",
+    "path": "System/AutoAllowMultipleGames.cs",
+    "category": "System",
+    "sha256": "2600af02a5b577ecd470ee1c5121d4c4c885fb2670f41d0b735684732e82d0b4",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoBackupGameConfig",
+    "title": "自动备份游戏配置",
+    "description": "配置后，登录游戏时将自动同步游戏配置数据至 GitHub Gist，并支持自动冲突检测与云端恢复。",
+    "path": "System/AutoBackupGameConfig.cs",
+    "category": "System",
+    "sha256": "f015d0e8893af4f6fea49460b03f3fcda5206eb6565b5337d5f603d75956258b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoBlockShutdownFromLobbyError",
+    "title": "自动防止大厅错误关闭游戏",
+    "description": "在游戏遭遇大厅服务器错误时, 自动阻止相关逻辑关闭游戏, 并使游戏回到登录主界面",
+    "path": "System/AutoBlockShutdownFromLobbyError.cs",
+    "category": "System",
+    "sha256": "7853d698935abae5cf88c32ccc38a09511d6df457c6e303a8ae1e68dde3620b6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoBlockSystemNotice",
+    "title": "自动屏蔽系统通告",
+    "description": "自动屏蔽由服务器下发的紫色文字系统通告信息。\n（示例：登录后收到的“欢迎来到艾欧泽亚！”）",
+    "path": "System/AutoBlockSystemNotice.cs",
+    "category": "System",
+    "sha256": "0cb376054728c51583daf86ede40f86bfb5ba87e3511f492aaae3d97dae47b70",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCancelNPCEmote",
+    "title": "自动取消 NPC 情感动作播放",
+    "description": "自动取消交互与过场剧情播放时, NPC 的情感动作播放及其产生的等待时间",
+    "path": "System/AutoCancelNPCEmote.cs",
+    "category": "System",
+    "sha256": "f98f37f76d5ff14f4f68ce7e63218b379d7d9c1043b8f7e330755ce897d9fdb3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoChangeCharacterRaceSex",
+    "title": "自动变更角色种族性别",
+    "description": "配置完成后, 自动将指定的种族与性别组合变更为另一种族与性别组合",
+    "path": "System/AutoChangeCharacterRaceSex.cs",
+    "category": "System",
+    "sha256": "0b896973af4bbd7afeeec6a36c2e0177b7f4d103702740661ad1d2162064fbbd",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoChangeKeyboardLayout",
+    "title": "自动切换键盘布局",
+    "description": "配置完成后, 当游戏内文本输入框聚焦或失焦时, 自动切换至指定的键盘布局",
+    "path": "System/AutoChangeKeyboardLayout.cs",
+    "category": "System",
+    "sha256": "9b6d2b151d389dc80306562bb713b6ddc0ffc8b0a47c2759d799a3b7b811b7e5",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoConstantlyClick",
+    "title": "自动重复点击",
+    "description": "长按任一热键栏按键时，自动转为快速重复点击。",
+    "path": "System/AutoConstantlyClick.cs",
+    "category": "System",
+    "sha256": "8f352be201971c361c7177f7a969b418c0ea6058d1403afefb1d46491fbaf7b1",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoConvertMapLink",
+    "title": "自动转换地图坐标信息",
+    "description": "在发送包含地图坐标的文本信息时, 自动将其转换为可点击交互的地图坐标链接",
+    "path": "System/AutoConvertMapLink.cs",
+    "category": "System",
+    "sha256": "7f8da0cb02ddcd7b96ae0e165698df6330dd9d1a255ea3559318e6bce24aaf19",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoCutsceneSkip",
+    "title": "自动跳过过场动画",
+    "description": "自动跳过所有可被跳过的过场动画, 并解除包括但不限于主随、出海垂钓、水晶冲突等的跳过限制",
+    "path": "System/AutoCutsceneSkip.cs",
+    "category": "System",
+    "sha256": "2a0e94d601a63b0683bfe75fb6edfbcbd2ea99db70a6c563d33793cfa75b991a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDiscard",
+    "title": "自动丢弃物品",
+    "description": "允许快速丢弃/出售预设好中的一组物品",
+    "path": "System/AutoDiscard.cs",
+    "category": "System",
+    "sha256": "d42189b5eb19062400857b7762504cb14cb25eff663833eb1f570c159b3bcd2a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDismount",
+    "title": "自动下坐骑",
+    "description": "骑乘坐骑时，若尝试发动需要在未骑乘状态下才可发动的技能，则自动下坐骑并发动技能。",
+    "path": "System/AutoDismount.cs",
+    "category": "System",
+    "sha256": "177de8be279fcb8c013f4a662bd326351f5701219d0731c98b116aa99d053dc4",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDisplayTreasureMapLocation",
+    "title": "自动显示藏宝图位置",
+    "description": "解读/使用藏宝图时, 自动打开地图并标记详细位置",
+    "path": "System/AutoDisplayTreasureMapLocation.cs",
+    "category": "System",
+    "sha256": "850f53584b734375538725c84f69cb4e38bc21014b634155cdee996f31b10204",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoEnableDLSSSupport",
+    "title": "自动开启 DLSS 优设支持",
+    "description": "使非国际服客户端能被 NVIDIA APP 识别为国际服客户端, 从而自动启用程序的 DLSS 优设修改支持",
+    "path": "System/AutoEnableDLSSSupport.cs",
+    "category": "System",
+    "sha256": "3d6c4e32dfd8207235d1c0f82163c4f352163e09f7bf0cdd1586e56c8277d535",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoFaceCameraDirection",
+    "title": "自动面向摄像机方向",
+    "description": "使游戏人物的朝向始终与当前摄像机的面向保持一致",
+    "path": "System/AutoFaceCameraDirection.cs",
+    "category": "System",
+    "sha256": "dc864a456eb94ea6caa70b44f9d31d617c1e2bce0ed604288cee9449f2dd931a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoFilterLogMessage",
+    "title": "自动过滤日志消息",
+    "description": "配置完毕后, 自动阻止对应的游戏内日志消息发送与显示",
+    "path": "System/AutoFilterLogMessage.cs",
+    "category": "System",
+    "sha256": "29c1203d61d859c7e9d6ecf2adcb742f8ee415cfe7ab5120550bd45657f5cc85",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoGuardChatMessage",
+    "title": "自动屏蔽非指令聊天信息发送",
+    "description": "仅允许发送以半角斜杠开头的命令消息, 自动阻止发送其他所有一般聊天信息, 避免误触或意外发送全角指令等",
+    "path": "System/AutoGuardChatMessage.cs",
+    "category": "System",
+    "sha256": "5c5580ecf91f4a334ef5804a75ce4395d10e8cb071c9c90afdd9861b25b9e370",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoGuardFishingState",
+    "title": "自动守卫钓鱼状态",
+    "description": "",
+    "path": "System/AutoGuardFishingState.cs",
+    "category": "System",
+    "sha256": "016a63e97f57bc1c250528c20d4ec016c02926872bbcce88e3f8faa00766de0c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHandleTeleportStuck",
+    "title": "自动处理无法传送状态",
+    "description": "",
+    "path": "System/AutoHandleTeleportStuck.cs",
+    "category": "System",
+    "sha256": "59833ecf01a3feacbda8c0531512e0e611b4250d0192c437ca2552c2e30d9c1c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHideGameObjects",
+    "title": "自动隐藏对象模型",
+    "description": "配置完毕后, 自动隐藏对应类型的游戏人物模型, 以期改善游戏帧率与提升其余对象模型的显示优先级",
+    "path": "System/AutoHideGameObjects.cs",
+    "category": "System",
+    "sha256": "af50eb6393653a22fde5fbd275ca6c13df1ca75020794c08f545b4e6a63ad845",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoHighlightFlagMarker",
+    "title": "自动高亮地图标点",
+    "description": "当放置地图标点时, 自动使用场景标记组成光柱以在游戏内高亮标点目的地",
+    "path": "System/AutoHighlightFlagMarker.cs",
+    "category": "System",
+    "sha256": "4d2085b70b2a5a6aec506882c9631b9c8f9c78d0e7f98ac3f12e555e8456a52f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoIgnoreLoginLock",
+    "title": "自动取消登录操作冷却锁",
+    "description": "自动屏蔽登录角色时, 因取消登录等各种操作而被强制附加的 15 秒操作冷却锁, 并将各类登录请求的本地冷却锁由 15 秒至 30 秒不等强制缩短至 1 秒",
+    "path": "System/AutoIgnoreLoginLock.cs",
+    "category": "System",
+    "sha256": "ed6199798b2ac85cd5cb0389a0171ddb01d9e3ff149a841abbacf1917e3dc617",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoLockGameWindow",
+    "title": "自动锁定游戏窗口",
+    "description": "进入战斗后, 自动锁定游戏窗口, 防止其被意外拖动到主屏外",
+    "path": "System/AutoLockGameWindow.cs",
+    "category": "System",
+    "sha256": "f0abf5509f887a12ac6a953ea007bb46a2974293fa988242c0b61144e6cabee1",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoLogin",
+    "title": "自动登录",
+    "description": "进入主界面时, 自动按照优先级登录到已配置的第一个可登录角色中",
+    "path": "System/AutoLogin.cs",
+    "category": "System",
+    "sha256": "89aabc3345b5fcf60be22725d8f79e7fa537c58d412dc66fb48e17a8ffccbda9",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMateriaRetrive",
+    "title": "自动回收魔晶石",
+    "description": "回收任一装备的魔晶石时, 自动回收该装备所镶嵌的全部魔晶石",
+    "path": "System/AutoMateriaRetrive.cs",
+    "category": "System",
+    "sha256": "a4d0303736883f86bfaa514514abb130e67a31730bf3f61bcd99fd98ef7e82c2",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMaximiseWindow",
+    "title": "自动最大化窗口",
+    "description": "若当前游戏为窗口化, 则在每次模块加载时自动最大化窗口一次, 并提供 /pdr {0} 指令以进行同样的操作",
+    "path": "System/AutoMaximiseWindow.cs",
+    "category": "System",
+    "sha256": "a2187b3873bf5579192dacea70d7cb5b37a71a53a57b223c4345684fb3f1c7b3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMessageScheduler",
+    "title": "自动定时发送消息",
+    "description": "配置完毕后, 自动在指定的时间点以特定间隔发送特定的聊天消息或文本指令特定次数",
+    "path": "System/AutoMessageScheduler.cs",
+    "category": "System",
+    "sha256": "96711a746aed0f815e3d77320405caea0270d18ddf877e84e22e253e525d89b3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoMount",
+    "title": "自动上坐骑",
+    "description": "在满足指定的条件时, 自动上坐骑",
+    "path": "System/AutoMount.cs",
+    "category": "System",
+    "sha256": "6a087051f56ec9a38b7a49fab3f2b65e08b77c3bcd4b7ce61f14dc6778ffc33a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoNoviceNetwork",
+    "title": "自动加入新人频道",
+    "description": "点击开始后, 自动重复尝试加入新人频道",
+    "path": "System/AutoNoviceNetwork.cs",
+    "category": "System",
+    "sha256": "747dd47d85ae722bbdc73bc1fcb334bd54a90285ec8c173579c51eb391f91c30",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoOpenMapLinks",
+    "title": "自动打开地图链接",
+    "description": "支持订阅特定玩家或消息频道中发送的地图链接，将其自动标记在地图上。",
+    "path": "System/AutoOpenMapLinks.cs",
+    "category": "System",
+    "sha256": "dc2636d19c1d2646687e7c5549c9c2eace0193624231dc456be01cdc539bb1df",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRefocus",
+    "title": "自动重新焦点目标",
+    "description": "在副本内, 若丢失的焦点目标再次出现, 则自动重新焦点",
+    "path": "System/AutoRefocus.cs",
+    "category": "System",
+    "sha256": "e577dd76528275f426c4d4ae2a7d481882033f8258eedb216dd6d35e98bfea1f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRefreshMarketSearchResult",
+    "title": "自动刷新市场搜索结果",
+    "description": "当市场道具搜索结果为 \"请稍后\" 时, 自动重新请求获取",
+    "path": "System/AutoRefreshMarketSearchResult.cs",
+    "category": "System",
+    "sha256": "10e70f050bed12f2d9d0daf623cb4e38295898bb1da6cb59ddb83d6723c51939",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRefuseTrade",
+    "title": "自动取消交易",
+    "description": "在收到交易请求时自动将其取消, 并同时发送通知消息提醒与执行额外的自定义文本指令",
+    "path": "System/AutoRefuseTrade.cs",
+    "category": "System",
+    "sha256": "c7b847d46ab05de9afdb5a9d5efd2e6d7605136abe6e7fa84dbf7c72ad43bc73",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRepair",
+    "title": "自动修理",
+    "description": "配置后，在装备中装备耐久度低于设定下限时自动修理，并取消修理时的前后摇限制。",
+    "path": "System/AutoRepair.cs",
+    "category": "System",
+    "sha256": "6631a47c783e9de63b69c2d4fcb93d9e256fa98e5cf19703f9e001a6b16bbc69",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoRepeatChatMessage",
+    "title": "自动复读聊天信息",
+    "description": "为聊天频道内的每一条消息后新增 {0} 按钮, 用于快速复读该条消息",
+    "path": "System/AutoRepeatChatMessage.cs",
+    "category": "System",
+    "sha256": "28701958061aa8662bb49800312c591888076b0e2db9185ddfbe8b9ce874dd7e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoResumeQuestRedo",
+    "title": "自动继续昔日重现",
+    "description": "若已有中断的存档，则在登录、退出副本后自动继续游玩昔日重现。",
+    "path": "System/AutoResumeQuestRedo.cs",
+    "category": "System",
+    "sha256": "9eb6955b0f5e0e3c73b6a4d3fb509a949493aa088aa38cd473db6b0f286da83d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoReuseEmote",
+    "title": "自动重复使用表情",
+    "description": "添加 /pdr {0} {1}",
+    "path": "System/AutoReuseEmote.cs",
+    "category": "System",
+    "sha256": "577b5d61be5f43ee8e905d50cd9bf81976d765509209d8ddea8a0deb0bd86ce6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSkipBuddyFeedScene",
+    "title": "自动跳过陆行鸟喂食动画",
+    "description": "在喂食寄养在鸟房中的专属陆行鸟时, 自动跳过其动画立刻完成喂食操作",
+    "path": "System/AutoSkipBuddyFeedScene.cs",
+    "category": "System",
+    "sha256": "cb6d0aeea1fd30608e2fbbdfb7ffb0cd96be8a122d20dffe7e60075f3fa6455f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSnipeQuest",
+    "title": "自动完成观察任务",
+    "description": "在游戏尝试开始观察任务时, 自动阻止并将其标记为已完成",
+    "path": "System/AutoSnipeQuest.cs",
+    "category": "System",
+    "sha256": "0d822d909c6a8fc78c93c288d620f87dcab52db1163bca022fa823ae4d867891",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSortItems",
+    "title": "自动整理物品",
+    "description": "配置后，在切换区域时自动依据规则整理背包与兵装库。",
+    "path": "System/AutoSortItems.cs",
+    "category": "System",
+    "sha256": "74083dfafa5a7b0e168e5a7da3387fa344e43e2353c2d9a7962be287ec47cb3c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoSplitStacks",
+    "title": "自动拆分物品",
+    "description": "允许以右键物品/预设的形式快速拆分一组物品为指定数量",
+    "path": "System/AutoSplitStacks.cs",
+    "category": "System",
+    "sha256": "3161be4ce4b34b6c873f0f167482a37e65af7c1707bba180548f5325b0567177",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoTalkSkip",
+    "title": "自动跳过对话",
+    "description": "自动阻止所有对话显示，并自动快进跳过无法阻止的对话。",
+    "path": "System/AutoTalkSkip.cs",
+    "category": "System",
+    "sha256": "8e2975ca3585cc61fe4b23f6ab468f52cf3fae721a2cec88664dbe053ebb87fe",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoTimedLogout",
+    "title": "自动定时登出",
+    "description": "设定时间后, 自动在对应时间时登出角色/关闭游戏/关闭电脑",
+    "path": "System/AutoTimedLogout.cs",
+    "category": "System",
+    "sha256": "49055003cc1882693ede566b1ea54db2d5e879528a405174f6b4e44daea37be7",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoTrackPlayers",
+    "title": "自动追踪玩家",
+    "description": "配置完毕后, 使用场景标记持续追踪当前有效的多个玩家的位置信息",
+    "path": "System/AutoTrackPlayers.cs",
+    "category": "System",
+    "sha256": "e8df103f6f892be9abd646ddfdcae972a01e266f601c8719586565c11c3498b6",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoUnlockMapDiscoverZone",
+    "title": "自动解锁地图待探索区域",
+    "description": "自动在本地解锁全部地图中所有待探索区域的迷雾, 而无须曾到达过一次",
+    "path": "System/AutoUnlockMapDiscoverZone.cs",
+    "category": "System",
+    "sha256": "7d64116da405bae2f7d82fc709b9baca50981b666d29498b396c4373272a469d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoUseEventItem",
+    "title": "自动使用任务道具",
+    "description": "交互需要使用任务道具的对象并打开任务道具背包后, 自动使用对应的任务道具",
+    "path": "System/AutoUseEventItem.cs",
+    "category": "System",
+    "sha256": "6037795cb407bf1041bfd47112abdd58e6a8f971325162cc8d7db7b055c7166e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoUseItemStacks",
+    "title": "自动批量使用物品",
+    "description": "为堆叠物品新增右键菜单项，帮助自动批量使用其指定次数。",
+    "path": "System/AutoUseItemStacks.cs",
+    "category": "System",
+    "sha256": "a4ba55d7d20bf4bf8ef44db17bddd654ae4029ac641982d35b81b2db36a98f44",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterBlueSetLoad",
+    "title": "更好的青魔法技能组读取",
+    "description": "",
+    "path": "System/BetterBlueSetLoad.cs",
+    "category": "System",
+    "sha256": "5531b348db507f28a4af594947dd550072095d3b9507ee34c26e405375091b62",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterCollectionCommand",
+    "title": "“/重要物品”命令优化",
+    "description": "使“/重要物品（/collection、/coll）”命令支持填写重要物品名以直接打开对应界面。\n（示例：/重要物品 莫古莫古指南书、/重要物品 随身见闻录）",
+    "path": "System/BetterCollectionCommand.cs",
+    "category": "System",
+    "sha256": "d4d26d254c501efc02a924686c986fec6673d83061010bd06b2a3ac90b7a24be",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterCommandInput",
+    "title": "更好的命令输入",
+    "description": "在输入命令时, 自动将大小写、全半角形式不正确的命令转换为正确的命令",
+    "path": "System/BetterCommandInput.cs",
+    "category": "System",
+    "sha256": "65fe25e50ebff1946a310f4b8c75e82b7a81972fba82cc38955207d2a6f8cdfd",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterMountRoulette",
+    "title": "更好的随机坐骑",
+    "description": "提供新的随机坐骑系统, 允许为不同类型区域指定不同的随机坐骑待选列表, 且列表可保存无限个坐骑",
+    "path": "System/BetterMountRoulette.cs",
+    "category": "System",
+    "sha256": "f04ec08c9c914572eb79467ecd1707bb00966343e9ef32510d2fc785d6b51574",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterSoundEffectParam",
+    "title": "更好的系统音效参数",
+    "description": "使系统音效参数 (<se>) 可在任意频道触发; 重复强化音量时，也不再受最多三次的限制",
+    "path": "System/BetterSoundEffectParam.cs",
+    "category": "System",
+    "sha256": "c1031eccecae90516ffc21b4ff517b299f97ea2dc2ea185cf7c8d8998a302435",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterWaitCommand",
+    "title": "更好的等待指令",
+    "description": "使文本指令中的\"等待\"突破原生的最大时间限制和时间精度限制",
+    "path": "System/BetterWaitCommand.cs",
+    "category": "System",
+    "sha256": "69f6ab41723bfcb0460ba6c0699384ec50fc63b1a70e5dd22b02923f06f27a59",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ClipboardMultiLineToOneLine",
+    "title": "强制粘贴多行转单行",
+    "description": "在游戏内单行文本输入框粘贴文本时, 强制将多行文本转成单行; 在多行文本输入框时, 强制将各类换行符都转换为游戏支持的换行符, 以方便编辑发送",
+    "path": "System/ClipboardMultiLineToOneLine.cs",
+    "category": "System",
+    "sha256": "aec8d45a28bed70f2c4939922e9ddcedc4068dce807547f2fe3a3bf6f8dc558b",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CompanyCreditExchangeMore",
+    "title": "更高的部队战绩交易上限",
+    "description": "使部队战绩交易物品数量上限突破至最多 255",
+    "path": "System/CompanyCreditExchangeMore.cs",
+    "category": "System",
+    "sha256": "bbf8e48e1a6c9840f7de66af37dbb4a321c1d317b54322d90deaff56ac78c186",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CopyItemNameContextMenu",
+    "title": "复制道具名右键菜单",
+    "description": "为所有界面内的物品右键菜单补齐“复制道具名”菜单项。",
+    "path": "System/CopyItemNameContextMenu.cs",
+    "category": "System",
+    "sha256": "813c29cba747d5b2ce4652a1461617ff8555dda67e381278c43ea3738719b013",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CustomizeCommandAlias",
+    "title": "自定义命令别名",
+    "description": "配置完成后, 为任意命令设定多个自定义命令别名",
+    "path": "System/CustomizeCommandAlias.cs",
+    "category": "System",
+    "sha256": "c1373f87ace5da6b9897b1e25df5fdae7e95035ce39413627251544905b62777",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CustomizeGameObject",
+    "title": "自定义游戏对象缩放",
+    "description": "按照预设, 自定义游戏内各类实体的缩放",
+    "path": "System/CustomizeGameObject.cs",
+    "category": "System",
+    "sha256": "1524874be8be7cfb66cedfc51438079a293e284cb680b2fa289f415bba257588",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "CustomizeSightDistance",
+    "title": "自定义视距",
+    "description": "自定义当前游戏摄像头所允许的最大视距",
+    "path": "System/CustomizeSightDistance.cs",
+    "category": "System",
+    "sha256": "311fafdb1e4ffe01f86ee099ca66c420e6ce1d8c14130a7c90157c42057c65ef",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "DisregardFollowQuest",
+    "title": "无视跟踪任务判定",
+    "description": "无视跟踪任务中相对于被跟踪人物的躲藏判定",
+    "path": "System/DisregardFollowQuest.cs",
+    "category": "System",
+    "sha256": "e18d403b5795227b56d59c19a73cfca06cf57c2bfba666302dd878301a58572d",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "ExpandMacroTargetParameters",
+    "title": "宏目标参数扩展",
+    "description": "扩展游戏原生可用于文本指令的目标代称参数, 以支持更多更复杂的目标筛选情况",
+    "path": "System/ExpandMacroTargetParameters.cs",
+    "category": "System",
+    "sha256": "72dc87790405ccf8c9381bc793e412d1409034c871b60b134a591824c7e42403",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FasterTerritoryTransport",
+    "title": "更快的区域内过图加载",
+    "description": "加快区域内所有过图行为的加载速度, 使游戏人物能尽早脱离加载期间的禁用状态",
+    "path": "System/FasterTerritoryTransport.cs",
+    "category": "System",
+    "sha256": "f7fda68b4086085bd62359f4745c4433bd7f9806514953444d3d51da413ce454",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastInstanceZoneChange",
+    "title": "快捷副本区切换",
+    "description": "快速切换副本区并显示副本区信息, 支持自动重试、自动上下坐骑与自动传送等, 通过 /pdr {0} 指令快捷切换或点击服务器信息栏条目打开界面交互切换",
+    "path": "System/FastInstanceZoneChange.cs",
+    "category": "System",
+    "sha256": "93589948540859e70200286d1dae5e96f2f5e68faa1436d799ace77f63ad723c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastRidePillion",
+    "title": "快捷共同骑乘",
+    "description": "右键正在骑乘尚有空位的多人坐骑的队友时，自动共同骑乘。新增 /pdr {0} 指令，自动共同骑乘周围队友的坐骑。",
+    "path": "System/FastRidePillion.cs",
+    "category": "System",
+    "sha256": "cadf1d23cc3f6bcbfeb20e07ca894206dd74e8c6a307f12eb6bd133e16b8f0b1",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "IgnoreTransparencyWait",
+    "title": "自动取消 NPC 淡入淡出等待",
+    "description": "自动取消与 NPC 对话时, 对方因淡入淡出演出所产生的等待时间",
+    "path": "System/IgnoreTransparencyWait.cs",
+    "category": "System",
+    "sha256": "a68d4e73d0c0f1aec61ab833ad7328735382d68f6583de36dd5401e3f2986e6a",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "IgnoreTurnAndLookAtWait",
+    "title": "自动取消 NPC 转身及视线调整等待",
+    "description": "自动取消交互 NPC 时, 若不在其正面一定角度范围内, 则会触发的转身及调整视线的等待时间",
+    "path": "System/IgnoreTurnAndLookAtWait.cs",
+    "category": "System",
+    "sha256": "8e5d310ea23f3d38a6d048414a0377ded12063b35f77d01617238f0d995ac425",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "IgnoreWindowMinSizeLimit",
+    "title": "自动取消游戏窗口最小尺寸限制",
+    "description": "自动取消游戏窗口的最小尺寸限制, 使其能被手动缩放得更小",
+    "path": "System/IgnoreWindowMinSizeLimit.cs",
+    "category": "System",
+    "sha256": "a4957184ce65b9d54f1407922f09faf4e451b51f85f6f218c689c2ff115e11c4",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "InstantDismount",
+    "title": "即刻下坐骑",
+    "description": "在尝试下坐骑时, 立刻来到下方地面并取消骑乘坐骑",
+    "path": "System/InstantDismount.cs",
+    "category": "System",
+    "sha256": "a9102ee7e158216fbb33571e53b0e3ab56609fdace78b1b8286b5d69b86bf88e",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "InstantLogout",
+    "title": "即刻登出 / 退出",
+    "description": "解除所有登出/退出游戏限制, 在执行时强制返回至标题界面/退出游戏, 而无需等待",
+    "path": "System/InstantLogout.cs",
+    "category": "System",
+    "sha256": "0515d69855cd90b4440171b166554bfa77aebfaac084305506f585ded07b4a1f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "NoRenderWhenBackground",
+    "title": "后台禁止渲染游戏画面",
+    "description": "当游戏位于后台时, 禁止游戏画面渲染输出, 以降低待机占用与功耗 (不影响除画面以外的任何游戏功能)",
+    "path": "System/NoRenderWhenBackground.cs",
+    "category": "System",
+    "sha256": "e455d5b55f1b8ed1e563cc13f9c3ef6e4a5088c68e65c76c6769a0c5a1650e6c",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedBorderlessWindow",
+    "title": "窗口全屏模式优化",
+    "description": "对窗口全屏模式进行优化, 当游戏位于后台, 使用 Windows 右键菜单时游戏窗口不再会被强制唤出至前台",
+    "path": "System/OptimizedBorderlessWindow.cs",
+    "category": "System",
+    "sha256": "b786f8d3da562006ccfeec7c5bb57947a97b598e9add60dfa2f6464102789660",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "OptimizedInteraction",
+    "title": "游戏原生交互优化",
+    "description": "优化了游戏的交互逻辑, 取消了物体在视野外、被遮挡、位置过高过低，人物跳跃时、低空飞行时等的禁止交互限制",
+    "path": "System/OptimizedInteraction.cs",
+    "category": "System",
+    "sha256": "c4bfa7a832ba3749c5335faf1cd019bbd75101621d08dd5e9757d0d2677e4726",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "PlaceFurnitureAnywhere",
+    "title": "自动取消家具/庭具摆放限制",
+    "description": "自动取消家具/庭具位置调整过程中的本地位置摆放限制",
+    "path": "System/PlaceFurnitureAnywhere.cs",
+    "category": "System",
+    "sha256": "12a8538230f569256b443cd4a7ff2becd5e0c90f9f16ed5974e8fccaa58e8d73",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "QueueCombatTeleport",
+    "title": "存储战斗中传送请求",
+    "description": "解除战斗中无法打开传送界面的限制, 并存储战斗中发出的传送请求, 在战斗结束瞬间自动进行传送",
+    "path": "System/QueueCombatTeleport.cs",
+    "category": "System",
+    "sha256": "4c1e183fc49ad2741271e607835d90ca2ecf22e3334286e70b60bb70ddce6134",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "RealQueuePosition",
+    "title": "自动显示真实等待次序",
+    "description": "使用任务搜索器或跨界传送时，若队列人数超过50，则自动显示在队列中真实的等待次序。",
+    "path": "System/RealQueuePosition.cs",
+    "category": "System",
+    "sha256": "08ef079382f78665e9c20c33d18be9d892bd9d619f6d5ae317a9bd9f4ed1bc04",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "RightClickToMoveMode",
+    "title": "右键点击移动模式",
+    "description": "允许通过右键点击地面的方式, 移动到鼠标所指的对应目标地点",
+    "path": "System/RightClickToMoveMode.cs",
+    "category": "System",
+    "sha256": "674a82dcfc88ac23d7b03bb410fbbc484791be07c1ac0a022123a6895d4ca0bf",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "SameAethernetTeleport",
+    "title": "允许传送至当前以太之光",
+    "description": "自动解除游戏禁止传送至当前以太之光/城内以太之晶的限制",
+    "path": "System/SameAethernetTeleport.cs",
+    "category": "System",
+    "sha256": "b01cde68e364b2d4f1e7180d6ce313f682b1cb2037aed866087b66bb6787a4cc",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "SoundEffectThrottler",
+    "title": "自动限制系统音效频率",
+    "description": "配置完成后, 自动限制系统音效 (<se>) 的播放频率",
+    "path": "System/SoundEffectThrottler.cs",
+    "category": "System",
+    "sha256": "9f85719247205aae4adcbbb89b70dd839a4f86b942dd965a1d1931f9a390574f",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "SpecialRenderMode",
+    "title": "特殊渲染模式",
+    "description": "提供一系列游戏画面特殊渲染模式, 如禁止渲染游戏世界画面仅渲染界面、仅渲染玩家名牌隐藏其他界面等, 以便利游戏内截图拍摄、RP 等需求",
+    "path": "System/SpecialRenderMode.cs",
+    "category": "System",
+    "sha256": "7d43e08a1b154dab479271ac6fbe2506d37dab67e8b96ac73c49c8025a7b99d1",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterFPSLimitation",
+    "title": "更好的游戏帧数限制",
+    "description": "支持以任意值限制游戏帧率，并在服务器信息栏实时显示当前帧数，且提供原生界面快捷限制帧率。",
+    "path": "System/BetterFPSLimitation/BetterFPSLimitation.cs",
+    "category": "System",
+    "sha256": "bd4255ee83045f8632c6e4fd56a22f90ba8ca1918113706b368a0f9aebf215d2",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "FastWorldTravel",
+    "title": "快捷跨界传送",
+    "description": "",
+    "path": "System/FastWorldTravel/FastWorldTravel.cs",
+    "category": "System",
+    "sha256": "bc0f353c3a76570be5ea134abb13b037635c9f76e84c601ac858907c23745371",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoAntiCensorship",
+    "title": "自动反屏蔽词",
+    "description": "发送消息/编辑招募描述时, 自动在屏蔽词内部加点, 或是将其转成拼音以防止屏蔽\\n接收消息时, 自动阻止屏蔽词系统工作, 显示消息原文",
+    "path": "System/AutoAntiCensorship.cs",
+    "category": "System",
+    "sha256": "8ed5b9bd93bda1dabb9c8fe040faf391b3291fcf51705a179dedd98421b152a5",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "AutoDumpCensoredWords",
+    "title": "自动导出屏蔽词库",
+    "description": "自动提取所有屏蔽词导出至文件",
+    "path": "System/AutoDumpCensoredWords.cs",
+    "category": "System",
+    "sha256": "7a6a07094e4c6bb16062ccfa973ce2b28ba7b9d82f0cfe858d581f09018046e3",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  },
+  {
+    "id": "BetterNameSort",
+    "title": "更好的游戏内名称排序",
+    "description": "将多个游戏系统 (情感动作、无人岛、成就等) 中的项目名称排序方式, 由按 Unicode 码点排序改为按汉语拼音排序, 使界面显示更直观",
+    "path": "System/BetterNameSort.cs",
+    "category": "System",
+    "sha256": "86c9b67f270c015cf4784de39f273e3915a9d086533955c1ce34eba1ce7dc567",
+    "enabled": false,
+    "verification": "not-runtime-validated"
+  }
+]

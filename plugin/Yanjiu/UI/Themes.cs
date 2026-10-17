@@ -4,12 +4,13 @@ using Dalamud.Bindings.ImGui;
 namespace Yanjiu.UI;
 public sealed record Palette(string Name,Vector4 Background,Vector4 Surface,Vector4 Text,Vector4 Accent,bool Dark)
 {
+    public bool NativeGame {get;init;}
     public Vector4 Primary=>Accent;public Vector4 Secondary=>Surface;
     public Vector4? BorderOverride {get;init;}public Vector4? ShadowOverride {get;init;}public Vector4? SelectedOverride {get;init;}
     public Vector4 Border=>BorderOverride??(Dark?new(.36f,.39f,.44f,1):new(.97f,.97f,.92f,1));
     public Vector4 Shadow=>ShadowOverride??new Vector4(0,0,0,Dark?.45f:.18f);
     public Vector4 Selected=>SelectedOverride??Vector4.Lerp(Surface,Accent,.45f);
-    public float BorderRadius=>12;public float BorderThickness=>Themes.BorderWidth;public float HighlightStrength=>.25f;
+    public float BorderRadius=>NativeGame?7:12;public float BorderThickness=>NativeGame?Themes.BorderWidth/2.25f:Themes.BorderWidth;public float HighlightStrength=>.25f;
     public Vector4 Error=>new(.88f,.32f,.38f,1);public Vector4 Success=>new(.25f,.65f,.46f,1);public Vector4 Warning=>new(.92f,.66f,.22f,1);
 }
 public static class Themes
@@ -20,9 +21,14 @@ public static class Themes
         new("青麦",new(.84f,.85f,.73f,1),new(.90f,.90f,.79f,1),new(.19f,.22f,.18f,1),new(.65f,.69f,.51f,1),false),
         new("纸白",new(.94f,.94f,.93f,1),new(.99f,.99f,.98f,1),new(.22f,.24f,.26f,1),new(.60f,.65f,.70f,1),false),
         new("暖灰",new(.17f,.16f,.15f,1),new(.25f,.24f,.22f,1),new(.94f,.92f,.88f,1),new(.59f,.55f,.48f,1),true),
-        new("月白",new(.88f,.91f,.93f,1),new(.95f,.97f,.98f,1),new(.20f,.25f,.29f,1),new(.57f,.68f,.72f,1),false)
+        new("月白",new(.88f,.91f,.93f,1),new(.95f,.97f,.98f,1),new(.20f,.25f,.29f,1),new(.57f,.68f,.72f,1),false),
+        new("FF14原生",Rgb(49,48,49),Rgb(49,48,49),Rgb(238,225,197),Rgb(211,189,134),true){
+            NativeGame=true,BorderOverride=Rgb(183,162,119),ShadowOverride=new(0,0,0,.6f),SelectedOverride=Rgb(96,90,76)}
+
     };
-    public static int Selected {get;set;}
+    public const int NativeGameIndex=6;
+    private static Vector4 Rgb(int r,int g,int b)=>new(r/255f,g/255f,b/255f,1);
+    public static int Selected {get;set;}=NativeGameIndex;
     public static float Scale {get;set;}=1;
     public static float BorderWidth {get;private set;}=2.25f;
     private static IReadOnlyDictionary<string,float[]> colors=new Dictionary<string,float[]>();
@@ -41,13 +47,17 @@ public sealed class ThemeScope : IDisposable
     {
         var p=Themes.Current;Color(ImGuiCol.Text,p.Text);Color(ImGuiCol.TextDisabled,new Vector4(p.Text.X,p.Text.Y,p.Text.Z,.6f));
         Color(ImGuiCol.WindowBg,p.Background);Color(ImGuiCol.ChildBg,p.Surface);Color(ImGuiCol.PopupBg,p.Background);
-        Color(ImGuiCol.TitleBg,p.Surface);Color(ImGuiCol.TitleBgActive,p.Surface);Color(ImGuiCol.TitleBgCollapsed,p.Background);
+        Color(ImGuiCol.TitleBg,p.NativeGame?p.Background:p.Surface);Color(ImGuiCol.TitleBgActive,p.Surface);Color(ImGuiCol.TitleBgCollapsed,p.Background);
         Color(ImGuiCol.ScrollbarBg,p.Background);Color(ImGuiCol.ScrollbarGrab,p.Accent);Color(ImGuiCol.ScrollbarGrabHovered,p.Border);Color(ImGuiCol.ScrollbarGrabActive,p.Accent);
-        Color(ImGuiCol.Border,p.Border);Color(ImGuiCol.FrameBg,p.Surface);Color(ImGuiCol.FrameBgHovered,Vector4.Lerp(p.Surface,p.Selected,.5f));Color(ImGuiCol.FrameBgActive,p.Selected);
+        Color(ImGuiCol.Border,p.Border);Color(ImGuiCol.FrameBg,p.NativeGame?new(.29f,.29f,.29f,1):p.Surface);Color(ImGuiCol.FrameBgHovered,Vector4.Lerp(p.Surface,p.Selected,.5f));Color(ImGuiCol.FrameBgActive,p.Selected);
         Color(ImGuiCol.Button,p.Surface);Color(ImGuiCol.ButtonHovered,Vector4.Lerp(p.Surface,p.Selected,.5f));Color(ImGuiCol.ButtonActive,p.Selected);
         Color(ImGuiCol.Header,p.Surface);Color(ImGuiCol.HeaderHovered,Vector4.Lerp(p.Surface,p.Selected,.5f));Color(ImGuiCol.HeaderActive,p.Selected);
-        Color(ImGuiCol.CheckMark,p.Accent);Color(ImGuiCol.SliderGrab,p.Accent);Color(ImGuiCol.SliderGrabActive,p.Accent);Color(ImGuiCol.Separator,p.Border);
-        Var(ImGuiStyleVar.WindowRounding,14);Var(ImGuiStyleVar.ChildRounding,12);Var(ImGuiStyleVar.FrameRounding,8);Var(ImGuiStyleVar.PopupRounding,10);Var(ImGuiStyleVar.GrabRounding,7);
+        Color(ImGuiCol.CheckMark,p.Accent);Color(ImGuiCol.SliderGrab,p.Accent);Color(ImGuiCol.SliderGrabActive,p.Accent);Color(ImGuiCol.Separator,p.NativeGame?new Vector4(.34f,.33f,.31f,1):p.Border);
+        Color(ImGuiCol.BorderShadow,p.NativeGame?new Vector4(0,0,0,.65f):Vector4.Zero);
+        Color(ImGuiCol.TableHeaderBg,p.Surface);Color(ImGuiCol.TableBorderStrong,p.Border);Color(ImGuiCol.TableBorderLight,new(p.Border.X,p.Border.Y,p.Border.Z,.25f));
+        Color(ImGuiCol.TextSelectedBg,new(p.Accent.X,p.Accent.Y,p.Accent.Z,.3f));
+        Color(ImGuiCol.Tab,p.Surface);Color(ImGuiCol.TabHovered,p.Selected);Color(ImGuiCol.TabActive,p.Selected);
+        Var(ImGuiStyleVar.WindowRounding,p.NativeGame?7:14);Var(ImGuiStyleVar.ChildRounding,p.BorderRadius);Var(ImGuiStyleVar.FrameRounding,p.NativeGame?12:8);Var(ImGuiStyleVar.PopupRounding,p.NativeGame?7:10);Var(ImGuiStyleVar.GrabRounding,p.NativeGame?4:7);
         Var(ImGuiStyleVar.FrameBorderSize,p.BorderThickness);Var(ImGuiStyleVar.WindowBorderSize,p.BorderThickness);Var(ImGuiStyleVar.ChildBorderSize,p.BorderThickness);
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding,new Vector2(14,12)*Themes.Scale);vars++;
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding,new Vector2(10,7)*Themes.Scale);vars++;

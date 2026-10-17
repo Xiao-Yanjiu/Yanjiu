@@ -2,9 +2,12 @@
 <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWindowsForms>true</UseWindowsForms><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><AllowUnsafeBlocks>true</AllowUnsafeBlocks></PropertyGroup>
 <ItemGroup>
 <Reference Include="Yanjiu"><HintPath>$(YanjiuArtifactPath)/Yanjiu.dll</HintPath></Reference>
-<Reference Include="Dalamud"><HintPath>$(DalamudLibPath)/Dalamud.dll</HintPath></Reference>
+<Reference Include="FFXIVClientStructs"><HintPath>$(DalamudLibPath)/FFXIVClientStructs.dll</HintPath></Reference>
+<Reference Include="Lumina"><HintPath>$(DalamudLibPath)/Lumina.dll</HintPath></Reference><Reference Include="Dalamud"><HintPath>$(DalamudLibPath)/Dalamud.dll</HintPath></Reference>
 <Reference Include="OmenTools"><HintPath>$(YanjiuArtifactPath)/OmenTools.dll</HintPath></Reference>
 <Reference Include="Microsoft.CodeAnalysis"><HintPath>$(YanjiuArtifactPath)/Microsoft.CodeAnalysis.dll</HintPath></Reference>
 <Reference Include="Microsoft.CodeAnalysis.CSharp"><HintPath>$(YanjiuArtifactPath)/Microsoft.CodeAnalysis.CSharp.dll</HintPath></Reference>
 </ItemGroup>
-</Project>
+<ItemGroup><Content Include="$(YanjiuArtifactPath)/DR/ChineseSimplified.json" Link="DR/ChineseSimplified.json" CopyToOutputDirectory="PreserveNewest" Condition="Exists('$(YanjiuArtifactPath)/DR/ChineseSimplified.json')" /></ItemGroup><ItemGroup><Content Include="$(YanjiuArtifactPath)/DR/Modules/*" CopyToOutputDirectory="PreserveNewest" Link="DR/Modules/%(Filename)%(Extension)" /></ItemGroup><ItemGroup><Content Include="$(YanjiuArtifactPath)/Omni/Modules/*" CopyToOutputDirectory="PreserveNewest" Link="Omni/Modules/%(Filename)%(Extension)"/></ItemGroup></Project>
+
+

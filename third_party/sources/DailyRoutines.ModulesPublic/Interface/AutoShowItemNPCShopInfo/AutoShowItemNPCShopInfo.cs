@@ -1,0 +1,199 @@
+using DailyRoutines.Common.Module.Abstractions;
+using DailyRoutines.Common.Module.Enums;
+using DailyRoutines.Common.Module.Models;
+using DailyRoutines.Extensions;
+using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using OmenTools.Info.Game.ItemSource;
+using OmenTools.Info.Game.ItemSource.Enums;
+using OmenTools.Info.Game.ItemSource.Models;
+using OmenTools.Interop.Game.Helpers;
+using OmenTools.Interop.Game.Lumina;
+using OmenTools.OmenService;
+using CurrencyManager = FFXIVClientStructs.FFXIV.Client.Game.CurrencyManager;
+
+namespace DailyRoutines.ModulesPublic.Interface.AutoShowItemNPCShopInfo;
+
+public unsafe partial class AutoShowItemNPCShopInfo : ModuleBase
+{
+    public override ModuleInfo Info { get; } = new()
+    {
+        Title       = Lang.Get("AutoShowItemNPCShopInfoTitle"),
+        Description = Lang.Get("AutoShowItemNPCShopInfoDescription"),
+        Category    = ModuleCategory.Interface,
+        PreviewImageURL =
+        [
+            "https://gh.atmoomen.top/raw.githubusercontent.com/Dalamud-DailyRoutines/DailyRoutines/main/Resources/Modules/AutoShowItemNPCShopInfo/AutoShowItemNPCShopInfo-UI.png",
+            "https://gh.atmoomen.top/raw.githubusercontent.com/Dalamud-DailyRoutines/DailyRoutines/main/Resources/Modules/AutoShowItemNPCShopInfo/AutoShowItemNPCShopInfo-Tooltip.png"
+        ]
+    };
+
+    public override ModulePermission Permission { get; } = new()
+    {
+        AllDefaultEnabled = true
+    };
+
+    protected override void Init()
+    {
+        sourceContextMenu      = new();
+        destinationContextMenu = new();
+
+        ContextMenuManager.Instance().Reg(sourceContextMenu);
+        ContextMenuManager.Instance().Reg(destinationContextMenu);
+        TooltipManager.Instance().RegItem(OnItemTooltipUpdate);
+    }
+
+    protected override void Uninit()
+    {
+        ContextMenuManager.Instance().Unreg(sourceContextMenu);
+        ContextMenuManager.Instance().Unreg(destinationContextMenu);
+        TooltipManager.Instance().Unreg(OnItemTooltipUpdate);
+
+        AddonNPCShopsSource.Addon?.Dispose();
+        AddonNPCShopsSource.Addon = null;
+
+        AddonNPCShopsDestination.Addon?.Dispose();
+        AddonNPCShopsDestination.Addon = null;
+    }
+
+    private static void OnItemTooltipUpdate
+    (
+        ItemKind                          kind,
+        uint                              itemID,
+        ref List<TooltipItemModification> modifications
+    )
+    {
+        modifications.Add
+        (
+            new()
+            {
+                Target = TooltipItemType.ShopInfo,
+                Type   = TooltipModificationType.Contribute,
+                Text   = new()
+            }
+        );
+        
+        if (kind is ItemKind.Collectible or ItemKind.EventItem)
+            return;
+
+        const int    MAX_DISPLAY_COUNT = 5;
+        const string SPACING           = "    ";
+        
+        using var builder = new RentedSeStringBuilder();
+
+        var isAnyValid = false;
+
+        var sourceResult = ItemSourceInfo.Query(itemID);
+        if (sourceResult is { State: ItemSourceQueryState.Ready, Data: { } sourceInfo })
+        {
+            isAnyValid = true;
+
+            builder.Builder
+                   .Append($"[{Lang.Get("AutoShowItemNPCShopInfo-Tooltip-Source")}]");
+
+            var shopInfo = sourceInfo.NPCInfos
+                                     .SelectMany(x => x.CostInfos)
+                                     .DistinctBy(x => x.ItemID)
+                                     .ToList();
+            
+            for (var i = 0; i < shopInfo.Count; i++)
+            {
+                if (i >= MAX_DISPLAY_COUNT)
+                {
+                    builder.Builder
+                           .AppendNewLine()
+                           .Append($"{SPACING}{Lang.Get("AutoShowItemNPCShopInfo-Tooltip-Source-More", shopInfo.Count - MAX_DISPLAY_COUNT)}");
+                    break;
+                }
+                
+                var costInfo = shopInfo[i];
+                builder.Builder
+                       .AppendNewLine()
+                       .Append($"{SPACING}{LuminaWrapper.GetItemName(costInfo.ItemID)}")
+                       .PushColorType(32)
+                       .Append($"x{costInfo.Cost.ToChineseString()}")
+                       .PopColorType();
+
+                var itemCount = -1;
+                if (CurrencyManager.Instance()->HasItem(costInfo.ItemID))
+                    itemCount = (int)CurrencyManager.Instance()->GetItemCount(costInfo.ItemID);
+                else if (LocalPlayerState.GetItemCount(costInfo.ItemID) is var playerItemCount and > 0)
+                    itemCount = (int)playerItemCount;
+
+                if (itemCount > -1)
+                {
+                    builder.Builder
+                           .Append($"（{Lang.Get("Current")}：")
+                           .PushColorType
+                           (
+                               itemCount >= costInfo.Cost ?
+                                   67U :
+                                   17
+                           )
+                           .Append($"{itemCount.ToChineseString()}")
+                           .PopColorType()
+                           .Append("）");
+                }
+            }
+        }
+
+        var destinationResult = ItemSourceInfo.QueryExchangeItems(itemID);
+        if (destinationResult is { State: ItemSourceQueryState.Ready, Data: { } destinationInfo })
+        {
+            var message = Lang.Get
+            (
+                isAnyValid ?
+                    "AutoShowItemNPCShopInfo-Tooltip-Destination-More" :
+                    "AutoShowItemNPCShopInfo-Tooltip-Destination",
+                destinationInfo.Items.Count
+            );
+
+            if (isAnyValid)
+                builder.Builder.AppendNewLine();
+            
+            builder.Builder.Append($"{(isAnyValid ? SPACING : string.Empty)}{message}");
+            
+            isAnyValid = true;
+        }
+
+        if (isAnyValid)
+        {
+            modifications.Add
+            (
+                new()
+                {
+                    Target = TooltipItemType.Description,
+                    Type   = TooltipModificationType.Append,
+                    Text   = builder.Builder.ToReadOnlySeString()
+                }
+            );
+        }
+    }
+
+    private static void OpenMap
+    (
+        ShopNPCLocation location,
+        string          npcName
+    )
+    {
+        var pos = PositionHelper.MapToWorld(new(location.MapPosition.X, location.MapPosition.Y), location.GetMap()).ToVector3(0);
+
+        var instance = AgentMap.Instance();
+        instance->SetFlagMapMarker(location.TerritoryID, location.MapID, pos);
+        instance->OpenMap(location.MapID, location.TerritoryID, npcName);
+    }
+
+    private static void TeleportToLocation
+    (
+        ShopNPCLocation location
+    )
+    {
+        var pos = PositionHelper.MapToWorld(new(location.MapPosition.X, location.MapPosition.Y), location.GetMap()).ToVector3(0);
+
+        var instance = AgentMap.Instance();
+        instance->SetFlagMapMarker(location.TerritoryID, location.MapID, pos);
+
+        var aetheryte = AetheryteRecordManager.Instance().GetNearestAetheryte(location.TerritoryID, pos);
+        aetheryte?.TeleportTo();
+    }
+}

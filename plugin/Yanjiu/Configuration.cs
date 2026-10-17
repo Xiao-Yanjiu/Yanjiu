@@ -4,7 +4,8 @@ namespace Yanjiu;
 public sealed class Configuration : IPluginConfiguration
 {
     public int Version { get; set; } = 1;
-    public int Theme { get; set; }
+    public int NativeThemeRevision {get;set;}
+    public int Theme { get; set; } = UI.Themes.NativeGameIndex;
     public float Scale { get; set; } = 1;
     public float FontSize { get; set; } = 20;
     public int FontFamily { get; set; } = 1;
@@ -26,3 +27,4 @@ public sealed class ModulePreference
     public string Origin { get; set; } = "本地";
     public string Repository { get; set; } = "";
 }
+

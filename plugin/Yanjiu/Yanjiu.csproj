@@ -4,7 +4,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Yanjiu</AssemblyName>
     <RootNamespace>Yanjiu</RootNamespace>
-    <Version>0.1.0.0</Version>
+    <Version>0.1.5.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -22,12 +22,19 @@
     <Reference Include="Dalamud.Bindings.ImGuizmo"><HintPath>$(DalamudLibPath)/Dalamud.Bindings.ImGuizmo.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="FFXIVClientStructs"><HintPath>$(DalamudLibPath)/FFXIVClientStructs.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="InteropGenerator.Runtime"><HintPath>$(DalamudLibPath)/InteropGenerator.Runtime.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="Lumina"><HintPath>$(DalamudLibPath)/Lumina.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Microsoft.Extensions.ObjectPool"><HintPath>$(DalamudLibPath)/Microsoft.Extensions.ObjectPool.dll</HintPath><Private>false</Private></Reference><Reference Include="Lumina"><HintPath>$(DalamudLibPath)/Lumina.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="Lumina.Excel"><HintPath>$(DalamudLibPath)/Lumina.Excel.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="Newtonsoft.Json"><HintPath>$(DalamudLibPath)/Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="OmenTools"><HintPath>$(YanjiuDependencyPath)/OmenTools.dll</HintPath></Reference>
+    <Reference Include="KamiToolKit"><HintPath>$(YanjiuDependencyPath)/KamiToolKit.dll</HintPath></Reference><Reference Include="OmenTools.KamiToolKit"><HintPath>$(YanjiuDependencyPath)/OmenTools.KamiToolKit.dll</HintPath></Reference><Reference Include="TinyPinyin"><HintPath>$(YanjiuDependencyPath)/TinyPinyin.dll</HintPath></Reference><Reference Include="OmenTools"><HintPath>$(YanjiuDependencyPath)/OmenTools.dll</HintPath></Reference>
     <Reference Include="Microsoft.CodeAnalysis"><HintPath>$(YanjiuDependencyPath)/Microsoft.CodeAnalysis.dll</HintPath></Reference>
     <Reference Include="Microsoft.CodeAnalysis.CSharp"><HintPath>$(YanjiuDependencyPath)/Microsoft.CodeAnalysis.CSharp.dll</HintPath></Reference>
   </ItemGroup>
   <ItemGroup><Content Include="$(YanjiuDependencyPath)/*.dll" CopyToOutputDirectory="PreserveNewest" Link="%(Filename)%(Extension)"/><Content Include="Yanjiu.json" CopyToOutputDirectory="PreserveNewest"/></ItemGroup>
-</Project>
+<ItemGroup><PackageReference Include="CsvHelper" Version="33.1.0"/><PackageReference Include="LuminaSupplemental.Excel" Version="5.1.4"/></ItemGroup>
+<ItemGroup><EmbeddedResource Include="../../third_party/sources/OmniHostResources/Resources/*.*" LogicalName="OmniToolbox.Data.%(Filename)%(Extension)"/><EmbeddedResource Include="../../third_party/sources/OmniHostResources/Resources/UI/边框.png" LogicalName="OmniToolbox.Resources.边框.png"/></ItemGroup>
+<ItemGroup><EmbeddedResource Include="../../third_party/sources/OmniHostResources/ModuleTitles.json" LogicalName="Yanjiu.Omni.ModuleTitles.json"/></ItemGroup></Project>
+
+
+
+
+

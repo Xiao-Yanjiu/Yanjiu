@@ -1,0 +1,667 @@
+using System.Diagnostics;
+using System.Globalization;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using DailyRoutines.Common.Module.Abstractions;
+using DailyRoutines.Common.Module.Enums;
+using DailyRoutines.Common.Module.Models;
+using DailyRoutines.Extensions;
+using DailyRoutines.RemoteInteraction.ISPTranslation;
+using DailyRoutines.RemoteInteraction.ISPTranslation.Models.Responses;
+using Dalamud.Game.Gui.Dtr;
+using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Utility.Numerics;
+using Newtonsoft.Json;
+using OmenTools.Dalamud;
+using OmenTools.OmenService;
+using Framework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
+using NetworkModule = FFXIVClientStructs.Expansion.FFXIV.Application.Network.NetworkModule;
+
+namespace DailyRoutines.ModulesPublic.Interface;
+
+public class AutoDisplayNetworkLatency : ModuleBase
+{
+    public override ModuleInfo Info { get; } = new()
+    {
+        Title       = Lang.Get("AutoDisplayNetworkLatencyTitle"),
+        Description = Lang.Get("AutoDisplayNetworkLatencyDescription"),
+        Category    = ModuleCategory.Interface,
+        PreviewImageURL =
+        [
+            "https://gh.atmoomen.top/raw.githubusercontent.com/Dalamud-DailyRoutines/DailyRoutines/main/Resources/Modules/AutoDisplayNetworkLatency/preview-1.png"
+        ]
+    };
+
+    public override ModulePermission Permission { get; } = new()
+    {
+        AllDefaultEnabled = true
+    };
+
+    private Config config = null!;
+
+    private          ServerPingMonitor?      monitor;
+    private          IDtrBarEntry?           entry;
+    private readonly CancellationTokenSource cancelSource = new();
+
+    protected override void Init()
+    {
+        config = Config.Load(this) ?? new();
+
+        monitor ??= new();
+        entry   ??= IDtrBar.Instance().Get("DailyRoutines-AutoDisplayNetworkLatency");
+        entry.OnClick = _ =>
+        {
+            if (Overlay == null)
+            {
+                Overlay       =  new(this);
+                Overlay.Flags &= ~ImGuiWindowFlags.AlwaysAutoResize;
+                Overlay.SizeConstraints = new()
+                {
+                    MinimumSize = ScaledVector2(300f, 200f)
+                };
+            }
+
+            Overlay.Toggle();
+        };
+
+        Task.Run(MainLoop, cancelSource.Token);
+    }
+
+    protected override void Uninit()
+    {
+        cancelSource.Cancel();
+        cancelSource.Dispose();
+
+        monitor?.Dispose();
+        monitor = null;
+
+        entry?.Remove();
+        entry = null;
+    }
+
+    protected override void ConfigUI()
+    {
+        ImGui.TextColored(KnownColor.LightSkyBlue.ToVector4(), Lang.Get("Format"));
+
+        using (ImRaii.PushIndent())
+        {
+            ImGui.InputText("##FormatInput", ref config.Format);
+            if (ImGui.IsItemDeactivatedAfterEdit())
+                config.Save(this);
+        }
+    }
+
+    protected override unsafe void OverlayUI()
+    {
+        if (monitor == null) return;
+
+        if (!ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows))
+        {
+            Overlay.IsOpen = false;
+            return;
+        }
+
+        float min          = 9999f, max = 0f, sum = 0f;
+        var   validCount   = 0;
+        var   lossCount    = 0;
+        var   totalSamples = monitor.FilledCount;
+
+        for (var i = 0; i < totalSamples; i++)
+        {
+            var value = monitor.History[i];
+
+            if (value <= 0.1f)
+            {
+                lossCount++;
+                continue;
+            }
+
+            if (value < min) min = value;
+            if (value > max) max = value;
+            sum += value;
+            validCount++;
+        }
+
+        var average = validCount > 0 ?
+                          sum / validCount :
+                          0f;
+        var lossRate = totalSamples > 0 ?
+                           (float)lossCount / totalSamples :
+                           0f;
+        if (min == 9999f)
+            min = 0f;
+
+        var currentPing = monitor.LastPing;
+        var color       = GetPingColor(currentPing);
+
+        using (FontManager.Instance().UIFont160.Push())
+            ImGui.TextColored(color, $"{currentPing}");
+
+        ImGui.SameLine();
+        ImGui.TextColored(color, "ms");
+
+        ImGui.SameLine();
+
+        var addressText = $"{monitor.ServerAddress}:{monitor.ServerPort}";
+        var addressSize = ImGui.CalcTextSize(addressText);
+        var availableX  = ImGui.GetContentRegionAvail().X;
+        if (availableX > addressSize.X)
+            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + availableX - addressSize.X);
+        ImGui.TextDisabled(addressText);
+
+        var addressRectMax = ImGui.GetItemRectMax();
+
+        if (monitor.AddressInfo is { } info)
+        {
+            using (FontManager.Instance().UIFont80.Push())
+            {
+                var locationText = $"{info.CountryName} - {info.CityName}";
+                if (monitor.ISPInfo is { } ispInfo)
+                    locationText += $" / {ispInfo.Translated}";
+
+                if (!string.IsNullOrWhiteSpace(locationText))
+                {
+                    var locationSize = ImGui.CalcTextSize(locationText);
+                    var windowPos    = ImGui.GetWindowPos();
+                    var scrollY      = ImGui.GetScrollY();
+                    ImGui.SetCursorPosY(addressRectMax.Y - windowPos.Y + scrollY);
+
+                    var locationAvailableX = ImGui.GetContentRegionAvail().X;
+                    if (locationAvailableX > locationSize.X)
+                        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + locationAvailableX - locationSize.X);
+                    ImGui.TextDisabled(locationText);
+                }
+            }
+        }
+
+        ImGui.Spacing();
+        ImGui.Spacing();
+        ImGui.Spacing();
+        ImGui.SameLine();
+
+        using (var table = ImRaii.Table("##StatsTable", 4, ImGuiTableFlags.SizingStretchProp))
+        {
+            if (table)
+            {
+                DrawStatColumn(Lang.Get("AutoDisplayNetworkLatencyTitle-Stat-Avg"), $"{average:F0}", GetPingColor(average));
+                DrawStatColumn(Lang.Get("AutoDisplayNetworkLatencyTitle-Stat-Min"), $"{min:F0}",     GetPingColor(min));
+                DrawStatColumn(Lang.Get("AutoDisplayNetworkLatencyTitle-Stat-Max"), $"{max:F0}",     GetPingColor(max));
+
+                var lossColor = lossRate switch
+                {
+                    0f      => KnownColor.SpringGreen.ToVector4(),
+                    < 0.05f => KnownColor.Orange.ToVector4(),
+                    _       => KnownColor.Red.ToVector4()
+                };
+                DrawStatColumn(Lang.Get("AutoDisplayNetworkLatencyTitle-Stat-Loss"), $"{lossRate:P0}", lossColor);
+            }
+        }
+
+        using (ImRaii.PushColor(ImPlotCol.AxisBg, new Vector4(0.05f)))
+        using (ImRaii.PushColor(ImPlotCol.FrameBg, Vector4.Zero))
+        using (ImRaii.PushColor(ImPlotCol.AxisGrid, Vector4.One.WithW(0.05f)))
+        using (ImRaii.PushStyle(ImPlotStyleVar.FillAlpha, 0.25f))
+        using (ImRaii.PushStyle(ImPlotStyleVar.LineWeight, 2f))
+        using (var plot = ImRaii.Plot("##LatencyPlot", new(-1), ImPlotFlags.CanvasOnly | ImPlotFlags.NoTitle))
+        {
+            if (!plot) return;
+
+            const ImPlotAxisFlags AXIS_FLAGS = ImPlotAxisFlags.NoLabel | ImPlotAxisFlags.NoTickLabels;
+            ImPlot.SetupAxes((byte*)null, (byte*)null, AXIS_FLAGS, AXIS_FLAGS);
+
+            var yMax = MathF.Max(max * 1.25f, 100f);
+            ImPlot.SetupAxesLimits(0, monitor.History.Length, 0, yMax, ImPlotCond.Always);
+            ImPlot.SetupAxisTicks(ImAxis.X1, 0, monitor.History.Length, 51);
+            ImPlot.SetupAxisTicks(ImAxis.Y1, 0, yMax,                   21);
+
+            using (ImRaii.PushColor(ImPlotCol.Line, color)
+                         .Push(ImPlotCol.Fill, color))
+                ImPlot.PlotLine("##Ping", ref monitor.History[0], monitor.History.Length, 1.0, 0.0, ImPlotLineFlags.Shaded, monitor.HistoryIndex);
+
+            if (average <= 0) return;
+
+            var averageColor = KnownColor.White.ToVector4() with { W = 0.6f };
+
+            using (ImRaii.PushColor(ImPlotCol.Line, averageColor))
+            {
+                var xs = new double[] { 0, monitor.History.Length };
+                var ys = new double[] { average, average };
+                ImPlot.PlotLine("##Avg", ref xs[0], ref ys[0], 2);
+            }
+        }
+
+        return;
+
+        static Vector4 GetPingColor
+        (
+            float ping
+        ) =>
+            ping switch
+            {
+                < 0   => KnownColor.Gray.ToVector4(),
+                < 100 => KnownColor.SpringGreen.ToVector4(),
+                < 200 => KnownColor.Orange.ToVector4(),
+                _     => KnownColor.Red.ToVector4()
+            };
+
+        static void DrawStatColumn
+        (
+            string  label,
+            string  value,
+            Vector4 color
+        )
+        {
+            ImGui.TableNextColumn();
+            
+            ImGui.Spacing();
+            ImGui.TextDisabled(label);
+            
+            ImGui.SameLine(0, 8f * GlobalUIScale);
+            ImGui.SetCursorPosY(ImGui.GetCursorPosY() - ImGui.GetStyle().FramePadding.Y);
+            using (FontManager.Instance().UIFont140.Push())
+                ImGui.TextColored(color, value);
+        }
+    }
+
+    private async Task MainLoop()
+    {
+        try
+        {
+            var cancellationToken = cancelSource.Token;
+            var lastPing          = -1L;
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                var currentMonitor = monitor;
+                var currentEntry   = entry;
+                if (currentMonitor == null || currentEntry == null) return;
+
+                if (!GameState.IsLoggedIn)
+                {
+                    await Task.Delay(3000, cancellationToken);
+                    continue;
+                }
+
+                await currentMonitor.UpdateAsync(cancellationToken);
+                if (cancellationToken.IsCancellationRequested) return;
+
+                var currentPing = currentMonitor.LastPing;
+                var address     = currentMonitor.ServerAddress;
+                var port        = currentMonitor.ServerPort;
+
+                await IFramework.Instance().RunOnTick
+                (
+                    () =>
+                    {
+                        if (cancellationToken.IsCancellationRequested || entry != currentEntry) return;
+
+                        currentEntry.Shown = true;
+
+                        if (lastPing != currentPing)
+                        {
+                            currentEntry.Text = string.Format(config.Format, currentPing);
+                            lastPing          = currentPing;
+                        }
+
+                        var builder = new SeStringBuilder().AddIcon(BitmapFontIcon.Meteor)
+                                                           .AddText($"{address}:{port}");
+
+                        if (currentMonitor.AddressInfo is { } info)
+                            builder.AddText($"（{info.CountryName} - {info.CityName}）");
+
+                        currentEntry.Tooltip = builder.Build();
+                    },
+                    cancellationToken: cancellationToken
+                );
+
+                await Task.Delay(1_000, cancellationToken);
+            }
+        }
+        catch (OperationCanceledException) when (cancelSource.IsCancellationRequested)
+        {
+        }
+        catch (Exception ex)
+        {
+            DLog.Error("更新网络延迟时发生错误", ex);
+        }
+    }
+
+    private class Config : ModuleConfig
+    {
+        public string Format = Lang.Get("AutoDisplayNetworkLatency-DefaultFormat");
+    }
+
+    private class ServerPingMonitor : IDisposable
+    {
+        private const string TARGET_IP_QUERY_API             = "http://ip-api.com/json/{0}?lang={1}";
+        private const int    TUN_DETECTION_THRESHOLD_MS      = 5;
+        private const int    TUN_DETECTION_CONSECUTIVE_COUNT = 5;
+
+        private CancellationTokenSource? ipInfoCancelSource;
+        private ZoneEndpoint?            endpoint;
+
+        public IPAddress              ServerAddress { get; private set; } = IPAddress.Loopback;
+        public ushort                 ServerPort    { get; private set; }
+        public IPLocationDTO?         AddressInfo   { get; private set; }
+        public ISPTranslatorResponse? ISPInfo       { get; private set; }
+        public long                   LastPing      { get; private set; } = -1;
+        public float[]                History       { get; }              = new float[100];
+        public int                    HistoryIndex  { get; private set; }
+        public int                    FilledCount   { get; private set; }
+
+        private bool bypassTun;
+        private int  consecutiveLowPings;
+        private bool bypassTunAttempted;
+
+        private static IPAddress? CachedPhysicalNicIP;
+        private static bool       PhysicalNicResolved;
+
+        public void Dispose()
+        {
+            ipInfoCancelSource?.Cancel();
+            ipInfoCancelSource?.Dispose();
+        }
+
+        public async Task UpdateAsync
+        (
+            CancellationToken cancellationToken
+        )
+        {
+            try
+            {
+                if (await UpdateServerEndpointAsync(cancellationToken))
+                {
+                    bypassTun           = false;
+                    consecutiveLowPings = 0;
+                    bypassTunAttempted  = false;
+
+                    if (ServerPort != 0)
+                        RefreshIPInfo(ServerAddress);
+                    else
+                        ResetAddressInfo();
+                }
+
+                LastPing = ServerPort == 0 ?
+                               -1 :
+                               await MeasureLatencyAsync(cancellationToken);
+            }
+            catch (Exception)
+            {
+                LastPing = -1;
+            }
+
+            History[HistoryIndex] = LastPing == -1 ?
+                                        0 :
+                                        LastPing;
+            HistoryIndex = (HistoryIndex + 1) % History.Length;
+            if (FilledCount < History.Length) FilledCount++;
+        }
+
+        private async Task<bool> UpdateServerEndpointAsync
+        (
+            CancellationToken cancellationToken
+        )
+        {
+            var nextEndpoint = await GetZoneEndpointAsync(cancellationToken);
+            if (nextEndpoint == null || !IPAddress.TryParse(nextEndpoint.Value.Host, out var nextAddress))
+                return ResetServerEndpoint();
+
+            if (endpoint == nextEndpoint)
+                return false;
+
+            var changed = !nextAddress.Equals(ServerAddress) || nextEndpoint.Value.Port != ServerPort;
+            endpoint      = nextEndpoint;
+            ServerAddress = nextAddress;
+            ServerPort    = nextEndpoint.Value.Port;
+            return changed;
+        }
+
+        private static unsafe ZoneEndpoint? GetZoneEndpoint()
+        {
+            var framework = Framework.Instance();
+            if (framework == null)
+                return null;
+
+            var networkModuleProxy = framework->GetNetworkModuleProxy();
+            if (networkModuleProxy == null || networkModuleProxy->NetworkModule == null)
+                return null;
+
+            var module = (NetworkModule*)networkModuleProxy->NetworkModule;
+
+            var zoneClient = module->ZoneClient;
+            if (zoneClient == null)
+                return null;
+
+            var host = zoneClient->Host.ToString();
+            return string.IsNullOrWhiteSpace(host) || zoneClient->Port == 0 ?
+                       null :
+                       new(host, zoneClient->Port);
+        }
+
+        private static async Task<ZoneEndpoint?> GetZoneEndpointAsync
+        (
+            CancellationToken cancellationToken
+        )
+        {
+            ZoneEndpoint? endpoint = null;
+
+            await IFramework.Instance().RunOnTick
+            (
+                () => endpoint = GetZoneEndpoint(),
+                cancellationToken: cancellationToken
+            );
+
+            return endpoint;
+        }
+
+        private async Task<long> MeasureLatencyAsync
+        (
+            CancellationToken cancellationToken
+        )
+        {
+            using var socket        = new Socket(ServerAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            using var timeoutSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            timeoutSource.CancelAfter(TimeSpan.FromSeconds(1));
+
+            if (bypassTun && TryGetPhysicalNicIP() is { } physicalIP)
+            {
+                try
+                {
+                    socket.Bind(new IPEndPoint(physicalIP, 0));
+                }
+                catch (SocketException)
+                {
+                    // ignored
+                }
+            }
+
+            var timestamp = Stopwatch.GetTimestamp();
+
+            try
+            {
+                await socket.ConnectAsync(new IPEndPoint(ServerAddress, ServerPort), timeoutSource.Token);
+                var elapsed = (long)Math.Round(Stopwatch.GetElapsedTime(timestamp).TotalMilliseconds);
+
+                if (!bypassTun && !bypassTunAttempted && elapsed is > 0 and < TUN_DETECTION_THRESHOLD_MS)
+                {
+                    consecutiveLowPings++;
+                    if (consecutiveLowPings >= TUN_DETECTION_CONSECUTIVE_COUNT && TryGetPhysicalNicIP() != null)
+                        bypassTun = true;
+                }
+                else if (elapsed > TUN_DETECTION_THRESHOLD_MS * 4)
+                    bypassTunAttempted = true;
+
+                return elapsed;
+            }
+            catch (OperationCanceledException)
+            {
+                return -1;
+            }
+            catch (SocketException)
+            {
+                return -1;
+            }
+        }
+
+        private void RefreshIPInfo
+        (
+            IPAddress address
+        )
+        {
+            ResetAddressInfo();
+
+            // The optional public IP/ISP lookup is not reliable under Wine and
+            // can enter a native TLS/certificate path that terminates CoreCLR.
+            // The in-game socket latency measurement remains available.
+            if (RuntimeInformation.IsWine()) return;
+
+            ipInfoCancelSource = new();
+
+            var token = ipInfoCancelSource.Token;
+            Task.Run
+            (
+                async () =>
+                {
+                    try
+                    {
+                        if (HTTPClientHelper.Instance().Get() is not { } httpClient) return;
+
+                        var response = await httpClient.GetStringAsync(string.Format(TARGET_IP_QUERY_API, address, CultureInfo.CurrentUICulture), token);
+                        if (token.IsCancellationRequested) return;
+
+                        if (JsonConvert.DeserializeObject<IPLocationDTO>(response) is not { } newInfo) return;
+                        if (token.IsCancellationRequested) return;
+
+                        ISPInfo = await RemoteISPTranslation.GetFreshAsync
+                                  (
+                                      newInfo.InternetServiceProvider,
+                                      cancellationToken: token
+                                  );
+                        if (await RemoteISPTranslation.GetFreshAsync
+                            (
+                                newInfo.CityName,
+                                cancellationToken: token
+                            ) is { } cityNameInfo)
+                            newInfo.CityName = cityNameInfo.Translated;
+
+                        AddressInfo = newInfo;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                    }
+                    catch (Exception)
+                    {
+                        AddressInfo = null;
+                        ISPInfo     = null;
+                    }
+                },
+                token
+            );
+        }
+
+        private bool ResetServerEndpoint()
+        {
+            var changed = !ServerAddress.Equals(IPAddress.Loopback) || ServerPort != 0;
+            endpoint      = null;
+            ServerAddress = IPAddress.Loopback;
+            ServerPort    = 0;
+            return changed;
+        }
+
+        private static IPAddress? TryGetPhysicalNicIP()
+        {
+            if (PhysicalNicResolved)
+                return CachedPhysicalNicIP;
+
+            PhysicalNicResolved = true;
+
+            try
+            {
+                CachedPhysicalNicIP =
+                    NetworkInterface.GetAllNetworkInterfaces()
+                                    .Where(n => n.OperationalStatus == OperationalStatus.Up)
+                                    .Where
+                                    (n => n.NetworkInterfaceType is
+                                              NetworkInterfaceType.Ethernet or
+                                              NetworkInterfaceType.Wireless80211 or
+                                              NetworkInterfaceType.GigabitEthernet
+                                    )
+                                    .Where(n => !IsVirtualNic(n.Description) && !IsVirtualNic(n.Name))
+                                    .Select
+                                    (n => new
+                                        {
+                                            Nic        = n,
+                                            HasGateway = n.GetIPProperties().GatewayAddresses.Count > 0
+                                        }
+                                    )
+                                    .OrderByDescending(x => x.HasGateway)
+                                    .ThenByDescending(x => x.Nic.Speed)
+                                    .Select(x => x.Nic)
+                                    .FirstOrDefault()
+                                    ?.GetIPProperties()
+                                    .UnicastAddresses
+                                    .FirstOrDefault(a => a.Address.AddressFamily == AddressFamily.InterNetwork)
+                                    ?.Address;
+            }
+            catch
+            {
+                // Best-effort
+            }
+
+            return CachedPhysicalNicIP;
+        }
+
+        private static bool IsVirtualNic
+        (
+            string text
+        )
+        {
+            if (string.IsNullOrWhiteSpace(text)) return false;
+
+            var lower = text.ToLowerInvariant();
+
+            return lower.Contains("tun")       ||
+                   lower.Contains("tap")       ||
+                   lower.Contains("vpn")       ||
+                   lower.Contains("virtual")   ||
+                   lower.Contains("hyper-v")   ||
+                   lower.Contains("wsl")       ||
+                   lower.Contains("docker")    ||
+                   lower.Contains("loopback")  ||
+                   lower.Contains("tunnel")    ||
+                   lower.Contains("pseudo")    ||
+                   lower.Contains("bluetooth") ||
+                   lower.Contains("wwan");
+        }
+
+        private void ResetAddressInfo()
+        {
+            ipInfoCancelSource?.Cancel();
+            ipInfoCancelSource?.Dispose();
+            ipInfoCancelSource = null;
+            AddressInfo        = null;
+            ISPInfo            = null;
+        }
+
+        private readonly record struct ZoneEndpoint
+        (
+            string Host,
+            ushort Port
+        );
+    }
+
+    private class IPLocationDTO
+    {
+        [JsonProperty("country")]
+        public string? CountryName { get; set; }
+
+        [JsonProperty("city")]
+        public string? CityName { get; set; }
+
+        [JsonProperty("isp")]
+        public string? InternetServiceProvider { get; set; }
+    }
+}

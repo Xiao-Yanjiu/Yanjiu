@@ -15,3 +15,5 @@
 | TinyPinyin 1.1.0 | MIT | https://github.com/hstarorg/TinyPinyin.Net |
 
 各 NuGet 包的原始 nuspec 元数据同时保留，用于核对版本和授权。OmenTools 与 Roslyn 为带源码提交号的发行包版本；升级依赖时必须重新编译、运行兼容测试并更新哈希。
+
+当前启动热修复已从公开源码重建 OmenTools，仅修改区域服务器地址解析；来源和修改记录见 docs/启动扫描错误热修复.md，完整源码位于 third_party/sources/OmenTools，通用重建入口为 plugin/tools/rebuild-omen.ps1。新构建库不是“未经修改”的原始发行包，运行 SHA256 仍以本目录清单为准。
