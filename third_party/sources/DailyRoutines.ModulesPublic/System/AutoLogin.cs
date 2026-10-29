@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
@@ -76,6 +76,7 @@ public unsafe class AutoLogin : ModuleBase
 
     protected override void ConfigUI()
     {
+        if (config.LoginData.Count == 0) ImGui.TextWrapped("尚未添加登录角色：请在下方选择服务器并输入角色名，点击添加。没有目标时不会自动登录。");
         ImGui.TextColored(KnownColor.LightSkyBlue.ToVector4(), $"{Lang.Get("Command")}");
 
         using (ImRaii.PushIndent())

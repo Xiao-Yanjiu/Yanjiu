@@ -1,4 +1,4 @@
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
@@ -31,7 +31,7 @@ public class AutoDisplayZoneServerID : ModuleBase
     {
         config = Config.Load(this) ?? new();
         
-        entry         = IDtrBar.Instance().Get("DailyRoutines-AutoDisplayZoneServerID");
+        entry         = IDtrBar.Instance().Get("Yanjiu-DailyRoutines-AutoDisplayZoneServerID");
         entry.Tooltip = Lang.Get("AutoDisplayZoneServerID-DTR-Tooltip");
 
         entry.OnClick = data =>

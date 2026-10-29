@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
 using System.Security.Cryptography;
@@ -23,6 +23,20 @@ static class Tests
   var compiler=new SourceCompiler(refs.Concat(SourceCompiler.ReferencePaths()));
   Check(SourceCompiler.ReferenceFiles([null,"",root+"/missing-directory",(Environment.GetEnvironmentVariable("YANJIU_ARTIFACT_PATH")??root+"/artifacts/plugin")]).Any(path=>Path.GetFileName(path)=="Yanjiu.dll"),"empty in-memory assembly paths skipped");
   _=new SourceCompiler();
+  var pulse=new AfkPulse();var keyEvents=new List<bool>();bool SendKey(bool down){keyEvents.Add(down);return true;}
+  Check(!AfkPulse.ShouldPulse(float.NaN,30)&&!AfkPulse.ShouldPulse(float.PositiveInfinity,30)&&!AfkPulse.ShouldPulse(29,30)&&AfkPulse.ShouldPulse(30,30),"AFK validates finite idle timer and threshold");
+  Check(pulse.Start(1000,SendKey)&&!pulse.Start(1001,SendKey),"AFK does not overlap key pulses");
+  pulse.Advance(1199,SendKey);Check(keyEvents.SequenceEqual(new[]{true}),"AFK waits before release");
+  pulse.Advance(1200,SendKey);Check(!pulse.IsPressed&&keyEvents.SequenceEqual(new[]{true,false}),"AFK releases on deadline");
+  pulse.Start(2000,SendKey);pulse.Release(SendKey);pulse.Release(SendKey);Check(keyEvents.SequenceEqual(new[]{true,false,true,false}),"AFK disable releases pending key exactly once");
+  Check(!pulse.Start(3000,_=>false)&&!pulse.IsPressed,"AFK failed send does not retain a pressed state");
+  var upgradeConfig=new Yanjiu.Configuration();
+  var savedPreference=new Yanjiu.ModulePreference{Path="C:/plugins/0.1.5/DR/Modules/AutoLogin.dll",Origin="DR",Favorite=true,Enabled=true,Hash="old-build"};
+  upgradeConfig.Modules.Add(savedPreference);
+  var migratedPreference=upgradeConfig.ResolveBundledPreference("C:/plugins/0.1.6/DR/Modules/AutoLogin.dll","DR");
+  Check(ReferenceEquals(savedPreference,migratedPreference)&&migratedPreference.Favorite&&migratedPreference.Enabled&&migratedPreference.Hash==""&&upgradeConfig.Modules.Count==1,"bundled upgrade preserves favorites and enabled intention without pinning obsolete binary hash");
+  var otherSource=upgradeConfig.ResolveBundledPreference("C:/plugins/0.1.6/Omni/Modules/AutoLogin.dll","Omni");
+  Check(!ReferenceEquals(otherSource,migratedPreference)&&!otherSource.Favorite,"same filename in another provider does not inherit preference");
   var blankHelp=new Dalamud.Game.Command.CommandInfo((_,_)=>{});
   var existingHelp=new Dalamud.Game.Command.CommandInfo((_,_)=>{}){HelpMessage="模块原有帮助"};
   CommandMetadata.EnsureHelp(new Dictionary<string,Dalamud.Game.Command.CommandInfo>{{"/test",blankHelp},{"/existing",existingHelp}});

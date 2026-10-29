@@ -1,4 +1,4 @@
-using DailyRoutines.Common.Module.Abstractions;
+﻿using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
 using DailyRoutines.Extensions;
@@ -53,7 +53,7 @@ public unsafe class AutoDisplayIDInformation : ModuleBase
     {
         config = Config.Load(this) ?? new();
 
-        zoneInfoEntry ??= IDtrBar.Instance().Get("AutoDisplayIDInformation-ZoneInfo");
+        zoneInfoEntry ??= IDtrBar.Instance().Get("Yanjiu-AutoDisplayIDInformation-ZoneInfo");
 
         TooltipManager.Instance().RegItem(OnItemTooltip);
         TooltipManager.Instance().RegAction(OnActionTooltip);

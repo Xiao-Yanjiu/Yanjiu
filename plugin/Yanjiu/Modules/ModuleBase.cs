@@ -9,7 +9,7 @@ public abstract class ModuleBase : IDisposable
     internal Action? PersistImportedConfiguration{get;set;}
     internal void SaveImportedConfiguration()=>PersistImportedConfiguration?.Invoke();
     public bool IsEnabled { get; private set; }
-    public string ModuleName=>GetType().Name;
+    public virtual string ModuleName=>GetType().Name;
     public virtual bool HasSettings=>false;
     public virtual bool DrawSettings()=>false;
     public virtual bool ResetSettings()=>false;
@@ -30,7 +30,8 @@ public abstract class ModuleBase : IDisposable
     protected T? ReadConfiguration<T>(){var path=ConfigPath;return File.Exists(path)?JsonSerializer.Deserialize<T>(File.ReadAllText(path),new JsonSerializerOptions{IncludeFields=true}):default;}
     protected void WriteConfiguration<T>(T data){Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath)!);File.WriteAllText(ConfigPath+".tmp",JsonSerializer.Serialize(data,new JsonSerializerOptions{IncludeFields=true}));File.Move(ConfigPath+".tmp",ConfigPath,true);}
     private string ConfigPath=>Path.Combine(Services.ConfigDirectory,"modules",GetType().FullName!.Replace(':','_')+".json");
-    public void Dispose(){if(disposed)return;try{if(IsEnabled)OnDisable();}finally{try{OnDispose();SaveImportedConfiguration();}finally{IsEnabled=false;disposed=true;}}}
+    protected void MarkEnabled(bool enabled)=>IsEnabled=enabled;
+    public virtual void Dispose(){if(disposed)return;try{if(IsEnabled)OnDisable();}finally{try{OnDispose();SaveImportedConfiguration();}finally{IsEnabled=false;disposed=true;}}}
 }
 
 

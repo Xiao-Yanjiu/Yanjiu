@@ -1,4 +1,4 @@
-using DailyRoutines.Common.Extensions;
+﻿using DailyRoutines.Common.Extensions;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
@@ -617,7 +617,7 @@ public partial class FastWorldTravel : ModuleBase
         switch (isAdd)
         {
             case true:
-                entry         ??= IDtrBar.Instance().Get("DailyRoutines-FastWorldTravel");
+                entry         ??= IDtrBar.Instance().Get("Yanjiu-DailyRoutines-FastWorldTravel");
                 entry.OnClick =   OnDTRClick;
                 entry.Tooltip =   Lang.Get("FastWorldTravel-DtrEntryTooltip");
                 entry.Text    =   LuminaWrapper.GetAddonText(12510);

@@ -1,0 +1,3 @@
+namespace OmniToolbox.Common.Module.Models;
+
+public sealed record PluginCollectionOption(Guid ID, string Name);

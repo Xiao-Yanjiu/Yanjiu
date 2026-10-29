@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="FFXIVClientStructs.Expansion/FFXIVClientStructs.Expansion.csproj" />
+  <Project Path="FFXIVClientStructs.Expansion.Generators/FFXIVClientStructs.Expansion.Generators.csproj" />
+</Solution>

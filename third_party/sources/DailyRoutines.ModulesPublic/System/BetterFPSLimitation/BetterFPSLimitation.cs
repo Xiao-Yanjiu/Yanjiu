@@ -1,4 +1,4 @@
-using DailyRoutines.Common.Extensions;
+﻿using DailyRoutines.Common.Extensions;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
@@ -40,7 +40,7 @@ public partial class BetterFPSLimitation : ModuleBase
 
         pacer = new FramePacer(this);
 
-        entry ??= IDtrBar.Instance().Get("DailyRoutines-BetterFPSLimitation");
+        entry ??= IDtrBar.Instance().Get("Yanjiu-DailyRoutines-BetterFPSLimitation");
         entry.OnClick = param =>
         {
             switch (param.ClickType)

@@ -1,10 +1,16 @@
-# 小烟酒 · Yanjiu 0.1.5 开发测试版
+# 小烟酒 · Yanjiu 0.1.6 开发测试版
 
 国服卫月 API 15 / .NET 10。入口 `/yanjiu`、`/xyj`；音乐播放器入口 `/ymusic`（模块须已安装并启用）；图标浏览器入口 `/yanjiu icons`。
 
 ## 安装
 
 卫月第三方仓库地址：`https://raw.githubusercontent.com/Xiao-Yanjiu/Yanjiu/main/Pluginmaster.json`。本版以测试版本发布，需允许测试版插件。安装器从本仓库 Releases 下载完整 ZIP；开发插件可导入解压后的 Yanjiu.dll，保留同目录依赖、DR、Omni、Assets 和许可证。
+
+## 新增与修复
+
+模块 → 系统 → AFK 防掉线，默认关闭，可先配置后启用。AntiAfkKick 运行时自动让行；如使用 Omni 同类功能，请只启用一处。原理参考 AntiAfkKick 的输入计时器与短暂按键方案，由 Yanjiu 独立实现。
+
+API 1 七模块兼容、过场设置即时应用、信息栏名称隔离及收藏升级迁移见 [检查报告](../docs/DR-REVIEW-2026-10-29.md)。
 
 ## 功能与边界
 

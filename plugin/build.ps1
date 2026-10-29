@@ -38,3 +38,6 @@ Write-Output "Plugin: $output/Yanjiu.dll"
 
 
 
+
+$api1=Join-Path (Split-Path $PSScriptRoot -Parent) "third_party/api1-runtime"
+if(Test-Path -LiteralPath $api1){New-Item -ItemType Directory -Force -Path "$output/Api1" | Out-Null;Copy-Item -Path "$api1/*" -Destination "$output/Api1" -Force}

@@ -1,4 +1,4 @@
-using DailyRoutines.Common.Module.Abstractions;
+﻿using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
 using DailyRoutines.Extensions;
@@ -62,7 +62,7 @@ public partial class AutoRecordSubTimeLeft : ModuleBase
         tracker = new PlaytimeTracker(storePath, legacyPath);
         tracker.Start();
 
-        entry         ??= IDtrBar.Instance().Get("DailyRoutines-GameTimeLeft");
+        entry         ??= IDtrBar.Instance().Get("Yanjiu-DailyRoutines-GameTimeLeft");
         entry.OnClick =   OnDTREntryClick;
 
         UpdateEntryAndTimeInfo();

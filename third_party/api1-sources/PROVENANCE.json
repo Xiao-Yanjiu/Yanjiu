@@ -1,0 +1,38 @@
+[
+  {
+    "repository": "YouShux/OmniToolbox.Common",
+    "commit": "91ec532259a2569f8274d481ae323847a285d13f",
+    "archiveSha256": "9d3036969bcc67a9eda4afc781a33e2669f1523a7047bff0ceac32246515afc3",
+    "binaryOrigin": "Omni 1.1.8.7; AssemblyInformationalVersion identifies this commit"
+  },
+  {
+    "repository": "YouShux/TreeTools",
+    "commit": "e82ab7c197132a388b4bdd770580e77123248ead",
+    "archiveSha256": "da45d5a008e7e714ae96746fad9dbef10c31bee6718266660c031ae96da2017e",
+    "binaryOrigin": "Omni 1.1.8.7; AssemblyInformationalVersion identifies this commit"
+  },
+  {
+    "repository": "YouShux/TreeToolKit",
+    "commit": "4cf40bfd20664df3c693066b8e1ddeda89f10dc1",
+    "archiveSha256": "467bca864d070e61f6a1732cdcebdba14ca4adb5f5bf6cafd261b6a8eb80bd51",
+    "binaryOrigin": "Omni 1.1.8.7; AssemblyInformationalVersion identifies this commit"
+  },
+  {
+    "repository": "AtmoOmen/OmenTools",
+    "commit": "925446f261cc01d803d313ae965d015afdf02652",
+    "archiveSha256": "df7d3e70e5f3e96255e74dd61b11e80b701f913bd5b854db7f3484f31042375b",
+    "binaryOrigin": "Omni 1.1.8.7; AssemblyInformationalVersion identifies this commit"
+  },
+  {
+    "repository": "MidoriKami/KamiToolKit",
+    "commit": "1eaccb5c6d6fcc697f7e1b98b5528580f5edd201",
+    "archiveSha256": "68982858534124300338c1e1fec9db86563c4c75df5c4baf5688e164753e0280",
+    "binaryOrigin": "Omni 1.1.8.7; AssemblyInformationalVersion identifies this commit"
+  },
+  {
+    "repository": "AtmoOmen/FFXIVClientStructs.Expansion",
+    "commit": "485695b9e24199b180b5214bc96fb486d0841279",
+    "archiveSha256": "7b26ff2bc047002b7e64f1f33617632caccd56aff888663499c34e8c609e8a09",
+    "binaryOrigin": "Omni 1.1.8.7; AssemblyInformationalVersion identifies this commit"
+  }
+]

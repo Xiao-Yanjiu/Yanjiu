@@ -7,3 +7,5 @@
 - `DRLocalizations/`：DailyRoutines.Localizations 中文语言资源，保留来源归属，不将代码许可证扩张为资源的独立授权。
 
 其他运行库版本、许可证和来源见 third_party/plugin-runtime/README.md、plugin/licenses/ 和 third_party/licenses/。模块与第三方部分各自保留原许可证；包含 AGPL 模块的发行须遵守其 AGPL 条款。源码可从同一 Release 下载或通过对应 Git 标签取得。
+
+新版 API 1 运行库对应源码单独位于 third_party/api1-sources/，与旧 DR 的 OmenTools 运行库隔离；准确提交及构建来源见其中 PROVENANCE.json。

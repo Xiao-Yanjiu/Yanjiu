@@ -1,4 +1,4 @@
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using System.Numerics;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
@@ -307,7 +307,7 @@ public unsafe class FastInstanceZoneChange : ModuleBase
         switch (isAdd)
         {
             case true when entry == null:
-                entry ??= IDtrBar.Instance().Get("DailyRoutines-FastInstanceZoneChange");
+                entry ??= IDtrBar.Instance().Get("Yanjiu-DailyRoutines-FastInstanceZoneChange");
                 entry.OnClick = _ =>
                 {
                     Overlay ??= new(this)

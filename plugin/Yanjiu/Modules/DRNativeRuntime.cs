@@ -3,7 +3,7 @@ namespace Yanjiu.Modules;
 /// <summary>Initializes native UI only when a DR module is explicitly imported.</summary>
 internal static class DRNativeRuntime
 {
-    private static Task? initialization;private static bool stopping;
+    private static Task? initialization;private static Task? shutdown;private static bool stopping;
     public static Task EnsureReady()
     {
         if(stopping)throw new ObjectDisposedException(nameof(DRNativeRuntime));
@@ -11,10 +11,9 @@ internal static class DRNativeRuntime
     }
     public static void Stop()
     {
-        stopping=true;
-        if(initialization==null)return;
-        _=Cleanup(initialization);
+        _=StopAsync();
     }
+    public static Task StopAsync(){stopping=true;return shutdown??=initialization==null?Task.CompletedTask:Cleanup(initialization);}
     private static async Task Cleanup(Task task)
     {
         try{await task;await Services.Framework.Run(KamiToolKit.KamiToolKitLibrary.Dispose);}

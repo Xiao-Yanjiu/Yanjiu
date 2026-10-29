@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -51,7 +51,7 @@ public class AutoDisplayNetworkLatency : ModuleBase
         config = Config.Load(this) ?? new();
 
         monitor ??= new();
-        entry   ??= IDtrBar.Instance().Get("DailyRoutines-AutoDisplayNetworkLatency");
+        entry   ??= IDtrBar.Instance().Get("Yanjiu-DailyRoutines-AutoDisplayNetworkLatency");
         entry.OnClick = _ =>
         {
             if (Overlay == null)

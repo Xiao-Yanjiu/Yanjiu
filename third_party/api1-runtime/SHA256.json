@@ -1,0 +1,16 @@
+{
+  "OmniToolbox.Common.dll": "ff081f553617d40b2c11bad16d60edf1a4555e5c88189f5de3686e86cd875e20",
+  "TreeTools.dll": "8c27854cac258e4266039ef2a8072d79160ea68ccd148fcd47a947077b9a6642",
+  "TreeToolKit.dll": "caa65780fb2309b5b026580764a81e58feba5255afe99af2625299178e563e5e",
+  "OmenTools.dll": "3fbf23646ac6715f4bc9ce88100b5599a3e162795c5fec0d432f340d00ab9431",
+  "KamiToolKit.dll": "a3e63c2c44f7fb8f26da6a8ecd0b616c8f35c08ce0f23b64712bffcccae26270",
+  "FFXIVClientStructs.Expansion.dll": "ea0bd046bd0a9c6d586959f5a50d218ecb69cac7c389e56f350d37c7c687fb65",
+  "AngleSharp.dll": "3b957dcbc83e406e32268f8d4ab1fe069691b11ca32823168e751a192812cfc6",
+  "GuerrillaNtp.dll": "2c083c720ecbc2224fc728132b971b38ebc30d787a443a490b855e9b04d0094f",
+  "Jeffijoe.MessageFormat.dll": "d4b3af8a2efc4071dc36edbbbc8b04b9604c498bd882534ca0c1d3c5ec9bc355",
+  "Markdig.dll": "419844b384f1e7e285cb72ebe5976d047482c81a692e7b46a57a1d301d0cbaed",
+  "TinyPinyin.dll": "3e7f3d65e7a5076ca823dce496bc182a658ee72aacb23012e8c186a8e5aa2ede",
+  "Microsoft.Extensions.DependencyInjection.dll": "ba7e45a53867bfcf4b12997c2d565ce7c0eaa9595d2b509c56605b46a28228b1",
+  "Microsoft.Extensions.DependencyInjection.Abstractions.dll": "7d07e2588a256ae5983af6a2e64eac603cb81d8f224dbea5e65eda8d67258175",
+  "CsvHelper.dll": "189a0d69f35a7e3827bfc35111d5d6e29d08bae60780cc48b215a06b18b6a852"
+}

@@ -1,4 +1,4 @@
-using DailyRoutines.Common.Info.Models;
+﻿using DailyRoutines.Common.Info.Models;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
@@ -60,7 +60,7 @@ public unsafe partial class AutoCountPlayers : ModuleBase
     {
         config = Config.Load(this) ?? new();
 
-        entry       ??= IDtrBar.Instance().Get("DailyRoutines-AutoCountPlayers");
+        entry       ??= IDtrBar.Instance().Get("Yanjiu-DailyRoutines-AutoCountPlayers");
         entry.Shown =   true;
         entry.Text  =   $"{Lang.Get("AutoCountPlayers-PlayersAroundCount")}: 0";
         entry.OnClick = _ =>

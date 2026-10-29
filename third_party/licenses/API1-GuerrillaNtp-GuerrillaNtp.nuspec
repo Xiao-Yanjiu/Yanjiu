@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>GuerrillaNtp</id>
+    <version>3.1.0</version>
+    <title>GuerrillaNtp</title>
+    <authors>robertvazan</authors>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <icon>icon.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://guerrillantp.machinezoo.com/</projectUrl>
+    <description>Simple NTP (SNTP) client that can be embedded in desktop applications to provide accurate network time even when the system clock is unsynchronized.</description>
+    <tags>NTP SNTP time clock network</tags>
+    <repository url="https://github.com/robertvazan/guerrillantp" />
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="System.Memory" version="4.5.5" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="System.Memory" version="4.5.5" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

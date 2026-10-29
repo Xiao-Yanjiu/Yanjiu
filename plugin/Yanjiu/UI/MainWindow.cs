@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
@@ -42,7 +42,7 @@ public sealed class MainWindow : Window,IDisposable
         var pos=ImGui.GetWindowPos();var size=ImGui.GetWindowSize();
         ImGui.GetBackgroundDrawList().AddRectFilled(pos+new Vector2(6),pos+size+new Vector2(6),ImGui.ColorConvertFloat4ToU32(Themes.Current.Shadow),Themes.Current.BorderRadius*Themes.Scale);
         ImGui.BeginChild("sidebar",new Vector2(170*Themes.Scale,0),true);
-        ImGui.Spacing();ImGui.TextUnformatted("小烟酒");ImGui.TextDisabled("Yanjiu · 0.1.5");ImGui.Spacing();ImGui.Separator();ImGui.Spacing();
+        ImGui.Spacing();ImGui.TextUnformatted("小烟酒");ImGui.TextDisabled("Yanjiu · 0.1.6");ImGui.Spacing();ImGui.Separator();ImGui.Spacing();
         string[] pages=["首页","模块","外观","诊断"];
         for(int i=0;i<pages.Length;i++){bool active=page==i;if(active)ImGui.PushStyleColor(ImGuiCol.Button,Themes.Current.Selected);if(ThemeWidgets.Button(pages[i],new Vector2(-1,40*Themes.Scale)))page=i;if(active)ImGui.PopStyleColor();}
         if(ThemeWidgets.Button("图标浏览器",new Vector2(-1,40*Themes.Scale)))OmniModuleFactory.GetIconBrowser().Toggle();
@@ -140,7 +140,7 @@ public sealed class MainWindow : Window,IDisposable
             ImGui.SameLine();
         }
         ImGui.NewLine();
-        ImGui.TextDisabled($"DR 模块 {modules.Entries.Count} · 已启用 {modules.Entries.Count(e=>e.Instance?.IsEnabled==true)}");
+        ImGui.TextDisabled($"模块 {modules.Entries.Count} · 已启用 {modules.Entries.Count(e=>e.Instance?.IsEnabled==true)}");
         foreach(var entry in modules.Entries.Where(e=>Matches(e.Title+(e.Instance?.Descriptor.Description??e.Catalog?.Description)+e.Instance?.Descriptor.Author)&& ModuleFilters.Matches(e,moduleFilter)).OrderByDescending(e=>e.Preference.Favorite).ThenBy(e=>e.Title).ToArray())DrawEntry(entry);
         if(drCatalogError.Length>0)ImGui.TextWrapped(drCatalogError);
         if(moduleFilter=="全部"||moduleFilter=="在线模块"){
@@ -188,7 +188,7 @@ public sealed class MainWindow : Window,IDisposable
             if(showAuthor)ImGui.TableSetupColumn("author",ImGuiTableColumnFlags.WidthFixed,Math.Min(180*Themes.Scale,ImGui.GetContentRegionAvail().X*.23f));
             ImGui.TableSetupColumn("actions",ImGuiTableColumnFlags.WidthFixed,(entry.Origin=="在线"?112:36)*Themes.Scale);
             ImGui.TableNextColumn();
-            bool enabled=entry.Instance?.IsEnabled==true;ImGui.BeginDisabled(entry.Error.Length>0);
+            bool enabled=entry.Instance?.IsEnabled==true;ImGui.BeginDisabled(entry.Error.Length>0||entry.Transitioning);
             if(ImGui.Checkbox("##enabled",ref enabled)){ClearSettingsError(entry);modules.Enable(entry,enabled);}ImGui.EndDisabled();
             ImGui.TableNextColumn();
             bool open=selected?.Path==entry.Path;
@@ -207,6 +207,7 @@ public sealed class MainWindow : Window,IDisposable
             if(ImGui.BeginPopup("actions")){
                 if(ImGui.MenuItem(entry.Preference.Favorite?"取消收藏":"收藏")){entry.Preference.Favorite=!entry.Preference.Favorite;config.Save();}
                 if(entry.Compiled!=null&&ImGui.MenuItem("重载"))modules.Import(entry.Path,entry.Origin,entry.Preference.Hash,entry.Preference.Repository);
+                if(entry.Origin=="在线"&&FindOnline(entry) is {} update&&!update.Item.Sha256.Equals(entry.Preference.Hash,StringComparison.OrdinalIgnoreCase)&&ImGui.MenuItem("更新到 "+update.Item.Version))Install(update.Address,update.Listing,update.Item);
                 if(entry.Origin=="在线"&&ImGui.MenuItem("删除并卸载"))remove=true;
                 ImGui.EndPopup();
             }
@@ -227,8 +228,11 @@ public sealed class MainWindow : Window,IDisposable
         }
         if(selected?.Path==entry.Path){
             ImGui.Separator();
-            if(entry.Instance is OmniToolbox.Common.Module.Abstractions.ModuleBase){var macro="/yanjiu "+entry.Instance.ModuleName;ImGui.TextDisabled("Yanjiu 宏命令："+macro);ImGui.SameLine();if(ThemeWidgets.Button("复制宏命令"))ImGui.SetClipboardText(macro);}
+            if(entry.Instance is OmniToolbox.Common.Module.Abstractions.ModuleBase or Api1ModuleAdapter){var macro="/yanjiu "+entry.Instance.ModuleName;ImGui.TextDisabled("Yanjiu 宏命令："+macro);ImGui.SameLine();if(ThemeWidgets.Button("复制宏命令"))ImGui.SetClipboardText(macro);}
+            if(entry.Instance is Api1ModuleAdapter commands){foreach(var command in commands.MacroCommands()){ImGui.TextDisabled(command.Key+"："+command.Value);if(ThemeWidgets.Button("复制命令##"+command.Value))ImGui.SetClipboardText(command.Value);}}
             if(entry.Instance==null)ImGui.TextDisabled(entry.Error.Length>0?"此模块仍需适配，暂时无法打开设置":"模块正在加载，请稍候");
+            else if(entry.Instance is Api1ModuleAdapter api){if(!Api1Runtime.IsReady)ImGui.TextDisabled(Api1Runtime.StateText);else if(api.HasSettings)try{api.DrawSettings();}catch(Exception e){ImGui.TextWrapped("配置界面错误："+e.GetBaseException().Message);}}
+            else if(entry.Instance is AfkKeepAlive afk){afk.DrawSettings();}
             else if(!entry.Instance.IsEnabled){ try{disabledSettings.Draw(entry);}catch(Exception e){ImGui.TextWrapped("配置读取失败："+e.GetBaseException().Message);} }
             else if(entry.Instance.HasSettings){
                 disabledSettings.Forget(entry);
@@ -342,7 +346,7 @@ public sealed class MainWindow : Window,IDisposable
         try{
             var bytes=await online.Download(listing,item,stop.Token);if(stop.IsCancellationRequested)return;
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);File.WriteAllBytes(path+".tmp",bytes);File.Move(path+".tmp",path,true);
-            uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address)||config.HiddenAvailableModules.Contains(item.InternalName))return;modules.Import(path,"在线",repository:address);status="校验通过，正在导入 "+item.Name;});
+            uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address)||config.HiddenAvailableModules.Contains(item.InternalName))return;modules.Import(path,"在线",item.Sha256,address,item.ApiVersion);status="校验通过，正在导入 "+item.Name;});
         }catch(Exception e){var message=e.GetBaseException().Message;uiActions.Enqueue(()=>status=message);}
         finally{uiActions.Enqueue(()=>installing.Remove(path));}
     }

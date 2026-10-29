@@ -1,4 +1,4 @@
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using System.Numerics;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
@@ -241,7 +241,7 @@ public class AutoDisplayMitigationInfo : ModuleBase
         WindowManager.Instance().PostDraw += Draw;
         FrameworkManager.Instance().Reg(OnUpdate, 500);
 
-        barEntry ??= IDtrBar.Instance().Get("DailyRoutines-AutoDisplayMitigationInfo");
+        barEntry ??= IDtrBar.Instance().Get("Yanjiu-DailyRoutines-AutoDisplayMitigationInfo");
         barEntry.OnClick = _ =>
         {
             if (Overlay == null)

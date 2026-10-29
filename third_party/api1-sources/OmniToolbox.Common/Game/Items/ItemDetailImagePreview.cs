@@ -1,0 +1,219 @@
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Interface.Textures;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using OmenTools.Extensions;
+using OmenTools.Interop.Game.Helpers;
+using OmniToolbox.Config;
+using OmniToolbox.Host;
+using TreeTools.Lifecycle;
+using OmniToolbox.UI.Controls;
+using OmniToolbox.UI.Theme;
+
+namespace OmniToolbox.Items;
+
+internal sealed unsafe class ItemDetailImagePreview : IDisposable
+{
+    private readonly ItemImagePreviewConfig config;
+    private readonly ItemPreviewService itemPreviewService;
+    private readonly AddonEventRegistry addonEvents = new(DalamudServices.AddonLifecycle);
+    private ISharedImmediateTexture? previewTexture;
+    private ItemPreviewImage? preview;
+    private uint currentItemID;
+    private long nextRetryTick;
+    private bool lookupPending;
+    private bool drawRegistered;
+    private bool disposed;
+
+    public ItemDetailImagePreview(ItemImagePreviewConfig config, ItemPreviewService itemPreviewService)
+    {
+        this.config = config;
+        this.itemPreviewService = itemPreviewService;
+
+        try
+        {
+            addonEvents.Register(AddonEvent.PostUpdate, ADDON_NAME, OnItemDetailUpdate);
+            addonEvents.Register(AddonEvent.PreFinalize, ADDON_NAME, OnItemDetailFinalize);
+            DalamudServices.PluginInterface.UiBuilder.Draw += Draw;
+            drawRegistered = true;
+            Refresh();
+        }
+        catch
+        {
+            if (drawRegistered)
+            {
+                DalamudServices.PluginInterface.UiBuilder.Draw -= Draw;
+                drawRegistered = false;
+            }
+
+            addonEvents.Dispose();
+            throw;
+        }
+    }
+
+    public void Refresh() => UpdateCurrentItem(true);
+
+    public void Dispose()
+    {
+        if (disposed)
+        {
+            return;
+        }
+
+        disposed = true;
+        try
+        {
+            addonEvents.Dispose();
+        }
+        finally
+        {
+            if (drawRegistered)
+            {
+                DalamudServices.PluginInterface.UiBuilder.Draw -= Draw;
+                drawRegistered = false;
+            }
+
+            ClearCurrentItem();
+        }
+    }
+
+    private void OnItemDetailUpdate(AddonEvent _, AddonArgs args) => UpdateCurrentItem(false);
+
+    private void OnItemDetailFinalize(AddonEvent _, AddonArgs args) => ClearCurrentItem();
+
+    private void UpdateCurrentItem(bool force)
+    {
+        try
+        {
+            var agent = AgentItemDetail.Instance();
+            if (agent == null || agent->ItemId == 0)
+            {
+                ClearCurrentItem();
+                return;
+            }
+
+            var itemID = agent->ItemId;
+            if (!force &&
+                itemID == currentItemID &&
+                (!lookupPending || Environment.TickCount64 < nextRetryTick))
+            {
+                return;
+            }
+
+            currentItemID = itemID;
+            switch (itemPreviewService.ResolveImagePreview(itemID, config, out var image))
+            {
+                case ItemPreviewImageLookup.Found:
+                    preview = image;
+                    previewTexture = DalamudServices.TextureProvider.GetFromGame(image.TexturePath);
+                    lookupPending = false;
+                    break;
+                case ItemPreviewImageLookup.Pending:
+                    ClearImage();
+                    lookupPending = true;
+                    nextRetryTick = Environment.TickCount64 + 500;
+                    break;
+                default:
+                    ClearImage();
+                    lookupPending = false;
+                    break;
+            }
+        }
+        catch (Exception)
+        {
+            ClearImage();
+            lookupPending = false;
+        }
+    }
+
+    private void Draw()
+    {
+        if (lookupPending && Environment.TickCount64 >= nextRetryTick)
+        {
+            UpdateCurrentItem(true);
+        }
+
+        if (preview is not { } image ||
+            previewTexture?.GetWrapOrDefault() is not { } texture)
+        {
+            return;
+        }
+
+        var addon = AddonHelper.GetByName(ADDON_NAME);
+        if (addon == null ||
+            !addon->IsVisible ||
+            addon->RootNode == null ||
+            addon->WindowNode == null)
+        {
+            return;
+        }
+
+        var scale = Math.Clamp(config.Scale, 0.1f, 3f);
+        var nativeScale = addon->WindowNode->AtkResNode.GetScale().X;
+        var imageSize = OmniTheme.FitImageSize(
+            new Vector2(texture.Width, texture.Height),
+            (image.Kind is ItemPreviewImageKind.Minion or
+                ItemPreviewImageKind.Hairstyle or
+                ItemPreviewImageKind.FashionAccessory
+                    ? 192f
+                    : 240f) * nativeScale * scale);
+        var viewport = ImGui.GetMainViewport();
+        var displaySize = viewport.Size;
+        if (displaySize.X <= 0f || displaySize.Y <= 0f)
+        {
+            return;
+        }
+
+        var gap = 6f * nativeScale * scale;
+        var tooltipPosition = addon->WindowNode->AtkResNode.GetPosition();
+        var tooltipSize = addon->WindowNode->AtkResNode.GetSize();
+        var rightStart = MathF.Max(0f, tooltipPosition.X + tooltipSize.X + gap);
+        var leftEnd = MathF.Min(displaySize.X, tooltipPosition.X - gap);
+        var rightSpace = MathF.Max(0f, displaySize.X - rightStart);
+        var leftSpace = MathF.Max(0f, leftEnd);
+        var showOnRight = rightSpace >= imageSize.X ||
+                          (leftSpace < imageSize.X && rightSpace >= leftSpace);
+        var availableWidth = showOnRight ? rightSpace : leftSpace;
+        if (availableWidth <= 0f)
+        {
+            return;
+        }
+
+        imageSize *= MathF.Min(1f, MathF.Min(availableWidth / imageSize.X, displaySize.Y / imageSize.Y));
+        var position = viewport.Pos + new Vector2(
+            showOnRight ? rightStart : leftEnd - imageSize.X,
+            Math.Clamp(
+                tooltipPosition.Y - (image.Kind == ItemPreviewImageKind.Mount ? 22f * nativeScale * scale : 0f),
+                0f,
+                MathF.Max(0f, displaySize.Y - imageSize.Y)));
+        var drawList = ImGui.GetForegroundDrawList(viewport);
+        drawList.AddImage(texture.Handle, position, position + imageSize);
+
+        var statusSize = MathF.Min(imageSize.X, imageSize.Y) * 0.3f;
+        var statusMin = position + imageSize - new Vector2(statusSize);
+        FramedGameIcon.DrawCollectionStatus(
+            drawList,
+            statusMin,
+            position + imageSize,
+            image.IsUnlocked);
+    }
+
+    private void ClearCurrentItem()
+    {
+        currentItemID = 0;
+        lookupPending = false;
+        ClearImage();
+    }
+
+    private void ClearImage()
+    {
+        preview = null;
+        previewTexture = null;
+    }
+
+    #region 常量
+
+    private const string ADDON_NAME = "ItemDetail";
+
+    #endregion
+}

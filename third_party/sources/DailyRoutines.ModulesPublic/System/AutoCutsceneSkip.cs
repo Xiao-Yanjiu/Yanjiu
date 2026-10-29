@@ -1,4 +1,4 @@
-using DailyRoutines.Common.Extensions;
+﻿using DailyRoutines.Common.Extensions;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
@@ -91,7 +91,6 @@ public unsafe class AutoCutsceneSkip : ModuleBase
         whitelistZoneCombo.SelectedIDs = config.WhitelistZones;
         blacklistZoneCombo.SelectedIDs = config.BlacklistZones;
 
-        cutsceneUnskippablePatch.Set(true);
 
         CutsceneHandleInputHook ??= CutsceneHandleInputSig.GetHook<CutsceneHandleInputDelegate>(CutsceneHandleInputDetour);
         PlayCutsceneHook        ??= PlayCutsceneSig.GetHook<PlayCutsceneDelegate>(PlayCutsceneDetour);
@@ -144,7 +143,10 @@ public unsafe class AutoCutsceneSkip : ModuleBase
                     bgActiveColor: bgColor,
                     bgColor: bgColor
                 ))
-                config.Save(this);
+                {
+                    config.Save(this);
+                    OnZoneChanged(0);
+                }
 
             ImGui.SameLine();
             ImGui.TextUnformatted
@@ -165,6 +167,7 @@ public unsafe class AutoCutsceneSkip : ModuleBase
                 {
                     config.WhitelistZones = whitelistZoneCombo.SelectedIDs;
                     config.Save(this);
+                    OnZoneChanged(0);
                 }
             }
             else
@@ -173,6 +176,7 @@ public unsafe class AutoCutsceneSkip : ModuleBase
                 {
                     config.BlacklistZones = blacklistZoneCombo.SelectedIDs;
                     config.Save(this);
+                    OnZoneChanged(0);
                 }
             }
 
@@ -188,6 +192,7 @@ public unsafe class AutoCutsceneSkip : ModuleBase
     {
         var isValidCurrentZone = !IsProhibitToSkipInZone();
 
+        cutsceneUnskippablePatch.Set(isValidCurrentZone);
         CutsceneHandleInputHook.Toggle(isValidCurrentZone);
         PlayCutsceneHook.Toggle(isValidCurrentZone);
         PlayCutsceneLuaHook.Toggle(isValidCurrentZone);
@@ -196,6 +201,7 @@ public unsafe class AutoCutsceneSkip : ModuleBase
         PlayToBeContinuedHook.Toggle(isValidCurrentZone);
         IsEnterTerritoryEventLoginHook.Toggle(isValidCurrentZone);
 
+        IAgentLifecycle.Instance().UnregisterListener(OnAgent);
         if (isValidCurrentZone)
         {
             IAgentLifecycle.Instance().RegisterListener(AgentEvent.PostReceiveEvent, AgentId.PointMenu, OnAgent);
