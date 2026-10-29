@@ -3,10 +3,10 @@
     "Author": "小烟酒",
     "Name": "小烟酒 · Yanjiu",
     "InternalName": "Yanjiu",
-    "AssemblyVersion": "0.1.6.0",
+    "AssemblyVersion": "0.1.6.1",
     "DalamudApiLevel": 15,
     "ApplicableVersion": "any",
-    "Description": "小烟酒模块管理框架，提供在线和本地模块加载、收藏与分类筛选、图标浏览器及主题设置。\n支持经适配的 DR 和 Omni 模块。\n命令：/yanjiu；音乐播放器：/ymusic；图标浏览器：/yanjiu icons。\n0.1.6 测试版：新版在线模块 API 1、AFK 防掉线、DR 显示与过场规则修复。",
+    "Description": "小烟酒模块管理框架，提供在线和本地模块加载、收藏与分类筛选、图标浏览器及主题设置。\n支持经适配的 DR 和 Omni 模块。\n命令：/yanjiu；音乐播放器：/ymusic；图标浏览器：/yanjiu icons。\n0.1.6 测试版：新版在线模块 API 1、AFK 防掉线、DR 显示与过场规则修复。\n0.1.6.1：初始化 API 1 原生界面服务，修复用户宏启用崩溃与幻化窗口无法创建。",
     "Punchline": "在线、本地模块与图标浏览器，集中管理。",
     "RepoUrl": "https://github.com/Xiao-Yanjiu/Yanjiu",
     "Tags": [
@@ -15,14 +15,14 @@
       "模块",
       "主题"
     ],
-    "TestingAssemblyVersion": "0.1.6.0",
+    "TestingAssemblyVersion": "0.1.6.1",
     "IsHide": false,
     "IsTestingExclusive": true,
-    "DownloadLinkInstall": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6-test.1/Yanjiu-0.1.6-test.zip",
-    "DownloadLinkUpdate": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6-test.1/Yanjiu-0.1.6-test.zip",
-    "DownloadLinkTesting": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6-test.1/Yanjiu-0.1.6-test.zip",
-    "Changelog": "0.1.6 测试版：新增 AFK 防掉线；兼容新版 API 1 七个在线模块；修复过场规则、显示事件、信息栏重名及升级收藏状态。DR 303/311 编译绑定通过，8 项仍待适配；详情见发布报告。",
-    "LastUpdate": 1793241690,
+    "DownloadLinkInstall": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.1-test.1/Yanjiu-0.1.6.1-test.zip",
+    "DownloadLinkUpdate": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.1-test.1/Yanjiu-0.1.6.1-test.zip",
+    "DownloadLinkTesting": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.1-test.1/Yanjiu-0.1.6.1-test.zip",
+    "Changelog": "0.1.6.1：修复 API 1 原生界面库初始化和释放顺序，隔离原生窗口配置，解决用户宏崩溃与幻化窗口创建失败的已定位原因。构建和离线回归通过，游戏内交互仍需验证。DR 保持 303/311 编译绑定通过。",
+    "LastUpdate": 1793280750,
     "MinimumDalamudVersion": "15.0.3.9"
   }
 ]
