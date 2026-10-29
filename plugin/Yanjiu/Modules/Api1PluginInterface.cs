@@ -16,8 +16,9 @@ public class Api1PluginInterface:DispatchProxy
     protected override object? Invoke(MethodInfo? method,object?[]? args)
     {
         if(method==null)throw new MissingMethodException();
-        if(method.Name=="GetPluginConfigDirectory"){
-            var path=Path.Combine(target.GetPluginConfigDirectory(),"api1-runtime");Directory.CreateDirectory(path);return path;
+        if(method.Name is "GetPluginConfigDirectory" or "get_ConfigDirectory"){
+            var path=Path.Combine(target.GetPluginConfigDirectory(),"api1-runtime");Directory.CreateDirectory(path);
+            return method.Name=="get_ConfigDirectory"?new DirectoryInfo(path):path;
         }
         try{return method.Invoke(target,args);}catch(TargetInvocationException e)when(e.InnerException!=null){System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(e.InnerException).Throw();throw;}
     }

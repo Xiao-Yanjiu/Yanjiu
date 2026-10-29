@@ -14,6 +14,8 @@ public static class Api1Runtime
     private static RuntimeContext? context;
     private static Task? initialization;
     private static object? tools,kit,icons;
+    private static Type? nativeLibrary;
+    private static bool nativeInitializationStarted;
     private static bool stopping;private static string initializationError="";
     public static string DirectoryPath=>Path.Combine(PluginFiles.DirectoryPath,"Api1");
     private sealed class RuntimeContext:AssemblyLoadContext
@@ -52,16 +54,28 @@ public static class Api1Runtime
     private static async Task ObserveInitialization(){try{await Initialize().ConfigureAwait(false);}catch(Exception e){initializationError=e.GetBaseException().Message;throw;}}
     private static async Task Initialize()
     {
+        Dalamud.Plugin.IDalamudPluginInterface? pi=null;
         await Dispatch(()=>{
-            var pi=Api1PluginInterface.Create(Services.PluginInterface);
+            pi=Api1PluginInterface.Create(Services.PluginInterface);
             Invoke(Type("OmniToolbox.Host.DalamudServices"),null,"Initialize",pi);
             tools=Invoke(Type("TreeTools.Runtime","TreeTools"),null,"Prepare",pi);
         }).ConfigureAwait(false);
         await (Task)Invoke(tools!.GetType(),tools,"StartServicesAsync",Array.Empty<Type>(),CancellationToken.None)!;
+        Task? nativeInitialization=null;
         await Dispatch(()=>{
-            // None of the seven supported modules creates a plugin-owned native
-            // addon. Game addons must retain the game's own scaling policy.
-            kit=Invoke(Type("TreeToolKit.Runtime","TreeToolKit"),null,"Initialize",Services.Framework,Services.PluginInterface.UiBuilder,Services.Addons,(Func<string,bool>)(_=>false),(Action<Exception>)(e=>Services.Log.Error(e,"API 1 native UI")));
+            nativeLibrary=Type("KamiToolKit.KamiToolKitLibrary","KamiToolKit");
+            nativeInitializationStarted=true;
+            nativeInitialization=(Task)Invoke(nativeLibrary,null,"InitializeAsync",pi,"Yanjiu API 1")!;
+        }).ConfigureAwait(false);
+        // TreeToolKit initializes fonts/scale helpers only. The isolated KamiToolKit
+        // must have its own services and close callback before any module creates nodes.
+        await nativeInitialization!.ConfigureAwait(false);
+        await Dispatch(()=>{
+            var nativeAddon=Type("KamiToolKit.BaseTypes.NativeAddon","KamiToolKit");
+            var created=nativeAddon.GetProperty("CreatedAddons",Members)??throw new MissingMemberException(nativeAddon.FullName,"CreatedAddons");
+            var addonName=nativeAddon.GetProperty("InternalName",Members)??throw new MissingMemberException(nativeAddon.FullName,"InternalName");
+            bool OwnsAddon(string name)=>created.GetValue(null) is System.Collections.IEnumerable addons&&addons.Cast<object>().Any(addon=>string.Equals((string?)addonName.GetValue(addon),name,StringComparison.Ordinal));
+            kit=Invoke(Type("TreeToolKit.Runtime","TreeToolKit"),null,"Initialize",Services.Framework,Services.PluginInterface.UiBuilder,Services.Addons,(Func<string,bool>)OwnsAddon,(Action<Exception>)(e=>Services.Log.Error(e,"API 1 native UI")));
             var iconType=Type("OmniToolbox.UI.IconBrowser");
             var configType=Type("OmniToolbox.UI.IconBrowserConfig");
             var path=Path.Combine(Services.ConfigDirectory,"Api1IconBrowser.json");
@@ -96,8 +110,11 @@ public static class Api1Runtime
         async Task Capture(Func<Task> f){try{await f().ConfigureAwait(false);}catch(Exception e){errors.Add(e);}}
         if(tools!=null){Invoke(tools.GetType(),tools,"BeginShutdown");await Capture(async()=>await (Task)Invoke(tools.GetType(),tools,"StopTaskHelpersAsync")!);}
         if(kit!=null)await Capture(async()=>await ((ValueTask)Invoke(kit.GetType(),kit,"DisposeAsync")!).AsTask());
+        // Modules have drained before this method. Release native windows/nodes
+        // while their services still exist, before unloading Omen/TreeTools.
+        if(nativeInitializationStarted&&nativeLibrary!=null)await Capture(async()=>await (Task)Invoke(nativeLibrary,null,"DisposeAsync")!);
         if(tools!=null)await Capture(async()=>await ((ValueTask)Invoke(tools.GetType(),tools,"DisposeAsync")!).AsTask());
-        lock(gate){stopping=true;icons=null;tools=null;kit=null;context?.Unload();context=null;}
+        lock(gate){stopping=true;icons=null;tools=null;kit=null;nativeLibrary=null;nativeInitializationStarted=false;context?.Unload();context=null;}
         if(errors.Count>0)throw new AggregateException("API 1 runtime shutdown failed",errors);
     }
 }

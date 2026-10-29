@@ -5,6 +5,7 @@ if(!$ArtifactPath){$ArtifactPath=Join-Path $ProjectRoot 'artifacts/plugin'}
 $manifest=Get-Content -LiteralPath "$ArtifactPath/Yanjiu.json" -Raw | ConvertFrom-Json
 $version=[Version]$manifest.AssemblyVersion
 $versionLabel="$($version.Major).$($version.Minor).$($version.Build)"
+if($version.Revision -gt 0){$versionLabel += ".$($version.Revision)"}
 if(!$Tag){$Tag="v$versionLabel-test.1"}
 $hostHash=(Get-FileHash -LiteralPath "$ArtifactPath/Yanjiu.dll").Hash
 if([Reflection.AssemblyName]::GetAssemblyName("$ArtifactPath/Yanjiu.dll").Version -ne $version){throw 'Manifest and assembly version differ'}

@@ -31,4 +31,6 @@ New-Item -ItemType Directory -Force -Path $emptyPackage | Out-Null
 & "$repo/plugin/build.ps1" -ProjectRoot $work -OutputDirectory $output -DotnetPath $dotnetExecutable -DalamudPath $DalamudPath
 $env:YANJIU_OFFLINE_TESTS='1'
 & "$repo/plugin/tests/run-tests.ps1" -ProjectRoot $work -ArtifactPath $output -DotnetPath $dotnetExecutable -DalamudPath $DalamudPath
+& $dotnetExecutable run --project "$repo/plugin/tools/Api1NativeRuntimeCheck/Api1NativeRuntimeCheck.csproj" -c Release "-p:YanjiuArtifactPath=$output" -- $output $DalamudPath
+if($LASTEXITCODE -ne 0){throw "API 1 native runtime contract failed"}
 Write-Output "Complete test release: $output"
