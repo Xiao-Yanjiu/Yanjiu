@@ -3,7 +3,7 @@
     "Author": "小烟酒",
     "Name": "小烟酒 · Yanjiu",
     "InternalName": "Yanjiu",
-    "AssemblyVersion": "0.1.6.1",
+    "AssemblyVersion": "0.1.6.2",
     "DalamudApiLevel": 15,
     "ApplicableVersion": "any",
     "Description": "小烟酒模块管理框架，提供在线和本地模块加载、收藏与分类筛选、图标浏览器及主题设置。\n支持经适配的 DR 和 Omni 模块。\n命令：/yanjiu；音乐播放器：/ymusic；图标浏览器：/yanjiu icons。\n0.1.6 测试版：新版在线模块 API 1、AFK 防掉线、DR 显示与过场规则修复。\n0.1.6.1：初始化 API 1 原生界面服务，修复用户宏启用崩溃与幻化窗口无法创建。",
@@ -15,14 +15,14 @@
       "模块",
       "主题"
     ],
-    "TestingAssemblyVersion": "0.1.6.1",
+    "TestingAssemblyVersion": "0.1.6.2",
     "IsHide": false,
     "IsTestingExclusive": true,
-    "DownloadLinkInstall": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.1-test.1/Yanjiu-0.1.6.1-test.zip",
-    "DownloadLinkUpdate": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.1-test.1/Yanjiu-0.1.6.1-test.zip",
-    "DownloadLinkTesting": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.1-test.1/Yanjiu-0.1.6.1-test.zip",
-    "Changelog": "0.1.6.1：修复 API 1 原生界面库初始化和释放顺序，隔离原生窗口配置，解决用户宏崩溃与幻化窗口创建失败的已定位原因。构建和离线回归通过，游戏内交互仍需验证。DR 保持 303/311 编译绑定通过。",
-    "LastUpdate": 1793280750,
+    "DownloadLinkInstall": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.2-test.1/Yanjiu-0.1.6.2-test.zip",
+    "DownloadLinkUpdate": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.2-test.1/Yanjiu-0.1.6.2-test.zip",
+    "DownloadLinkTesting": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.2-test.1/Yanjiu-0.1.6.2-test.zip",
+    "Changelog": "修复本地模块刷新被旧 DLL 哈希拒绝的问题。手动刷新接受更新文件，保留配置，更新后默认停用；在线模块继续校验仓库哈希。构建、离线回归通过；游戏内仍需验证。",
+    "LastUpdate": 1793326659,
     "MinimumDalamudVersion": "15.0.3.9"
   }
 ]
