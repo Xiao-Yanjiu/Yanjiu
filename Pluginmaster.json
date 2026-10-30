@@ -3,10 +3,10 @@
     "Author": "小烟酒",
     "Name": "小烟酒 · Yanjiu",
     "InternalName": "Yanjiu",
-    "AssemblyVersion": "0.1.6.2",
+    "AssemblyVersion": "0.1.6.3",
     "DalamudApiLevel": 15,
     "ApplicableVersion": "any",
-    "Description": "小烟酒模块管理框架，提供在线和本地模块加载、收藏与分类筛选、图标浏览器及主题设置。\n支持经适配的 DR 和 Omni 模块。\n命令：/yanjiu；音乐播放器：/ymusic；图标浏览器：/yanjiu icons。\n0.1.6 测试版：新版在线模块 API 1、AFK 防掉线、DR 显示与过场规则修复。\n0.1.6.1：初始化 API 1 原生界面服务，修复用户宏启用崩溃与幻化窗口无法创建。",
+    "Description": "小烟酒模块管理框架，提供在线和本地模块加载、收藏与分类筛选、图标浏览器及主题设置。\n支持经适配的 DR 和 Omni 模块。\n命令：/yanjiu；音乐播放器：/ymusic；图标浏览器：/yanjiu icons。\n0.1.6 测试版：新版在线模块 API 1、AFK 防掉线、DR 显示与过场规则修复。\n0.1.6.3：恢复旧版本收藏，保留个人配色并在迁移前备份；API 1 模块统一跟随 Yanjiu 当前主题。",
     "Punchline": "在线、本地模块与图标浏览器，集中管理。",
     "RepoUrl": "https://github.com/Xiao-Yanjiu/Yanjiu",
     "Tags": [
@@ -15,14 +15,14 @@
       "模块",
       "主题"
     ],
-    "TestingAssemblyVersion": "0.1.6.2",
+    "TestingAssemblyVersion": "0.1.6.3",
     "IsHide": false,
     "IsTestingExclusive": true,
-    "DownloadLinkInstall": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.2-test.1/Yanjiu-0.1.6.2-test.zip",
-    "DownloadLinkUpdate": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.2-test.1/Yanjiu-0.1.6.2-test.zip",
-    "DownloadLinkTesting": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.2-test.1/Yanjiu-0.1.6.2-test.zip",
-    "Changelog": "修复本地模块刷新被旧 DLL 哈希拒绝的问题。手动刷新接受更新文件，保留配置，更新后默认停用；在线模块继续校验仓库哈希。构建、离线回归通过；游戏内仍需验证。",
-    "LastUpdate": 1793326659,
+    "DownloadLinkInstall": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.3-test.1/Yanjiu-0.1.6.3-test.zip",
+    "DownloadLinkUpdate": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.3-test.1/Yanjiu-0.1.6.3-test.zip",
+    "DownloadLinkTesting": "https://github.com/Xiao-Yanjiu/Yanjiu/releases/download/v0.1.6.3-test.1/Yanjiu-0.1.6.3-test.zip",
+    "Changelog": "修复升级后旧路径收藏丢失，保留个人主题并在迁移前备份配置；API 1 模块跟随 Yanjiu 当前主题。离线回归通过，真实配置只读验证可恢复20个收藏；尚未游戏内实测。工具栏与跨界传送独立模块需另外刷新。",
+    "LastUpdate": 1793367629,
     "MinimumDalamudVersion": "15.0.3.9"
   }
 ]
