@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 using Dalamud.Configuration;
 namespace Yanjiu;
 public sealed class Configuration : IPluginConfiguration
@@ -18,17 +18,27 @@ public sealed class Configuration : IPluginConfiguration
     public bool RemoveRetiredBuiltInModules()=>Modules.RemoveAll(p=>p.Path=="builtin:phone")>0;
     public ModulePreference ResolveBundledPreference(string path,string source)
     {
-        var exact=Modules.FirstOrDefault(p=>p.Path.Equals(path,StringComparison.OrdinalIgnoreCase));
-        if(exact!=null)return exact;
-        // Bundled paths contain the installed plugin version; preserve user choices across upgrades.
-        var previous=Modules.FirstOrDefault(p=>p.Origin==source&&System.IO.Path.GetFileName(p.Path).Equals(System.IO.Path.GetFileName(path),StringComparison.OrdinalIgnoreCase));
-        if(previous!=null){previous.Path=path;previous.Hash="";return previous;}
-        var created=new ModulePreference{Path=path,Origin=source};Modules.Add(created);return created;
+        var key=source+":"+System.IO.Path.GetFileName(path);
+        var candidates=Modules.Where(p=>
+            string.Equals(p.BundledKey,key,StringComparison.OrdinalIgnoreCase)||
+            (string.Equals(p.Origin,source,StringComparison.OrdinalIgnoreCase)&&
+             System.IO.Path.GetFileName(p.Path).Equals(System.IO.Path.GetFileName(path),StringComparison.OrdinalIgnoreCase))) .ToArray();
+        var exact=candidates.FirstOrDefault(p=>p.Path.Equals(path,StringComparison.OrdinalIgnoreCase));
+        var result=exact??candidates.FirstOrDefault()??new ModulePreference{Origin=source};
+        // Merge stranded favorites once, then remove old identities so an explicit
+        // later un-favorite cannot be resurrected on the next startup.
+        result.Favorite|=candidates.Any(p=>p.Favorite);
+        if(!result.Path.Equals(path,StringComparison.OrdinalIgnoreCase)) result.Hash="";
+        result.Path=path;result.BundledKey=key;
+        foreach(var previous in candidates) if(!ReferenceEquals(previous,result)) Modules.Remove(previous);
+        if(!Modules.Contains(result))Modules.Add(result);
+        return result;
     }
     public void Save()=>Services.PluginInterface.SavePluginConfig(this);
 }
 public sealed class ModulePreference
 {
+    public string BundledKey { get; set; } = "";
     public string Path { get; set; } = "";
     public string Hash { get; set; } = "";
     public int ApiVersion { get; set; }

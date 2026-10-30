@@ -4,13 +4,14 @@
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Yanjiu</AssemblyName>
     <RootNamespace>Yanjiu</RootNamespace>
-    <Version>0.1.6.2</Version>
+    <Version>0.1.6.3</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj/**;bin/**</DefaultItemExcludes>
     <DalamudLibPath Condition="'$(DalamudLibPath)'==''">$(APPDATA)/XIVLauncherCN/addon/Hooks/dev</DalamudLibPath>
     <YanjiuDependencyPath Condition="'$(YanjiuDependencyPath)'==''">../../third_party/plugin-runtime</YanjiuDependencyPath>
   </PropertyGroup>

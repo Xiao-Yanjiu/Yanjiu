@@ -94,7 +94,19 @@ public static class Api1Runtime
     {
         var theme=Type("OmniToolbox.UI.Theme.OmniTheme");
         var p=theme.GetProperty("CurrentTheme",Members)!;
-        p.SetValue(null,Enum.Parse(p.PropertyType,"LineGraphite"));
+        var palette=UI.Themes.Current;
+        p.SetValue(null,Enum.Parse(p.PropertyType,palette.Dark?"LineGraphite":"LineGreen"));
+        // The provider lives in an isolated load context. Copy values rather than
+        // passing a host ThemeTokens instance across incompatible type identities.
+        var tokens=theme.GetProperty("BaseTokens",Members)!.GetValue(null)!;
+        void Set(string name,object value)=>tokens.GetType().GetProperty(name,Members)!.SetValue(tokens,value);
+        Set("Primary",palette.Surface);Set("Secondary",palette.Selected);Set("Accent",palette.Accent);
+        Set("Background",palette.Background);Set("Surface",palette.Surface);Set("Text",palette.Text);
+        Set("Border",palette.Border);Set("Shadow",palette.Shadow);
+        Set("BorderRadius",palette.BorderRadius);Set("ButtonRadius",palette.NativeGame?12f:8f);
+        Set("BorderThickness",palette.BorderThickness);
+        theme.GetField("scopedTokens",Members)!.SetValue(null,tokens);
+        theme.GetField("scopedControlAccent",Members)!.SetValue(null,palette.Accent);
     }
     public static void SaveJson(string path,object value,Type type)
     {

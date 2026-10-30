@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
 using System.Security.Cryptography;
@@ -37,6 +37,35 @@ static class Tests
   Check(ReferenceEquals(savedPreference,migratedPreference)&&migratedPreference.Favorite&&migratedPreference.Enabled&&migratedPreference.Hash==""&&upgradeConfig.Modules.Count==1,"bundled upgrade preserves favorites and enabled intention without pinning obsolete binary hash");
   var otherSource=upgradeConfig.ResolveBundledPreference("C:/plugins/0.1.6/Omni/Modules/AutoLogin.dll","Omni");
   Check(!ReferenceEquals(otherSource,migratedPreference)&&!otherSource.Favorite,"same filename in another provider does not inherit preference");
+  var duplicateConfig=new Yanjiu.Configuration();
+  duplicateConfig.Modules.Add(new(){Path="C:/plugins/old/DR/Modules/AutoLogin.dll",Origin="DR",Favorite=true});
+  duplicateConfig.Modules.Add(new(){Path="C:/plugins/new/DR/Modules/AutoLogin.dll",Origin="DR",Favorite=false});
+  var recovered=duplicateConfig.ResolveBundledPreference("C:/plugins/new/DR/Modules/AutoLogin.dll","DR");
+  Check(recovered.Favorite&&duplicateConfig.Modules.Count==1,"recover stranded favorites even when a new-version record already exists");
+  recovered.Favorite=false;
+  Check(!duplicateConfig.ResolveBundledPreference("C:/plugins/next/DR/Modules/AutoLogin.dll","DR").Favorite,"explicit un-favorite survives next upgrade");
+  if(Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("YANJIU_ARTIFACT_PATH")!,"Api1"))) {
+   Yanjiu.PluginFiles.Initialize(Path.Combine(Environment.GetEnvironmentVariable("YANJIU_ARTIFACT_PATH")!,"Yanjiu.dll"));
+   var customTheme=new Yanjiu.Configuration{Theme=Themes.NativeGameIndex};
+   customTheme.ThemeColors["body"]=[.21f,.22f,.23f,1];Themes.Configure(customTheme);
+   typeof(Api1Runtime).GetMethod("SyncTheme",BindingFlags.Static|BindingFlags.NonPublic)!.Invoke(null,null);
+   var providerTheme=Api1Runtime.Type("OmniToolbox.UI.Theme.OmniTheme");
+   var tokens=providerTheme.GetProperty("Tokens")!.GetValue(null)!;
+   Check((System.Numerics.Vector4)tokens.GetType().GetProperty("Background")!.GetValue(tokens)! ==Themes.Current.Background,"API1 receives current Yanjiu custom background");
+   Check((System.Numerics.Vector4)tokens.GetType().GetProperty("Border")!.GetValue(tokens)! ==Themes.Current.Border,"API1 receives Yanjiu border color");
+  }
+  var recoveryInput=Environment.GetEnvironmentVariable("YANJIU_RECOVERY_TEST_CONFIG");
+  if(!string.IsNullOrWhiteSpace(recoveryInput)){
+   using var document=System.Text.Json.JsonDocument.Parse(File.ReadAllText(recoveryInput));
+   var moduleJson=document.RootElement.GetProperty("Modules");
+   if(moduleJson.ValueKind==System.Text.Json.JsonValueKind.Object) moduleJson=moduleJson.GetProperty("$values");
+   var actual=new Yanjiu.Configuration{Modules=System.Text.Json.JsonSerializer.Deserialize<List<Yanjiu.ModulePreference>>(moduleJson.GetRawText())!};
+   var expected=actual.Modules.Where(x=>x.Origin=="DR"&&x.Favorite).Select(x=>Path.GetFileName(x.Path)).Distinct(StringComparer.OrdinalIgnoreCase).Count();
+   foreach(var name in actual.Modules.Where(x=>x.Origin=="DR").Select(x=>Path.GetFileName(x.Path)).Distinct(StringComparer.OrdinalIgnoreCase).ToArray())
+    actual.ResolveBundledPreference("C:/migration-check/DR/Modules/"+name,"DR");
+   Check(actual.Modules.Count(x=>x.Origin=="DR"&&x.Favorite)==expected,"real configuration stranded favorites recover without writing user files");
+   Console.WriteLine("REAL CONFIG RECOVERY PASS: "+expected+" favorites; source left unchanged.");
+  }
   var blankHelp=new Dalamud.Game.Command.CommandInfo((_,_)=>{});
   var existingHelp=new Dalamud.Game.Command.CommandInfo((_,_)=>{}){HelpMessage="模块原有帮助"};
   CommandMetadata.EnsureHelp(new Dictionary<string,Dalamud.Game.Command.CommandInfo>{{"/test",blankHelp},{"/existing",existingHelp}});
@@ -386,6 +415,7 @@ public class TestIpcCallGate:DispatchProxy
   }
  }
 }
+
 
 
 

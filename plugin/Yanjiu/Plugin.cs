@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 using Dalamud.Plugin;
 using Dalamud.Game.Command;
 using Dalamud.Plugin.Services;
@@ -18,8 +18,12 @@ public sealed class Plugin : IAsyncDalamudPlugin
     private void Initialize(IDalamudPluginInterface pi)
     {
         PluginFiles.Initialize(pi.AssemblyLocation.FullName);pi.Create<Services>();Services.ConfigDirectory=pi.GetPluginConfigDirectory();Directory.CreateDirectory(Services.ConfigDirectory);
+        // Preserve the pre-migration file once per host version before any module save.
+        var configFile=Services.ConfigDirectory.TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar)+".json";
+        var backup=Path.Combine(Services.ConfigDirectory,"backups","before-"+typeof(Plugin).Assembly.GetName().Version+".json");
+        if(File.Exists(configFile)&&!File.Exists(backup)){Directory.CreateDirectory(Path.GetDirectoryName(backup)!);File.Copy(configFile,backup);}
         config=pi.GetPluginConfig() as Configuration??new Configuration();config.Modules??=new();config.Repositories??=new();config.ThemeColors??=new();config.RepositoryAutoRefresh??=new();config.HiddenAvailableModules??=new();
-        if(config.NativeThemeRevision<2){config.Theme=Themes.NativeGameIndex;config.ThemeColors.Clear();config.BorderWidth=2.25f;config.NativeThemeRevision=2;config.Save();}
+        if(config.NativeThemeRevision<2){config.NativeThemeRevision=2;config.Save();}
         if(config.RemoveRetiredBuiltInModules())config.Save();
         modules=new ModuleManager(config,new SourceCompiler());DailyRoutines.Manager.ModuleManager.Instance().Bind(modules);OmniModuleFactory.Bind(modules);
         try{DService.Init(pi);_ = OmenTools.OmenService.WindowManager.Instance().WindowSystem;}catch(Exception e){Services.Log.Error(e,"OmenTools initialization failed; helper-dependent modules may be unavailable");}
