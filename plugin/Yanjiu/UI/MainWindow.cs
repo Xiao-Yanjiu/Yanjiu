@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
@@ -86,7 +86,7 @@ public sealed class MainWindow : Window,IDisposable
                 ImGui.TableNextColumn();if(IconButton(Plus,"addLocal","添加本地模块")){modules.Import(localPath);localPath="";}
                 foreach(var pref in config.Modules.Where(p=>p.Origin=="本地"&&!p.Path.StartsWith("builtin:")).ToArray()){
                     ImGui.PushID(pref.Path);ImGui.TableNextColumn();string display=pref.Path;ImGui.SetNextItemWidth(-1);ImGui.InputText("##path",ref display,2000,ImGuiInputTextFlags.ReadOnly);
-                    ImGui.TableNextColumn();if(IconButton(Refresh,"reload","重新读取本地文件"))modules.Import(pref.Path,pref.Origin,pref.Hash);ImGui.SameLine();if(IconButton(Trash,"remove","移除本地地址并卸载模块；保留原文件"))RemovePath(pref.Path);ImGui.PopID();
+                    ImGui.TableNextColumn();if(IconButton(Refresh,"reload","重新读取本地文件"))modules.Import(pref.Path,"本地");ImGui.SameLine();if(IconButton(Trash,"remove","移除本地地址并卸载模块；保留原文件"))RemovePath(pref.Path);ImGui.PopID();
                 }
                 ImGui.EndTable();
             }

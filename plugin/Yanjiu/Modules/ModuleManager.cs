@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 using System.Collections.Concurrent;
 namespace Yanjiu.Modules;
 public sealed class ModuleEntry : IDisposable,IAsyncDisposable
@@ -63,7 +63,7 @@ public sealed class ModuleManager : IDisposable
             try{await readiness.WaitAsync(stop.Token);await compileSlots.WaitAsync(stop.Token);acquired=true;stop.Token.ThrowIfCancellationRequested();if(revisions.GetValueOrDefault(file)!=revision)return;var bytes=File.ReadAllBytes(file);
                 if(origin=="在线"&&!SourceCompiler.IsApi1Payload(bytes,file)){requiresUpgrade=true;throw new InvalidDataException("在线模块缓存仍为旧接口。文件和配置已保留，请刷新仓库后在模块菜单更新到 API 1 版本。");}
                 if(SourceCompiler.IsApi1Payload(bytes,file)){
-                    if(!string.IsNullOrWhiteSpace(expectedHash)&&!Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes)).Equals(expectedHash,StringComparison.OrdinalIgnoreCase))throw new InvalidDataException("API 1 模块摘要已变化，请从仓库重新安装确认");
+                    if(!string.IsNullOrWhiteSpace(expectedHash)&&!Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes)).Equals(expectedHash,StringComparison.OrdinalIgnoreCase))throw new InvalidDataException(origin=="本地"?"本地模块文件已更新，请在本地模块地址中点击刷新重新导入":"API 1 模块摘要已变化，请从仓库重新安装确认");
                     if(origin=="在线")try{using var source=new OnlineRepository();await source.VerifyPublicRepository(canonicalRepository??"",stop.Token);}catch{repositoryFailed=true;throw;}
                 }
                 compiled=compiler.Compile(bytes,file);if(declaredApi==1&&!Api1Runtime.IsModule(compiled.ModuleType))throw new InvalidDataException("清单声明 API 1，但模块未实现新版契约");}
