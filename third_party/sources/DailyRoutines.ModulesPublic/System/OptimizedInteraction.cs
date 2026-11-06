@@ -251,6 +251,11 @@ public unsafe class OptimizedInteraction : ModuleBase
     {
         if (obj == null || IObjectTable.Instance().LocalPlayer is not { } localPlayer) return 0;
 
+        // The market board opens through native target interaction. A generic event-start
+        // packet cannot replace that flow.
+        if (obj->NameString == MarketBoardName)
+            return InteractWithObjectHook!.Original(system, obj, checkLOS);
+
         // 咏唱状态
         MemoryHelper.Write(ICondition.Instance().Address + 27, false);
 
@@ -325,10 +330,10 @@ public unsafe class OptimizedInteraction : ModuleBase
 
     #region 常量
 
+    private static readonly string MarketBoardName = LuminaGetter.GetRowOrDefault<EObjName>(2000073).Singular.ToString();
+
     private static readonly FrozenSet<string> WhitelistObjectNames =
     [
-        // 市场布告板
-        LuminaGetter.GetRowOrDefault<EObjName>(2000073).Singular.ToString(),
         // 简易以太之光
         LuminaGetter.GetRowOrDefault<EObjName>(2003395).Singular.ToString()
     ];
