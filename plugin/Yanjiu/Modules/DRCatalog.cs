@@ -11,7 +11,8 @@ public sealed class DRLocalModule
 public static class DRCatalog
 {
     public static string Root=>RootFor("DR");
-    public static string RootFor(string source){if(source is not ("DR" or "Omni"))throw new ArgumentException("无效来源");return Path.Combine(PluginFiles.DirectoryPath,source,"Modules");}
+    public static string RootFor(string source){if(source is not ("DR" or "Omni" or "Yanjiu"))throw new ArgumentException("无效来源");return Path.Combine(PluginFiles.DirectoryPath,source,"Modules");}
+    public static string ModulePath(DRLocalModule item)=>Path.Combine(RootFor(item.Source),(item.Source=="Yanjiu"?"Yanjiu.Modules.":"")+item.Id+".dll");
     public static IReadOnlyList<DRLocalModule> Load(string source="DR")
     {
         var path=Path.Combine(RootFor(source),"catalog.json");
@@ -27,7 +28,7 @@ public static class DRCatalog
     {
         if(!item.Compiles||!item.Importable)throw new InvalidOperationException(item.Error);
         if(!System.Text.RegularExpressions.Regex.IsMatch(item.Id,@"^[A-Za-z][A-Za-z0-9_]{0,127}$"))throw new InvalidDataException("无效模块名称");
-        var path=Path.Combine(RootFor(item.Source),item.Id+".dll");
+        var path=ModulePath(item);
         if(!File.Exists(path)||new FileInfo(path).Length>4*1024*1024)throw new InvalidDataException("DR模块文件缺失或过大");
         if(!Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path))).Equals(item.Sha256,StringComparison.OrdinalIgnoreCase))throw new InvalidDataException("DR模块校验失败，请重新构建");
         return path;

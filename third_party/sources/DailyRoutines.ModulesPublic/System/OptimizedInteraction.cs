@@ -102,8 +102,8 @@ public unsafe class OptimizedInteraction : ModuleBase
         EventFramework* framework,
         GameObject*     source,
         GameObject*     target,
-        ushort          interactType,
-        bool            sendError,
+        byte            interactType,
+        uint*           resultCode,
         byte            a6
     );
 
@@ -198,20 +198,22 @@ public unsafe class OptimizedInteraction : ModuleBase
         CheckCameraPositionHook.Toggle(isEnable);
     }
 
-    private static bool CameraObjectBlockedDetour
+    [ThreadStatic] private static int nativeMarketInteractionDepth;
+    private static bool IsMarketBoard(GameObject* obj)=>obj!=null&&(obj->BaseId==2000073||(!string.IsNullOrEmpty(MarketBoardName)&&obj->NameString==MarketBoardName));
+    private bool CameraObjectBlockedDetour
     (
         nint a1,
         nint a2,
         nint a3
-    ) => true;
+    ) => nativeMarketInteractionDepth>0?CameraObjectBlockedHook!.Original(a1,a2,a3):true;
 
-    private static bool IsObjectInViewRangeHookDetour
+    private bool IsObjectInViewRangeHookDetour
     (
         TargetSystem* system,
         GameObject*   gameObject
-    ) => true;
+    ) => nativeMarketInteractionDepth>0||IsMarketBoard(gameObject)?IsObjectInViewRangeHook!.Original(system,gameObject):true;
 
-    private static bool InteractCheck0Detour
+    private bool InteractCheck0Detour
     (
         nint a1,
         nint a2,
@@ -225,22 +227,23 @@ public unsafe class OptimizedInteraction : ModuleBase
         nint a1
     ) => false;
 
-    private static bool CheckTargetPositionDetour
+    private bool CheckTargetPositionDetour
     (
         EventFramework* framework,
         GameObject*     source,
         GameObject*     target,
-        ushort          interactType,
-        bool            sendError,
+        byte            interactType,
+        uint*           resultCode,
         byte            a6
     )
-        => true;
+        => nativeMarketInteractionDepth>0||IsMarketBoard(target)?CheckTargetPositionHook!.Original(framework,source,target,interactType,resultCode,a6):AllowOptimizedPosition(resultCode);
 
-    private static float CheckTargetDistanceDetour
+    private static bool AllowOptimizedPosition(uint* resultCode){if(resultCode!=null)*resultCode=0;return true;}
+    private float CheckTargetDistanceDetour
     (
         GameObject* localPlayer,
         GameObject* target
-    ) => 0f;
+    ) => nativeMarketInteractionDepth>0||IsMarketBoard(target)?CheckTargetDistanceHook!.Original(localPlayer,target):0f;
 
     private ulong InteractWithObjectDetour
     (
@@ -250,6 +253,15 @@ public unsafe class OptimizedInteraction : ModuleBase
     )
     {
         if (obj == null || IObjectTable.Instance().LocalPlayer is not { } localPlayer) return 0;
+
+        // The market board opens through native target interaction. A generic event-start
+        // packet cannot replace that flow.
+        if (IsMarketBoard(obj))
+        {
+            nativeMarketInteractionDepth++;
+            try{return InteractWithObjectHook!.Original(system,obj,checkLOS);}
+            finally{nativeMarketInteractionDepth--;}
+        }
 
         // 咏唱状态
         MemoryHelper.Write(ICondition.Instance().Address + 27, false);
@@ -316,19 +328,19 @@ public unsafe class OptimizedInteraction : ModuleBase
         }
     }
 
-    private static bool CheckCameraPositionDetour
+    private bool CheckCameraPositionDetour
     (
         TargetSystem* system,
         Camera*       activeCamera,
         GameObject*   obj
-    ) => true;
+    ) => nativeMarketInteractionDepth>0||IsMarketBoard(obj)?CheckCameraPositionHook!.Original(system,activeCamera,obj):true;
 
     #region 常量
 
+    private static readonly string MarketBoardName = LuminaGetter.GetRowOrDefault<EObjName>(2000073).Singular.ToString();
+
     private static readonly FrozenSet<string> WhitelistObjectNames =
     [
-        // 市场布告板
-        LuminaGetter.GetRowOrDefault<EObjName>(2000073).Singular.ToString(),
         // 简易以太之光
         LuminaGetter.GetRowOrDefault<EObjName>(2003395).Singular.ToString()
     ];

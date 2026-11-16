@@ -23,3 +23,7 @@ backups/
 .env
 .env.*
 local.properties
+
+# Generated test runtime fixtures
+/tests/
+

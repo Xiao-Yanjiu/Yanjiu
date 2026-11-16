@@ -22,8 +22,8 @@ public static class Themes
         new("纸白",new(.94f,.94f,.93f,1),new(.99f,.99f,.98f,1),new(.22f,.24f,.26f,1),new(.60f,.65f,.70f,1),false),
         new("暖灰",new(.17f,.16f,.15f,1),new(.25f,.24f,.22f,1),new(.94f,.92f,.88f,1),new(.59f,.55f,.48f,1),true),
         new("月白",new(.88f,.91f,.93f,1),new(.95f,.97f,.98f,1),new(.20f,.25f,.29f,1),new(.57f,.68f,.72f,1),false),
-        new("FF14原生",Rgb(49,48,49),Rgb(49,48,49),Rgb(238,225,197),Rgb(211,189,134),true){
-            NativeGame=true,BorderOverride=Rgb(183,162,119),ShadowOverride=new(0,0,0,.6f),SelectedOverride=Rgb(96,90,76)}
+        new("KamiToolKit原生",Rgb(49,48,49),Rgb(49,48,49),Rgb(224,222,215),Rgb(151,154,151),true){
+            NativeGame=true,BorderOverride=Rgb(87,90,89),ShadowOverride=new(0,0,0,.6f),SelectedOverride=Rgb(78,80,79)}
 
     };
     public const int NativeGameIndex=6;
@@ -43,25 +43,34 @@ public static class Themes
 public sealed class ThemeScope : IDisposable
 {
     private int colors,vars;private bool disposed;
-    public ThemeScope()
+    public ThemeScope(Palette? palette=null)
     {
-        var p=Themes.Current;Color(ImGuiCol.Text,p.Text);Color(ImGuiCol.TextDisabled,new Vector4(p.Text.X,p.Text.Y,p.Text.Z,.6f));
+        var p=palette??Themes.Current;Color(ImGuiCol.Text,p.Text);Color(ImGuiCol.TextDisabled,new Vector4(p.Text.X,p.Text.Y,p.Text.Z,.6f));
         Color(ImGuiCol.WindowBg,p.Background);Color(ImGuiCol.ChildBg,p.Surface);Color(ImGuiCol.PopupBg,p.Background);
         Color(ImGuiCol.TitleBg,p.NativeGame?p.Background:p.Surface);Color(ImGuiCol.TitleBgActive,p.Surface);Color(ImGuiCol.TitleBgCollapsed,p.Background);
         Color(ImGuiCol.ScrollbarBg,p.Background);Color(ImGuiCol.ScrollbarGrab,p.Accent);Color(ImGuiCol.ScrollbarGrabHovered,p.Border);Color(ImGuiCol.ScrollbarGrabActive,p.Accent);
         Color(ImGuiCol.Border,p.Border);Color(ImGuiCol.FrameBg,p.NativeGame?new(.29f,.29f,.29f,1):p.Surface);Color(ImGuiCol.FrameBgHovered,Vector4.Lerp(p.Surface,p.Selected,.5f));Color(ImGuiCol.FrameBgActive,p.Selected);
-        Color(ImGuiCol.Button,p.Surface);Color(ImGuiCol.ButtonHovered,Vector4.Lerp(p.Surface,p.Selected,.5f));Color(ImGuiCol.ButtonActive,p.Selected);
+        Color(ImGuiCol.Button,p.NativeGame?new(.25f,.25f,.25f,1):p.Surface);Color(ImGuiCol.ButtonHovered,p.NativeGame?new(.34f,.34f,.33f,1):Vector4.Lerp(p.Surface,p.Selected,.5f));Color(ImGuiCol.ButtonActive,p.NativeGame?new(.18f,.18f,.18f,1):p.Selected);
         Color(ImGuiCol.Header,p.Surface);Color(ImGuiCol.HeaderHovered,Vector4.Lerp(p.Surface,p.Selected,.5f));Color(ImGuiCol.HeaderActive,p.Selected);
         Color(ImGuiCol.CheckMark,p.Accent);Color(ImGuiCol.SliderGrab,p.Accent);Color(ImGuiCol.SliderGrabActive,p.Accent);Color(ImGuiCol.Separator,p.NativeGame?new Vector4(.34f,.33f,.31f,1):p.Border);
         Color(ImGuiCol.BorderShadow,p.NativeGame?new Vector4(0,0,0,.65f):Vector4.Zero);
         Color(ImGuiCol.TableHeaderBg,p.Surface);Color(ImGuiCol.TableBorderStrong,p.Border);Color(ImGuiCol.TableBorderLight,new(p.Border.X,p.Border.Y,p.Border.Z,.25f));
         Color(ImGuiCol.TextSelectedBg,new(p.Accent.X,p.Accent.Y,p.Accent.Z,.3f));
         Color(ImGuiCol.Tab,p.Surface);Color(ImGuiCol.TabHovered,p.Selected);Color(ImGuiCol.TabActive,p.Selected);
-        Var(ImGuiStyleVar.WindowRounding,p.NativeGame?7:14);Var(ImGuiStyleVar.ChildRounding,p.BorderRadius);Var(ImGuiStyleVar.FrameRounding,p.NativeGame?12:8);Var(ImGuiStyleVar.PopupRounding,p.NativeGame?7:10);Var(ImGuiStyleVar.GrabRounding,p.NativeGame?4:7);
+        Color(ImGuiCol.MenuBarBg,p.Surface);
+        Color(ImGuiCol.SeparatorHovered,p.Accent);Color(ImGuiCol.SeparatorActive,p.Accent);
+        Color(ImGuiCol.ResizeGrip,new(p.Border.X,p.Border.Y,p.Border.Z,.35f));
+        Color(ImGuiCol.ResizeGripHovered,p.Border);Color(ImGuiCol.ResizeGripActive,p.Accent);
+        Color(ImGuiCol.TabUnfocused,p.Surface);Color(ImGuiCol.TabUnfocusedActive,p.Selected);
+        Color(ImGuiCol.TableRowBg,Vector4.Zero);Color(ImGuiCol.TableRowBgAlt,new(p.Text.X,p.Text.Y,p.Text.Z,.035f));
+        Var(ImGuiStyleVar.WindowRounding,p.NativeGame?7:14);Var(ImGuiStyleVar.ChildRounding,p.BorderRadius);Var(ImGuiStyleVar.FrameRounding,p.NativeGame?5:8);Var(ImGuiStyleVar.PopupRounding,p.NativeGame?7:10);Var(ImGuiStyleVar.GrabRounding,p.NativeGame?4:7);
         Var(ImGuiStyleVar.FrameBorderSize,p.BorderThickness);Var(ImGuiStyleVar.WindowBorderSize,p.BorderThickness);Var(ImGuiStyleVar.ChildBorderSize,p.BorderThickness);
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding,new Vector2(14,12)*Themes.Scale);vars++;
-        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding,new Vector2(10,7)*Themes.Scale);vars++;
-        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing,new Vector2(9,8)*Themes.Scale);vars++;
+        Var(ImGuiStyleVar.PopupBorderSize,p.BorderThickness);
+        Var(ImGuiStyleVar.ScrollbarRounding,p.NativeGame?4:7);Var(ImGuiStyleVar.ScrollbarSize,p.NativeGame?14:16);
+        Var(ImGuiStyleVar.TabRounding,p.NativeGame?4:7);Var(ImGuiStyleVar.GrabMinSize,10);
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding,(p.NativeGame?new Vector2(10,8):new Vector2(14,12))*Themes.Scale);vars++;
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding,(p.NativeGame?new Vector2(8,3):new Vector2(10,7))*Themes.Scale);vars++;
+        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing,(p.NativeGame?new Vector2(6,4):new Vector2(9,8))*Themes.Scale);vars++;
     }
     private void Color(ImGuiCol index,Vector4 color){ImGui.PushStyleColor(index,color);colors++;}
     private void Var(ImGuiStyleVar index,float value){ImGui.PushStyleVar(index,value*Themes.Scale);vars++;}

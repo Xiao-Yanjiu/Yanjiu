@@ -161,6 +161,10 @@ public abstract unsafe class ComponentNode<T, TU> : ComponentNode where T : unma
     protected override void Dispose(bool isNativeDestructor) {
         if (IsDisposed) return;
 
+        // A native node destructor may leave its component alive until later in
+        // the UI rebuild. Restore its native table before the wrapper is unrooted.
+        if (isNativeDestructor) RestoreComponentVirtualTable();
+
         if (!isNativeDestructor) {
             ref var uldManager = ref Node->Component->UldManager;
 

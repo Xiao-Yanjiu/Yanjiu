@@ -101,6 +101,8 @@ public unsafe class OverlayController : IDisposable {
     public void Dispose() {
         ThreadSafety.AssertMainThread();
 
+        IFramework.Get().Update -= CheckOverlayState;
+
         IAddonLifecycle.Get().UnregisterListener(AddonEvent.PreFinalize, "NamePlate");
         IAddonLifecycle.Get().UnregisterListener(OnOverlayAddonFinalize, OnOverlayAddonUpdate);
 

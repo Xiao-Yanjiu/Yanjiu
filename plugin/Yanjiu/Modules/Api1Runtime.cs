@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Security.Cryptography;
@@ -23,6 +23,9 @@ public static class Api1Runtime
         public RuntimeContext():base("Yanjiu-API1",true){}
         protected override Assembly? Load(AssemblyName name)
         {
+            // All module contexts must share the host's UI contract and service binding.
+            if(name.Name==typeof(Yanjiu.NativeUI.INativeModuleUI).Assembly.GetName().Name)
+                return typeof(Yanjiu.NativeUI.INativeModuleUI).Assembly;
             var path=Path.Combine(DirectoryPath,name.Name+".dll");
             if(File.Exists(path))return LoadFromAssemblyPath(path);
             return AssemblyLoadContext.GetLoadContext(typeof(Plugin).Assembly)!.LoadFromAssemblyName(name);
@@ -90,11 +93,23 @@ public static class Api1Runtime
     public static object? Icons=>icons;
     public static bool IsReady=>initialization?.IsCompletedSuccessfully==true;
     public static void Draw(){if(initialization?.IsCompletedSuccessfully!=true||stopping)return;SyncTheme();if(icons!=null)Invoke(icons.GetType(),icons,"Draw");}
-    private static void SyncTheme()
+    internal static void SyncTheme(UI.Palette? paletteOverride=null)
     {
         var theme=Type("OmniToolbox.UI.Theme.OmniTheme");
         var p=theme.GetProperty("CurrentTheme",Members)!;
-        p.SetValue(null,Enum.Parse(p.PropertyType,"LineGraphite"));
+        var palette=paletteOverride??UI.Themes.Current;
+        p.SetValue(null,Enum.Parse(p.PropertyType,palette.Dark?"LineGraphite":"LineGreen"));
+        // The provider lives in an isolated load context. Copy values rather than
+        // passing a host ThemeTokens instance across incompatible type identities.
+        var tokens=theme.GetProperty("BaseTokens",Members)!.GetValue(null)!;
+        void Set(string name,object value)=>tokens.GetType().GetProperty(name,Members)!.SetValue(tokens,value);
+        Set("Primary",palette.Surface);Set("Secondary",palette.Selected);Set("Accent",palette.Accent);
+        Set("Background",palette.Background);Set("Surface",palette.Surface);Set("Text",palette.Text);
+        Set("Border",palette.Border);Set("Shadow",palette.Shadow);
+        Set("BorderRadius",palette.BorderRadius);Set("ButtonRadius",palette.NativeGame?12f:8f);
+        Set("BorderThickness",palette.BorderThickness);
+        theme.GetField("scopedTokens",Members)!.SetValue(null,tokens);
+        theme.GetField("scopedControlAccent",Members)!.SetValue(null,palette.Accent);
     }
     public static void SaveJson(string path,object value,Type type)
     {

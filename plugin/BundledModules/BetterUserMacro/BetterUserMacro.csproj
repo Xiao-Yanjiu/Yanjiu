@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><AssemblyName>Yanjiu.Modules.BetterUserMacro</AssemblyName></PropertyGroup><ItemGroup><Reference Include="Yanjiu.NativeUI.Contracts"><HintPath>../../Yanjiu/bin/Release/net10.0-windows/Yanjiu.NativeUI.Contracts.dll</HintPath><Private>false</Private></Reference></ItemGroup></Project>

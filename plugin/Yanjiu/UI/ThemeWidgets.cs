@@ -20,7 +20,7 @@ public static class ThemeWidgets
         var min=ImGui.GetItemRectMin();var max=ImGui.GetItemRectMax();var height=max.Y-min.Y;
         if(height<=2||max.X-min.X<=2||!ImGui.IsItemVisible())return clicked;
         bool pressed=ImGui.IsItemActive(),hover=ImGui.IsItemHovered();
-        var draw=ImGui.GetWindowDrawList();float radius=Math.Min(height/2,(max.X-min.X)/2);
+        var draw=ImGui.GetWindowDrawList();float radius=Math.Min(5*Themes.Scale,Math.Min(height/2,(max.X-min.X)/2));
         uint Color(Vector4 c)=>ImGui.GetColorU32(c);
         Vector4 top=pressed?new(.16f,.16f,.16f,1):new(.36f,.36f,.35f,1);
         Vector4 middle=pressed?new(.21f,.21f,.21f,1):new(.21f,.21f,.21f,1);
@@ -34,10 +34,11 @@ public static class ThemeWidgets
             var c=t<.5f?Vector4.Lerp(top,middle,t*2):Vector4.Lerp(middle,bottom,(t-.5f)*2);
             draw.AddRectFilled(new(min.X+Math.Max(1,inset),min.Y+y),new(max.X-Math.Max(1,inset),min.Y+y+1),Color(c));
         }
-        draw.AddRect(min,max,Color(new(.38f,.37f,.34f,.65f)),radius);
+        draw.AddRect(min,max,Color(new(.36f,.38f,.37f,.85f)),radius);
         draw.AddRect(min+Vector2.One,max-Vector2.One,Color(pressed?new(0,0,0,.4f):new(1,1,1,.08f)),Math.Max(0,radius-1));
         if(ImGui.IsItemFocused())draw.AddRect(min-Vector2.One,max+Vector2.One,Color(Themes.Current.Accent),radius+1);
         var textSize=ImGui.CalcTextSize(text);var pos=min+new Vector2(Math.Max(0,(max.X-min.X-textSize.X)/2),(height-textSize.Y)/2);
+        if(pressed)pos+=new Vector2(0,Themes.Scale);
         draw.PushClipRect(min,max,true);
         draw.AddText(pos+new Vector2(0,1),Color(new(0,0,0,.85f)),text);draw.AddText(pos,Color(ink),text);
         draw.PopClipRect();

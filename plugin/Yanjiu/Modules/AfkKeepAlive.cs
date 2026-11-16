@@ -19,6 +19,8 @@ public sealed class AfkKeepAlive : ModuleBase
     private bool settingsLoaded;
     public sealed class Settings { public int IdleSeconds {get;set;}=30; }
     private void LoadSettings(){if(settingsLoaded)return;settings=ReadConfiguration<Settings>()??new();settings.IdleSeconds=Math.Clamp(settings.IdleSeconds,30,300);settingsLoaded=true;}
+    internal int NativeIdleSeconds {get{LoadSettings();return settings.IdleSeconds;}}
+    internal void SetNativeIdleSeconds(int value){LoadSettings();settings.IdleSeconds=Math.Clamp(value,30,300);WriteConfiguration(settings);}
     protected override void OnEnable(){LoadSettings();nextCheck=0;Services.Framework.Update+=Update;status="等待空闲";}
     protected override void OnDisable(){Services.Framework.Update-=Update;pulse.Release(SendKey);status="未启用";}
     public override bool DrawSettings(){

@@ -296,6 +296,14 @@ public unsafe class CustomizeSightDistance : ModuleBase
         camera->FoV                    = FoV;
     }
 
+    // Host-native controls reuse the same camera update and collision patch as ConfigUI.
+    public void ApplyNativeConfiguration()
+    {
+        if(config==null)return;
+        var manager=CameraManager.Instance();
+        if(manager!=null&&manager->Camera!=null)UpdateCamera(manager->Camera,config.MaxDistance,config.MinDistance,config.MaxRotation,config.MinRotation,config.MaxFoV,config.MinFoV,config.FoV);
+        if(config.IgnoreCollision)cameraCollisionPatch.Enable();else cameraCollisionPatch.Disable();
+    }
     private class Config : ModuleConfig
     {
         public float FoV             = 0.78f;

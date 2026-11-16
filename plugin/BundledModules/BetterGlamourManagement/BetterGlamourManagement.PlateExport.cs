@@ -1,0 +1,391 @@
+using Dalamud.Interface.ImGuiNotification;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.BaseTypes;
+using KamiToolKit.Nodes;
+using OmenTools.Extensions;
+using OmenTools.Interop.Game.Helpers;
+using OmniToolbox.Notifications;
+using OmniToolbox.UI.Theme;
+
+namespace OmniToolbox.TreePublic;
+
+public sealed unsafe partial class BetterGlamourManagement
+{
+    private BetterGlamourPlateExportNativeUI? plateExportNativeUI;
+
+    public override bool DrawSettings()
+    {
+        ModuleText.Owner = this;
+        if (IsEnabled && OmniControls.SmallButton("打开幻化管理窗口", false)) OpenManager();
+        if (!IsEnabled) ImGui.TextDisabled("可调整设置；启用后可打开幻化管理窗口。");
+        var enabled = config.EnableGlamourPlateExport;
+        if (OmniControls.Checkbox(
+                OmniLoc.Get(this, "Feature.BetterGlamourManagement.PlateExport"),
+                ref enabled))
+        {
+            config.EnableGlamourPlateExport = enabled;
+            saveConfig();
+            RefreshPlateExport(AddonHelper.GetByName(GLAMOUR_PLATE_ADDON_NAME), true);
+        }
+
+        OmniControls.SameLineOrWrap(OmniControls.HelpIconSize().X, OmniTheme.Scale(4f));
+        OmniControls.HelpIcon(OmniLoc.Get(this, "Feature.BetterGlamourManagement.PlateExport.Help"));
+        var changed = configDirty; configDirty = false; return changed;
+    }
+
+    private void EnablePlateExport() =>
+        plateExportNativeUI = new(
+            ExportCurrentGlamourPlate,
+            OpenManager,
+            CanExportCurrentGlamourPlate,
+            () => config.Presets,
+            () => selectedPresetIndex >= 0 && selectedPresetIndex < config.Presets.Count
+                ? config.Presets[selectedPresetIndex]
+                : config.Presets.FirstOrDefault(),
+            preset =>
+            {
+                SelectPreset(preset);
+                managerNativeUI?.UpdateData(config.Presets, selectedPresetIndex);
+            },
+            ImportPresetToCurrentGlamourPlate,
+            CanImportCurrentGlamourPlate,
+            AbortPlateImport);
+
+    private void DisposePlateExport()
+    {
+        DisposePlateImport();
+        var ui = plateExportNativeUI;
+        plateExportNativeUI = null;
+        if (ui is null)
+        {
+            return;
+        }
+
+        ui.Close();
+        ui.Dispose();
+    }
+
+    private void RefreshPlateExport(AtkUnitBase* plateAddon, bool refreshState)
+    {
+        if (!config.EnableGlamourPlateExport ||
+            plateExportNativeUI is null ||
+            plateAddon == null || !plateAddon->IsVisible || !plateAddon->IsAddonAndNodesReady() || plateAddon->WindowNode == null)
+        {
+            AbortPlateImport();
+            plateExportNativeUI?.Close();
+            return;
+        }
+
+        PositionAttachedNativeUI(plateAddon, plateExportNativeUI, SCREEN_PADDING);
+        if (refreshState)
+            plateExportNativeUI.RefreshState();
+    }
+
+    private static bool CanExportCurrentGlamourPlate()
+    {
+        var agent = AgentMiragePrismMiragePlate.Instance();
+        if (agent == null ||
+            !agent->IsAgentActive() ||
+            agent->Data == null ||
+            agent->Data->SelectedMiragePlateIndex >= MIRAGE_PLATE_COUNT)
+        {
+            return false;
+        }
+
+        var plate = agent->Data->GlamourPlates[(int)agent->Data->SelectedMiragePlateIndex];
+        for (var index = 0; index < plate.Items.Length; index++)
+        {
+            if (plate.Items[index].ItemId != 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void ExportCurrentGlamourPlate()
+    {
+        if (config.Presets.Count >= MAX_PRESET_COUNT)
+        {
+            OmniNotifier.Popup(
+                Title,
+                string.Format(OmniLoc.Get(this, "Feature.BetterGlamourManagement.PresetLimitReached"), MAX_PRESET_COUNT),
+                NotificationType.Warning);
+            return;
+        }
+
+        if (!TryCaptureCurrentGlamourPlate(out var preset))
+        {
+            OmniNotifier.Popup(
+                Title,
+                OmniLoc.Get(this, "Feature.BetterGlamourManagement.PlateExport.Empty"),
+                NotificationType.Warning);
+            return;
+        }
+
+        var previousSelection = selectedPresetIndex;
+        config.Presets.Add(preset);
+        selectedPresetIndex = config.Presets.Count - 1;
+        try
+        {
+            saveConfig();
+        }
+        catch (Exception error)
+        {
+            config.Presets.Remove(preset);
+            selectedPresetIndex = previousSelection;
+            OmniNotifier.Popup(
+                Title,
+                string.Format(OmniLoc.Get(this, "Feature.BetterGlamourManagement.PlateExport.Failed"), error.Message),
+                NotificationType.Error);
+            return;
+        }
+
+        managerNativeUI?.UpdateData(config.Presets, selectedPresetIndex);
+        QueuePortraitPreview(preset);
+        OmniNotifier.Popup(
+            Title,
+            string.Format(OmniLoc.Get(this, "Feature.BetterGlamourManagement.PlateExport.Saved"), preset.Name),
+            NotificationType.Success);
+    }
+
+    private static bool TryCaptureCurrentGlamourPlate(out BetterGlamourPreset preset)
+    {
+        preset = null!;
+        var agent = AgentMiragePrismMiragePlate.Instance();
+        if (agent == null ||
+            !agent->IsAgentActive() ||
+            agent->Data == null ||
+            agent->Data->SelectedMiragePlateIndex >= MIRAGE_PLATE_COUNT)
+        {
+            return false;
+        }
+
+        var plateIndex = agent->Data->SelectedMiragePlateIndex;
+        var plate = agent->Data->GlamourPlates[(int)plateIndex];
+        preset = new()
+        {
+            Name = string.Format(
+                ModuleText.Get("Feature.BetterGlamourManagement.PlateExport.DefaultName"),
+                plateIndex + 1)
+        };
+        for (var index = 0; index < plate.Items.Length; index++)
+        {
+            var sourceItem = plate.Items[index];
+            var itemID = sourceItem.ItemId;
+            if (itemID == 0)
+            {
+                continue;
+            }
+
+            preset.Items.Add(new()
+            {
+                Slot = InspectSlots[index],
+                ItemID = itemID,
+                Stain0 = sourceItem.StainIds[0],
+                Stain1 = sourceItem.StainIds[1]
+            });
+        }
+
+        return preset.Items.Count > 0;
+    }
+
+    internal sealed class BetterGlamourPlateExportNativeUI : NativeAddon
+    {
+        private readonly Action onExport;
+        private readonly Action onOpenManager;
+        private readonly Func<bool> canExport;
+        private readonly Func<IReadOnlyList<BetterGlamourPreset>> getPresets;
+        private readonly Func<BetterGlamourPreset?> getSelectedPreset;
+        private readonly Action<BetterGlamourPreset> onSelectPreset;
+        private readonly Action<BetterGlamourPreset> onImport;
+        private readonly Func<bool> canImport;
+        private readonly Action onAbortImport;
+        private TextNode? presetLabel;
+        private DropDownNode<BetterGlamourPreset>? presetDropDown;
+        private TextButtonNode? importButton;
+        private string? displayedPresetName;
+        private TextButtonNode? exportButton;
+        private TextButtonNode? openManagerButton;
+        private bool selectedPresetHasItems;
+        private Vector2 layoutSize;
+        private Vector2 layoutStart;
+
+        [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
+        public BetterGlamourPlateExportNativeUI(
+            Action onExport,
+            Action onOpenManager,
+            Func<bool> canExport,
+            Func<IReadOnlyList<BetterGlamourPreset>> getPresets,
+            Func<BetterGlamourPreset?> getSelectedPreset,
+            Action<BetterGlamourPreset> onSelectPreset,
+            Action<BetterGlamourPreset> onImport,
+            Func<bool> canImport,
+            Action onAbortImport)
+        {
+            InternalName = "YanjiuBetterGlamourPlateExport";
+            Title = ModuleText.Get("Feature.BetterGlamourManagement.PlateExport");
+            Subtitle = string.Empty;
+            Size = new(260f, 230f);
+            ContentPadding = new(8f, 8f);
+            RememberClosePosition = false;
+            CreateWindowNode = static () => new WindowNode { ShowCloseButton = false };
+            EnableContextMenu = false;
+            RespectCloseAll = false;
+            DisableClose = true;
+            this.onExport = onExport;
+            this.onOpenManager = onOpenManager;
+            this.canExport = canExport;
+            this.getPresets = getPresets;
+            this.getSelectedPreset = getSelectedPreset;
+            this.onSelectPreset = onSelectPreset;
+            this.onImport = onImport;
+            this.canImport = canImport;
+            this.onAbortImport = onAbortImport;
+        }
+
+        protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan)
+        {
+            presetLabel = new()
+            {
+                AlignmentType = AlignmentType.Left,
+                String = ModuleText.Get("Feature.BetterGlamourManagement.PlateImport.Preset")
+            };
+            presetLabel.AttachNode(this);
+            presetDropDown = new()
+            {
+                MaxListOptions = 8,
+                GetLabelFunction = preset => string.IsNullOrWhiteSpace(preset.Name)
+                    ? ModuleText.Get("Feature.BetterGlamourManagement.WindowTitle")
+                    : preset.Name,
+                PlaceholderString = ModuleText.Get("Feature.BetterGlamourManagement.PlateImport.NoPresets"),
+                OnOptionSelected = onSelectPreset
+            };
+            presetDropDown.AttachNode(this);
+            importButton = new()
+            {
+                String = ModuleText.Get("Feature.BetterGlamourManagement.PlateImport.Action"),
+                TextTooltip = ModuleText.Get("Feature.BetterGlamourManagement.PlateImport.Help"),
+                OnClick = () =>
+                {
+                    if (getSelectedPreset() is { } preset)
+                        onImport(preset);
+                }
+            };
+            importButton.AttachNode(this);
+            exportButton = new()
+            {
+                String = ModuleText.Get("Feature.BetterGlamourManagement.PlateExport.Action"),
+                OnClick = onExport
+            };
+            exportButton.AttachNode(this);
+            openManagerButton = new()
+            {
+                String = ModuleText.Get("Feature.BetterGlamourManagement.PlateExport.OpenManager"),
+                OnClick = onOpenManager
+            };
+            openManagerButton.AttachNode(this);
+            RefreshPresets();
+            RefreshState();
+            ResizeContent();
+        }
+
+        protected override unsafe void OnUpdate(AtkUnitBase* addon)
+        {
+            var selected = getSelectedPreset();
+            if (presetDropDown is { IsCollapsed: true } &&
+                (presetDropDown.Options.Count != getPresets().Count ||
+                 !ReferenceEquals(presetDropDown.SelectedOption, selected) ||
+                 displayedPresetName != selected?.Name))
+                RefreshPresets();
+            if (importButton is not null)
+            {
+                var enabled = selectedPresetHasItems && canImport();
+                if (importButton.IsEnabled != enabled)
+                    importButton.IsEnabled = enabled;
+            }
+
+            ResizeContent();
+        }
+
+        protected override unsafe void OnHide(AtkUnitBase* addon) => onAbortImport();
+
+        protected override unsafe void OnFinalize(AtkUnitBase* addon)
+        {
+            onAbortImport();
+            presetLabel = null;
+            presetDropDown = null;
+            importButton = null;
+            displayedPresetName = null;
+            exportButton = null;
+            openManagerButton = null;
+            selectedPresetHasItems = false;
+            layoutSize = Vector2.Zero;
+            layoutStart = Vector2.Zero;
+        }
+
+        internal void RefreshState()
+        {
+            selectedPresetHasItems = getSelectedPreset()?.Items.Exists(static item => item.ItemID != 0) == true;
+            if (exportButton is not null)
+            {
+                var enabled = canExport();
+                if (exportButton.IsEnabled != enabled)
+                    exportButton.IsEnabled = enabled;
+            }
+        }
+
+        private void RefreshPresets()
+        {
+            if (presetDropDown is null)
+                return;
+            var selected = getSelectedPreset();
+            presetDropDown.Options = [.. getPresets()];
+            presetDropDown.SelectedOption = selected;
+            presetDropDown.IsEnabled = presetDropDown.Options.Count > 0;
+            presetDropDown.TextTooltip = selected?.Name ?? string.Empty;
+            displayedPresetName = selected?.Name;
+            selectedPresetHasItems = selected?.Items.Exists(static item => item.ItemID != 0) == true;
+        }
+
+        private void ResizeContent()
+        {
+            if (exportButton is null || openManagerButton is null || presetLabel is null || presetDropDown is null || importButton is null)
+            {
+                return;
+            }
+
+            var size = ContentSize;
+            var start = ContentStartPosition;
+            if (layoutSize == size && layoutStart == start)
+                return;
+            layoutSize = size;
+            layoutStart = start;
+
+            const float BUTTON_HEIGHT = 30f;
+            const float BUTTON_GAP = 6f;
+            presetLabel.Position = ContentStartPosition;
+            presetLabel.Size = new(ContentSize.X, 22f);
+            presetDropDown.Position = ContentStartPosition + new Vector2(0f, 24f);
+            presetDropDown.Size = new(ContentSize.X, 28f);
+            importButton.Position = ContentStartPosition + new Vector2(0f, 58f);
+            importButton.Size = new(ContentSize.X, BUTTON_HEIGHT);
+            exportButton.Position = ContentStartPosition + new Vector2(0f, 58f + BUTTON_HEIGHT + BUTTON_GAP);
+            exportButton.Size = new(ContentSize.X, BUTTON_HEIGHT);
+            openManagerButton.Position = new(
+                ContentStartPosition.X,
+                ContentStartPosition.Y + 58f + (BUTTON_HEIGHT + BUTTON_GAP) * 2f);
+            openManagerButton.Size = new(ContentSize.X, BUTTON_HEIGHT);
+        }
+    }
+
+    #region 常量
+
+    private const string GLAMOUR_PLATE_ADDON_NAME = "MiragePrismMiragePlate";
+
+    private const uint MIRAGE_PLATE_COUNT = 20;
+
+    #endregion
+}

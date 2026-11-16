@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><Version>1.3.0</Version><AssemblyName>Yanjiu.Modules.QuickCrossWorldTravel</AssemblyName></PropertyGroup><ItemGroup><Reference Include="Yanjiu.NativeUI.Contracts"><HintPath>../../Yanjiu/bin/Release/net10.0-windows/Yanjiu.NativeUI.Contracts.dll</HintPath><Private>false</Private></Reference></ItemGroup></Project>

@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Internal.Classes;
 
 namespace KamiToolKit.BaseTypes.ComponentNode;
 
@@ -24,12 +25,16 @@ public abstract unsafe partial class ComponentNode {
 
     private AtkComponentBase.AtkComponentBaseVirtualTable* modifiedVirtualTable;
     private AtkComponentBase.AtkComponentBaseVirtualTable* originalVirtualTable;
+    private AtkComponentBase* registeredComponent;
+    private NativeCallbackLifetime? callbackLifetime;
 
     /// <summary>
     /// Replaces components original virtual table with a fully managed custom virtual table.
     /// </summary>
     protected void RegisterVirtualTable() {
         originalVirtualTable = ComponentBase->VirtualTable;
+        registeredComponent = ComponentBase;
+        callbackLifetime = new NativeCallbackLifetime(this);
 
         modifiedVirtualTable = (AtkComponentBase.AtkComponentBaseVirtualTable*) IMemorySpace.GetUISpace()->AllocateZeroedArray<nint>(VirtualTableEntryCount);
         NativeMemory.Copy(ComponentBase->VirtualTable, modifiedVirtualTable, 0x8 * VirtualTableEntryCount);
@@ -62,6 +67,19 @@ public abstract unsafe partial class ComponentNode {
         modifiedVirtualTable->GetAtkResNode = (delegate* unmanaged<AtkComponentBase*, AtkResNode*>) Marshal.GetFunctionPointerForDelegate(getAtkResNodeFunction);
         modifiedVirtualTable->GetFocusNode = (delegate* unmanaged<AtkComponentBase*, AtkResNode*>) Marshal.GetFunctionPointerForDelegate(getFocusNodeFunction);
         modifiedVirtualTable->InitializeFromComponentData = (delegate* unmanaged<AtkComponentBase*, void*, void>) Marshal.GetFunctionPointerForDelegate(initializeFromComponentData);
+    }
+
+    protected void RestoreComponentVirtualTable() {
+        if (modifiedVirtualTable is not null) {
+            if (registeredComponent is not null && registeredComponent->VirtualTable == modifiedVirtualTable)
+                registeredComponent->VirtualTable = originalVirtualTable;
+            IMemorySpace.Free(modifiedVirtualTable);
+            modifiedVirtualTable = null;
+        }
+        registeredComponent = null;
+        callbackLifetime?.Dispose();
+        callbackLifetime = null;
+        GC.KeepAlive(this);
     }
 
     /// <summary>
@@ -156,14 +174,11 @@ public abstract unsafe partial class ComponentNode {
     }
 
     private AtkEventListener* Destructor(AtkComponentBase* thisPtr, byte freeFlags) {
-        var result = originalVirtualTable->Dtor(thisPtr, freeFlags);
-
-        if ((freeFlags & 1) != 0) {
-            // Free our custom virtual table, the game doesn't know this exists and won't clear it on its own.
-            IMemorySpace.Free(modifiedVirtualTable);
-            modifiedVirtualTable = null;
-        }
-
-        return result;
+        // The original destructor can dispatch more events. Stop publishing managed
+        // callbacks before it runs, and never dereference thisPtr after it frees it.
+        thisPtr->VirtualTable = originalVirtualTable;
+        registeredComponent = null;
+        try { return originalVirtualTable->Dtor(thisPtr, freeFlags); }
+        finally { RestoreComponentVirtualTable(); }
     }
 }

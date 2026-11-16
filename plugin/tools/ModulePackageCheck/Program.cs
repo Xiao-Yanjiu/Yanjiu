@@ -6,6 +6,7 @@ PackageCheck.Run(args);
 static class PackageCheck
 {
  public static void Run(string[] args){
+  Yanjiu.PluginFiles.Initialize(Path.Combine(args[0],"Yanjiu.dll"));
   using var document=JsonDocument.Parse(File.ReadAllText(Path.Combine(args[2],"compatibility.json")));
   var compiler=new Yanjiu.Modules.SourceCompiler(Directory.GetFiles(args[0],"*.dll").Concat(Directory.GetFiles(args[1],"*.dll")).Concat(Yanjiu.Modules.SourceCompiler.ReferencePaths()));
   var rows=new List<object>();int passed=0;

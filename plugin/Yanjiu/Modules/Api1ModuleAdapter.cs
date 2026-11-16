@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text.Json;
 namespace Yanjiu.Modules;
 
-public sealed class Api1ModuleAdapter:ModuleBase,IAsyncDisposable
+public sealed class Api1ModuleAdapter:ModuleBase,IAsyncDisposable,Yanjiu.NativeUI.INativeModuleUI
 {
     private const BindingFlags Members=BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance|BindingFlags.Static;
     private readonly Func<Task> ensureReady;
@@ -50,6 +50,24 @@ public sealed class Api1ModuleAdapter:ModuleBase,IAsyncDisposable
         token.ThrowIfCancellationRequested();if(StateRequest is {} request)await request(enabled,affectConfig,token).ConfigureAwait(false);else{await ChangeEnabledAsync(enabled).ConfigureAwait(false);if(affectConfig)await dispatcher(Save).ConfigureAwait(false);}
         return (T)typeof(T).GetProperty("Success",Members)!.GetValue(null)!;
     };
+    internal bool OwnsNativeUi(object owner)=>ReferenceEquals(module,owner);
+    public Yanjiu.NativeUI.NativePanel? CreateNativePanel()=>
+        module is Yanjiu.NativeUI.INativeModuleUI provider?provider.CreateNativePanel():null;
+    internal Task PrepareNativeSettingsAsync()=>ensureReady();
+    public bool TryOpenNativeSettings()=>
+        module is Yanjiu.NativeUI.INativeModuleUI provider && provider.TryOpenNativeSettings();
+    internal System.Text.Json.Nodes.JsonObject NativeSettingsSnapshot()
+    {
+        var value=config?.GetValue(module)??throw new InvalidOperationException("模块未提供可编辑配置。");
+        return JsonSerializer.SerializeToNode(value,config!.FieldType,new JsonSerializerOptions{IncludeFields=true}) as System.Text.Json.Nodes.JsonObject??throw new InvalidOperationException("配置不是对象。");
+    }
+    internal void SaveNativeSettings(System.Text.Json.Nodes.JsonObject values)
+    {
+        if(closing||Transitioning||IsEnabled)throw new InvalidOperationException("请先停用模块，等待完成后保存配置。");
+        var restored=JsonSerializer.Deserialize(values.ToJsonString(),config!.FieldType,new JsonSerializerOptions{IncludeFields=true,MaxDepth=64})??throw new InvalidDataException("配置为空。");
+        Api1SettingsStore.Save(configPath,ModuleName,restored,config.FieldType);
+        config.SetValue(module,restored);
+    }
     public void Save(){if(config?.GetValue(module) is {} value)Api1SettingsStore.Save(configPath,ModuleName,value,config.FieldType);}
     public override bool HasSettings=>(bool)Get("HasSettings")!;
     public IEnumerable<KeyValuePair<string,string>> MacroCommands()

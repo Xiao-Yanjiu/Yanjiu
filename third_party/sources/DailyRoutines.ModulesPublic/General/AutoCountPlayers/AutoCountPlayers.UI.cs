@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using DailyRoutines.Extensions;
 using DailyRoutines.Manager;
 using Dalamud.Game.Text.SeStringHandling;
@@ -46,6 +46,10 @@ public unsafe partial class AutoCountPlayers
 
     private void OnDraw()
     {
+        if(!string.IsNullOrEmpty(nativeHoveredPlayer)){
+            var hovered=PlayersManager.Instance().PlayersAround.FirstOrDefault(player=>player.GameObjectID.ToString()==nativeHoveredPlayer);
+            if(hovered!=null)DrawPlayerLine(hovered);
+        }
         if (!config.DisplayLineWhenTargetingMe || PlayersManager.Instance().PlayersTargetingMe.Count == 0) return;
 
         if (!GameState.IsForeground) return;

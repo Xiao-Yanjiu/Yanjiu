@@ -1,4 +1,4 @@
-﻿using DailyRoutines.Common.Info.Models;
+using DailyRoutines.Common.Info.Models;
 using DailyRoutines.Common.Module.Abstractions;
 using DailyRoutines.Common.Module.Enums;
 using DailyRoutines.Common.Module.Models;
@@ -65,8 +65,7 @@ public unsafe partial class AutoCountPlayers : ModuleBase
         entry.Text  =   $"{Lang.Get("AutoCountPlayers-PlayersAroundCount")}: 0";
         entry.OnClick = _ =>
         {
-            EnsureOverlay();
-            Overlay.IsOpen ^= true;
+            ToggleNativePlayers();
         };
 
         WindowManager.Instance().PostDraw += OnDraw;
@@ -97,6 +96,7 @@ public unsafe partial class AutoCountPlayers : ModuleBase
 
     protected override void Uninit()
     {
+        nativePlayers?.Dispose();nativePlayers=null;nativeHoveredPlayer="";
         GameState.Instance().WarpComplete -= OnWarpCompleted;
 
         FrameworkManager.Instance().Unreg(OnUpdate);
@@ -211,8 +211,7 @@ public unsafe partial class AutoCountPlayers : ModuleBase
 
         if (!entry.Shown)
         {
-            EnsureOverlay();
-            Overlay.IsOpen = false;
+            nativePlayers?.Close();
             return;
         }
 

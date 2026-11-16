@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,7 +7,7 @@ using Dalamud.Interface.Windowing;
 using Yanjiu.Modules;
 
 namespace Yanjiu.UI;
-public sealed class MainWindow : Window,IDisposable
+public sealed partial class MainWindow : Window,IDisposable
 {
     private const string Plus="\uf067",Trash="\uf1f8",Refresh="\uf021",Download="\uf019",Menu="\uf0c9";
     private readonly Configuration config;
@@ -34,6 +34,33 @@ public sealed class MainWindow : Window,IDisposable
         Services.IconPicker=callback=>OmniModuleFactory.GetIconBrowser().OpenForSelection(false,callback,null);
         foreach(var address in config.Repositories.ToArray())Fetch(address);
     }
+
+    internal sealed record NativeSourceAction(string Label,string Detail,Action Run,string SecondaryLabel,Action SecondaryRun);
+    internal NativeSourceAction[] NativeSourceActions()
+    {
+        var result=new List<NativeSourceAction>();
+        foreach(var address in config.Repositories.ToArray()){
+            result.Add(new("刷新来源",address,()=>Fetch(address,true),"删除来源",()=>RemoveRepository(address)));
+        }
+        foreach(var entry in modules.Entries.Where(e=>e.Origin=="本地").ToArray()){
+            var captured=entry;
+            result.Add(new("刷新模块",entry.Path,()=>modules.Import(captured.Path,"本地"),"移除模块",()=>RemovePath(captured.Path)));
+        }
+        return result.ToArray();
+    }
+    internal string NativeStatus=>status+"\n"+modules.Status+"\n"+string.Join("\n",sourceStatus.Where(pair=>pair.Value.Length>0).Select(pair=>pair.Value));
+    internal void PumpActions(){while(uiActions.TryDequeue(out var action))action();if(Environment.TickCount64>=nextRefresh){nextRefresh=Environment.TickCount64+900_000;foreach(var address in config.Repositories.ToArray())if(config.RepositoryAutoRefresh.GetValueOrDefault(address))Fetch(address);}}
+    internal void ImportNativeSource(string address)
+    {
+        address=address.Trim();
+        if(address.Length==0)return;
+        if(Uri.TryCreate(address,UriKind.Absolute,out var uri)&&uri.Scheme=="https"){
+            repository=address;AddRepository();
+        }else modules.Import(address);
+    }
+    internal void OpenModuleSettings(ModuleEntry entry){page=1;selected=entry;search=entry.Title;moduleFilter="全部";IsOpen=true;}
+
+    internal void SelectPage(int selectedPage){page=Math.Clamp(selectedPage,0,3);IsOpen=true;}
 
     public override void Draw()
     {
@@ -86,7 +113,7 @@ public sealed class MainWindow : Window,IDisposable
                 ImGui.TableNextColumn();if(IconButton(Plus,"addLocal","添加本地模块")){modules.Import(localPath);localPath="";}
                 foreach(var pref in config.Modules.Where(p=>p.Origin=="本地"&&!p.Path.StartsWith("builtin:")).ToArray()){
                     ImGui.PushID(pref.Path);ImGui.TableNextColumn();string display=pref.Path;ImGui.SetNextItemWidth(-1);ImGui.InputText("##path",ref display,2000,ImGuiInputTextFlags.ReadOnly);
-                    ImGui.TableNextColumn();if(IconButton(Refresh,"reload","重新读取本地文件"))modules.Import(pref.Path,pref.Origin,pref.Hash);ImGui.SameLine();if(IconButton(Trash,"remove","移除本地地址并卸载模块；保留原文件"))RemovePath(pref.Path);ImGui.PopID();
+                    ImGui.TableNextColumn();if(IconButton(Refresh,"reload","重新读取本地文件"))modules.Import(pref.Path,"本地");ImGui.SameLine();if(IconButton(Trash,"remove","移除本地地址并卸载模块；保留原文件"))RemovePath(pref.Path);ImGui.PopID();
                 }
                 ImGui.EndTable();
             }
@@ -141,7 +168,7 @@ public sealed class MainWindow : Window,IDisposable
         }
         ImGui.NewLine();
         ImGui.TextDisabled($"模块 {modules.Entries.Count} · 已启用 {modules.Entries.Count(e=>e.Instance?.IsEnabled==true)}");
-        foreach(var entry in modules.Entries.Where(e=>Matches(e.Title+(e.Instance?.Descriptor.Description??e.Catalog?.Description)+e.Instance?.Descriptor.Author)&& ModuleFilters.Matches(e,moduleFilter)).OrderByDescending(e=>e.Preference.Favorite).ThenBy(e=>e.Title).ToArray())DrawEntry(entry);
+        foreach(var entry in modules.Entries.Where(e=>Matches(e.Title+(e.Instance?.Descriptor.Description??e.Catalog?.Description)+e.Instance?.Descriptor.Author)&& ModuleFilters.Matches(e,moduleFilter)).OrderBy(e=>e.Origin=="在线"?1:e.Origin=="本地"?2:0).ThenBy(e=>TinyPinyin.PinyinHelper.GetPinyin(e.Title,string.Empty),StringComparer.OrdinalIgnoreCase).ToArray())DrawEntry(entry);
         if(drCatalogError.Length>0)ImGui.TextWrapped(drCatalogError);
         if(moduleFilter=="全部"||moduleFilter=="在线模块"){
             foreach(var pair in listings.ToArray())foreach(var item in pair.Value.Modules){
@@ -226,20 +253,7 @@ public sealed class MainWindow : Window,IDisposable
             using var small=UiFonts.Get(.85f).Push();
             ImGui.PushStyleColor(ImGuiCol.Text,Themes.Current.Error);ImGui.TextWrapped(entry.Error);ImGui.PopStyleColor();
         }
-        if(selected?.Path==entry.Path){
-            ImGui.Separator();
-            if(entry.Instance is OmniToolbox.Common.Module.Abstractions.ModuleBase or Api1ModuleAdapter){var macro="/yanjiu "+entry.Instance.ModuleName;ImGui.TextDisabled("Yanjiu 宏命令："+macro);ImGui.SameLine();if(ThemeWidgets.Button("复制宏命令"))ImGui.SetClipboardText(macro);}
-            if(entry.Instance is Api1ModuleAdapter commands){foreach(var command in commands.MacroCommands()){ImGui.TextDisabled(command.Key+"："+command.Value);if(ThemeWidgets.Button("复制命令##"+command.Value))ImGui.SetClipboardText(command.Value);}}
-            if(entry.Instance==null)ImGui.TextDisabled(entry.Error.Length>0?"此模块仍需适配，暂时无法打开设置":"模块正在加载，请稍候");
-            else if(entry.Instance is Api1ModuleAdapter api){if(!Api1Runtime.IsReady)ImGui.TextDisabled(Api1Runtime.StateText);else if(api.HasSettings)try{api.DrawSettings();}catch(Exception e){ImGui.TextWrapped("配置界面错误："+e.GetBaseException().Message);}}
-            else if(entry.Instance is AfkKeepAlive afk){afk.DrawSettings();}
-            else if(!entry.Instance.IsEnabled){ try{disabledSettings.Draw(entry);}catch(Exception e){ImGui.TextWrapped("配置读取失败："+e.GetBaseException().Message);} }
-            else if(entry.Instance.HasSettings){
-                disabledSettings.Forget(entry);
-                try{if(entry.DrawSettings())config.Save();}
-                catch(Exception e){Services.Log.Error(e,"Settings UI failed for {Module}",entry.Title);modules.Enable(entry,false);entry.Error="设置界面错误："+e.GetBaseException().Message;selected=null;}
-            }else ImGui.TextDisabled("此模块没有额外设置。");
-        }
+        if(selected?.Path==entry.Path)DrawModuleConfiguration(entry);
         ImGui.Unindent(46*Themes.Scale);
         EndCard(entry.Path,start);if(remove)RemovePath(entry.Path);
     }
@@ -311,6 +325,24 @@ public sealed class MainWindow : Window,IDisposable
     }
     private static void ClearSettingsError(ModuleEntry entry){if(entry.Error.StartsWith("设置界面错误：",StringComparison.Ordinal))entry.Error="";}
 
+    internal void DrawModuleConfiguration(ModuleEntry entry)
+    {
+
+            ImGui.Separator();
+            if(entry.Instance is OmniToolbox.Common.Module.Abstractions.ModuleBase or Api1ModuleAdapter){var macro="/yanjiu "+entry.Instance.ModuleName;ImGui.TextDisabled("Yanjiu 宏命令："+macro);ImGui.SameLine();if(ThemeWidgets.Button("复制宏命令"))ImGui.SetClipboardText(macro);}
+            if(entry.Instance is Api1ModuleAdapter commands){foreach(var command in commands.MacroCommands()){ImGui.TextDisabled(command.Key+"："+command.Value);if(ThemeWidgets.Button("复制命令##"+command.Value))ImGui.SetClipboardText(command.Value);}}
+            if(entry.Instance==null)ImGui.TextDisabled(entry.Error.Length>0?"此模块仍需适配，暂时无法打开设置":"模块正在加载，请稍候");
+            else if(entry.Instance is Api1ModuleAdapter api){if(!Api1Runtime.IsReady)ImGui.TextDisabled(Api1Runtime.StateText);else if(api.HasSettings)try{api.DrawSettings();}catch(Exception e){ImGui.TextWrapped("配置界面错误："+e.GetBaseException().Message);}}
+            else if(entry.Instance is AfkKeepAlive afk){afk.DrawSettings();}
+            else if(!entry.Instance.IsEnabled){ try{disabledSettings.Draw(entry);}catch(Exception e){ImGui.TextWrapped("配置读取失败："+e.GetBaseException().Message);} }
+            else if(entry.Instance.HasSettings){
+                disabledSettings.Forget(entry);
+                try{if(entry.DrawSettings())config.Save();}
+                catch(Exception e){Services.Log.Error(e,"Settings UI failed for {Module}",entry.Title);modules.Enable(entry,false);entry.Error="设置界面错误："+e.GetBaseException().Message;selected=null;}
+            }else ImGui.TextDisabled("此模块没有额外设置。");
+        
+    }
+
     private void DrawAppearance()
     {
         for(int i=0;i<Themes.Available.Length;i++){
@@ -333,10 +365,10 @@ public sealed class MainWindow : Window,IDisposable
         if(ImGui.ColorEdit4("##"+key,ref value,ImGuiColorEditFlags.AlphaBar)){config.ThemeColors[key]=[value.X,value.Y,value.Z,value.W];config.Save();}
     }
 
-    private async void Fetch(string address,bool restoreHidden=false)
+    private async void Fetch(string address,bool restoreHidden=false,string? updateModule=null)
     {
         if(!fetching.Add(address))return;sourceStatus[address]="读取中…";
-        try{var result=await online.Fetch(address,stop.Token);uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address))return;listings[address]=result;sourceStatus[address]="";if(restoreHidden){config.HiddenAvailableModules.RemoveAll(name=>result.Modules.Any(item=>item.InternalName==name));config.Save();}});}
+            try{var result=await online.Fetch(address,stop.Token);uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address))return;listings[address]=result;sourceStatus[address]="";if(restoreHidden){config.HiddenAvailableModules.RemoveAll(name=>result.Modules.Any(item=>item.InternalName==name));config.Save();}if(updateModule!=null&&result.Modules.FirstOrDefault(item=>item.InternalName==updateModule) is {} updated)Install(address,result,updated);});}
         catch(Exception e){string message=e.GetBaseException().Message;uiActions.Enqueue(()=>{if(config.Repositories.Contains(address))sourceStatus[address]=message;});}
         finally{uiActions.Enqueue(()=>fetching.Remove(address));}
     }
@@ -346,7 +378,7 @@ public sealed class MainWindow : Window,IDisposable
         try{
             var bytes=await online.Download(listing,item,stop.Token);if(stop.IsCancellationRequested)return;
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);File.WriteAllBytes(path+".tmp",bytes);File.Move(path+".tmp",path,true);
-            uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address)||config.HiddenAvailableModules.Contains(item.InternalName))return;modules.Import(path,"在线",item.Sha256,address,item.ApiVersion);status="校验通过，正在导入 "+item.Name;});
+            uiActions.Enqueue(()=>{if(stop.IsCancellationRequested||!config.Repositories.Contains(address))return;config.HiddenAvailableModules.Remove(item.InternalName);(config.DownloadedModuleVersions??=new())[item.Sha256.ToLowerInvariant()]=item.Version;config.Save();modules.Import(path,"在线",item.Sha256,address,item.ApiVersion);status="校验通过，正在导入 "+item.Name;});
         }catch(Exception e){var message=e.GetBaseException().Message;uiActions.Enqueue(()=>status=message);}
         finally{uiActions.Enqueue(()=>installing.Remove(path));}
     }
